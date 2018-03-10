@@ -192,6 +192,17 @@
     <ClInclude Include="App\SimpleSound.h" />
     <ClInclude Include="Editor.h" />
     <ClInclude Include="math\Color.h" />
+    <ClInclude Include="math\MathCore.h" />
+    <ClInclude Include="math\Matrix2x2.h" />
+    <ClInclude Include="math\Matrix3x3.h" />
+    <ClInclude Include="math\Matrix4x4.h" />
+    <ClInclude Include="math\Quaternion.h" />
+    <ClInclude Include="math\Random.h" />
+    <ClInclude Include="math\Rotation.h" />
+    <ClInclude Include="math\Transform.h" />
+    <ClInclude Include="math\Vector2.h" />
+    <ClInclude Include="math\Vector3.h" />
+    <ClInclude Include="math\Vector4.h" />
     <ClInclude Include="Table.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
@@ -204,6 +215,15 @@
     <ClCompile Include="Editor.cpp" />
     <ClCompile Include="game\GameTest.cpp" />
     <ClCompile Include="math\Color.cpp" />
+    <ClCompile Include="math\Matrix2x2.cpp" />
+    <ClCompile Include="math\Matrix3x3.cpp" />
+    <ClCompile Include="math\Matrix4x4.cpp" />
+    <ClCompile Include="math\Quaternion.cpp" />
+    <ClCompile Include="math\Rotation.cpp" />
+    <ClCompile Include="math\Transform.cpp" />
+    <ClCompile Include="math\Vector2.cpp" />
+    <ClCompile Include="math\Vector3.cpp" />
+    <ClCompile Include="math\Vector4.cpp" />
     <ClCompile Include="Table.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

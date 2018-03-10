@@ -1,8 +1,27 @@
-﻿  GameTest.cpp
-c:\users\100547971\desktop\nxt api\gametest\app\logger.h(94): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-c:\users\100547971\desktop\nxt api\gametest\app\logger.h(94): warning C4244: 'argument': conversion from 'const int' to 'float', possible loss of data
-c:\users\100547971\desktop\nxt api\gametest\game\gametest.cpp(44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-  GameTest.vcxproj -> C:\Users\100547971\Desktop\NXT API\x64\Debug\GameTest.exe
-  GameTest.vcxproj -> C:\Users\100547971\Desktop\NXT API\x64\Debug\GameTest.pdb (Partial PDB)
-  C:\Users\100547971\Desktop\NXT API\\GameTest\glut\bin\x64\freeglut.dll
-  1 File(s) copied
+﻿  Quaternion.cpp
+  GameTest.cpp
+c:\users\100547971\desktop\nxt\gametest\app\logger.h(94): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\users\100547971\desktop\nxt\gametest\app\logger.h(94): warning C4244: 'argument': conversion from 'const int' to 'float', possible loss of data
+c:\users\100547971\desktop\nxt\gametest\game\gametest.cpp(47): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+  Generating Code...
+  Compiling...
+  Vector4.cpp
+  Transform.cpp
+  Matrix4x4.cpp
+c:\users\100547971\desktop\nxt\gametest\math\matrix4x4.cpp(228): error C2572: 'Matrix4x4::Rotation': redefinition of default argument: parameter 1
+  c:\users\100547971\desktop\nxt\gametest\math\matrix4x4.h(65): note: see declaration of 'Matrix4x4::Rotation'
+c:\users\100547971\desktop\nxt\gametest\math\matrix4x4.cpp(233): error C2572: 'Matrix4x4::GetRotation': redefinition of default argument: parameter 1
+  c:\users\100547971\desktop\nxt\gametest\math\matrix4x4.h(66): note: see declaration of 'Matrix4x4::GetRotation'
+c:\users\100547971\desktop\nxt\gametest\math\matrix4x4.cpp(240): error C2572: 'Matrix4x4::Rotation': redefinition of default argument: parameter 1
+  c:\users\100547971\desktop\nxt\gametest\math\matrix4x4.h(68): note: see declaration of 'Matrix4x4::Rotation'
+c:\users\100547971\desktop\nxt\gametest\math\matrix4x4.cpp(316): error C2572: 'Matrix4x4::GetRotation': redefinition of default argument: parameter 1
+  c:\users\100547971\desktop\nxt\gametest\math\matrix4x4.h(69): note: see declaration of 'Matrix4x4::GetRotation'
+c:\users\100547971\desktop\nxt\gametest\math\matrix4x4.cpp(324): error C2572: 'Matrix4x4::Rotation': redefinition of default argument: parameter 1
+  c:\users\100547971\desktop\nxt\gametest\math\matrix4x4.h(72): note: see declaration of 'Matrix4x4::Rotation'
+c:\users\100547971\desktop\nxt\gametest\math\matrix4x4.cpp(329): error C2572: 'Matrix4x4::GetRotation': redefinition of default argument: parameter 1
+  c:\users\100547971\desktop\nxt\gametest\math\matrix4x4.h(73): note: see declaration of 'Matrix4x4::GetRotation'
+c:\users\100547971\desktop\nxt\gametest\math\matrix4x4.cpp(335): error C2572: 'Matrix4x4::Rotation': redefinition of default argument: parameter 1
+  c:\users\100547971\desktop\nxt\gametest\math\matrix4x4.h(75): note: see declaration of 'Matrix4x4::Rotation'
+c:\users\100547971\desktop\nxt\gametest\math\matrix4x4.cpp(340): error C2572: 'Matrix4x4::GetRotation': redefinition of default argument: parameter 1
+  c:\users\100547971\desktop\nxt\gametest\math\matrix4x4.h(76): note: see declaration of 'Matrix4x4::GetRotation'
+  Generating Code...

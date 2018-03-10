@@ -1,0 +1,166 @@
+#pragma once
+
+#include <string>
+
+class Vector2;
+class Matrix3x3;
+class Radians;
+class Degrees;
+enum class RotationDirection;
+enum class Axis;
+
+class Vector3
+{
+public:
+	// Data
+	float x, y, z;
+
+	// Is Empty
+	inline bool Is_Empty()
+	{
+		if (x && y && z) return true;
+		return false;
+	}
+
+	// Constructors
+	Vector3(void);
+	explicit Vector3(float all);
+	explicit Vector3(Radians all);
+	explicit Vector3(Degrees all);
+	explicit Vector3(float _x, float _y, float _z);
+	explicit Vector3(Radians _x, Radians _y, Radians _z);
+	explicit Vector3(Degrees _x, Degrees _y, Degrees _z);
+
+	// Inverse
+	Vector3 Inverse() const;
+	static Vector3 Inverse(const Vector3&);
+
+	// Compare
+	inline bool Compare(const Vector3&) const;
+	static bool Compare(const Vector3&, const Vector3&);
+
+	// Normalize Self (Returns Length)
+	float NormalizeSelf();
+	// Normalize
+	Vector3 Normalize() const;
+	static Vector3 Normalize(const Vector3&);
+	// Magnitude
+	float Magnitude() const;
+	static float Magnitude(const Vector3&);
+	// Length
+	float Length() const;
+	static float Length(const Vector3&);
+	// Length Squared
+	float LengthSqr() const;
+	static float LengthSqr(const Vector3&);
+
+	// Dot Product
+	float Dot() const;
+	float Dot(const Vector3&) const;
+	static float Dot(const Vector3&, const Vector3&);
+
+	// Project Vector
+	Vector3 Project(const Vector3&) const;
+	static Vector3 Project(const Vector3&, const Vector3&);
+	// Projection Length
+	float ProjectLength(const Vector3&) const;
+	static float ProjectLength(const Vector3&, const Vector3&);
+
+	// Cross Product
+	Vector3 Cross(const Vector3&) const;
+	static Vector3 Cross(const Vector3&, const Vector3&);
+
+	// Rotate
+	void Rotate(Degrees&, Axis, RotationDirection);
+	static void Rotate(Vector3&, Degrees&, Axis, RotationDirection);
+	// 
+	void Rotate(Radians&, Axis, RotationDirection);
+	static void Rotate(Vector3&, Radians&, Axis, RotationDirection);
+
+	// Get Angle Degrees
+	Degrees GetAngleDegrees(Vector3&);
+	static Degrees GetAngleDegrees(Vector3&, Vector3&);
+	// Get Angle Radians
+	Radians GetAngleRadians(Vector3&);
+	static Radians GetAngleRadians(Vector3&, Vector3&);
+
+	// Random Vector3 Unit Vector
+	static Vector3 GetRandomUnitVector();
+
+	// Fix Denormals (Fix Numbers close to zero)
+	bool FixDenormals();
+	static bool FixDenormals(Vector3&);
+
+	// Resize Vector
+	void Resize(float length);
+	static Vector3 Resize(Vector3, float length);
+
+	// Clamp
+	void Clamp(const Vector3& min, const Vector3& max);
+	static Vector3 Clamp(Vector3, const Vector3& min, const Vector3& max);
+
+	// Snap to nearest integer value
+	void Snap(void);
+	static Vector3 Snap(Vector3);
+
+	// Get Float pointer of values
+	inline float* GetStartPointer(void);
+	inline static float* GetStartPointer(Vector3&);
+
+	// Vector to string
+	std::string ToString();
+
+	// Lerp
+	Vector3 Lerp(const Vector3&, const float t);
+	static Vector3 Lerp(const Vector3&, const Vector3&, float t);
+	// Slerp
+	Vector3 Slerp(const Vector3&, const float t);
+	static Vector3 Slerp(const Vector3&, const Vector3&, float t);
+	// Nlerp
+	Vector3 Nlerp(const Vector3&, const float t);
+	static Vector3 Nlerp(const Vector3&, const Vector3&, float t);
+
+	// Special Operator Overloads
+	float operator[](const int) const;
+	float& operator[](const int);
+	Vector3 operator-() const;
+
+	// Basic Operator Overloading
+	Vector3 operator+ (const Vector3&) const;
+	Vector3 operator- (const Vector3&) const;
+	Vector3 operator* (const Vector3&) const;
+	Vector3 operator/ (const Vector3&) const;
+	Vector3& operator+= (const Vector3&);
+	Vector3& operator-= (const Vector3&);
+	Vector3& operator*= (const Vector3&);
+	Vector3& operator/= (const Vector3&);
+
+	// Operator Overloading with Float
+	friend Vector3 operator+ (const Vector3&, const float);
+	friend Vector3 operator- (const Vector3&, const float);
+	friend Vector3 operator* (const Vector3&, const float);
+	friend Vector3 operator/ (const Vector3&, const float);
+
+	friend Vector3 operator+ (const float, const Vector3&);
+	friend Vector3 operator- (const float, const Vector3&);
+	friend Vector3 operator* (const float, const Vector3&);
+	friend Vector3 operator/ (const float, const Vector3&);
+
+	Vector3& operator+= (const float);
+	Vector3& operator-= (const float);
+	Vector3& operator*= (const float);
+	Vector3& operator/= (const float);
+
+	// Operator Comparison Overloading
+	Vector3& operator= (const Vector3&);
+	bool operator== (const Vector3&) const;
+	bool operator!= (const Vector3&) const;
+
+	// Cout Overload
+	friend std::ostream &operator<<(std::ostream &stream, Vector3& ob);
+
+	// Return Vec3
+	Vector3 GetVector3(int index1, int index2, int index3) const;
+	// Return Vec2
+	Vector2 GetVector2(int index1, int index2) const;
+};
