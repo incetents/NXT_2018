@@ -1,0 +1,8 @@
+﻿  GameTest.cpp
+c:\users\100547971\desktop\nxt api\gametest\app\logger.h(94): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\users\100547971\desktop\nxt api\gametest\app\logger.h(94): warning C4244: 'argument': conversion from 'const int' to 'float', possible loss of data
+c:\users\100547971\desktop\nxt api\gametest\game\gametest.cpp(44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+  GameTest.vcxproj -> C:\Users\100547971\Desktop\NXT API\x64\Debug\GameTest.exe
+  GameTest.vcxproj -> C:\Users\100547971\Desktop\NXT API\x64\Debug\GameTest.pdb (Partial PDB)
+  C:\Users\100547971\Desktop\NXT API\\GameTest\glut\bin\x64\freeglut.dll
+  1 File(s) copied
