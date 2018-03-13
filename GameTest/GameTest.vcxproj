@@ -191,6 +191,10 @@
     <ClInclude Include="App\SimpleController.h" />
     <ClInclude Include="App\SimpleSound.h" />
     <ClInclude Include="Editor.h" />
+    <ClInclude Include="GameObject\Camera.h" />
+    <ClInclude Include="GameObject\GameObject.h" />
+    <ClInclude Include="GameObject\Mesh.h" />
+    <ClInclude Include="GameObject\Renderer.h" />
     <ClInclude Include="math\Color.h" />
     <ClInclude Include="math\MathCore.h" />
     <ClInclude Include="math\Matrix2x2.h" />
@@ -203,9 +207,12 @@
     <ClInclude Include="math\Vector2.h" />
     <ClInclude Include="math\Vector3.h" />
     <ClInclude Include="math\Vector4.h" />
+    <ClInclude Include="Math\Vertex.h" />
     <ClInclude Include="Table.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="Utility\Singleton.h" />
+    <ClInclude Include="Utility\Utility.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App\app.cpp" />
@@ -213,6 +220,10 @@
     <ClCompile Include="App\SimpleController.cpp" />
     <ClCompile Include="App\SimpleSound.cpp" />
     <ClCompile Include="Editor.cpp" />
+    <ClCompile Include="GameObject\Camera.cpp" />
+    <ClCompile Include="GameObject\GameObject.cpp" />
+    <ClCompile Include="GameObject\Mesh.cpp" />
+    <ClCompile Include="GameObject\Renderer.cpp" />
     <ClCompile Include="game\GameTest.cpp" />
     <ClCompile Include="math\Color.cpp" />
     <ClCompile Include="math\Matrix2x2.cpp" />

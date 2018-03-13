@@ -17,6 +17,7 @@ private:
 	void updateEuler();
 	
 public:
+	Transform();
 	Transform(const Vector3& position, const Vector3& euler_rotation, const Vector3& scale);
 
 	const Matrix4x4& getModel();

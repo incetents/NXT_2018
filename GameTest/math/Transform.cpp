@@ -20,6 +20,12 @@ const Matrix4x4& Transform::getModel()
 	return m_ModelMatrix;
 }
 
+Transform::Transform()
+{
+	m_position = Vector3(0, 0, 0);
+	m_scale = Vector3(1, 1, 1);
+	m_euler_rotation = Vector3(0, 0, 0);
+}
 Transform::Transform(const Vector3& position, const Vector3& euler_rotation, const Vector3& scale)
 {
 	m_position = position;
