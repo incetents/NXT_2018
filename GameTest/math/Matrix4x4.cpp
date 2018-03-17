@@ -23,26 +23,68 @@ Matrix4x4::Matrix4x4(void)
 }
 Matrix4x4::Matrix4x4(Matrix2x2& m)
 {
+	Identity();
+
 	_Val[0] = m[0];
 	_Val[1] = m[1];
 	_Val[4] = m[2];
 	_Val[5] = m[3];
-	// Set last values as 1
+
+	_Val[0xA] = 1.0f;
+	_Val[0xF] = 1.0f;
+}
+Matrix4x4::Matrix4x4(Matrix2x2& m, const Vector3& center)
+{
+	Identity();
+
+	_Val[0] = m[0];
+	_Val[1] = m[1];
+	_Val[4] = m[2];
+	_Val[5] = m[3];
+
+	_Val[0x3] = center.x;
+	_Val[0x7] = center.y;
+	_Val[0xB] = center.z;
+
 	_Val[0xA] = 1.0f;
 	_Val[0xF] = 1.0f;
 }
 Matrix4x4::Matrix4x4(Matrix3x3& m)
 {
+	Identity();
+
 	_Val[0] = m[0];
 	_Val[1] = m[1];
 	_Val[2] = m[2];
+
 	_Val[4] = m[3];
 	_Val[5] = m[4];
 	_Val[6] = m[5];
+
 	_Val[8] = m[6];
 	_Val[9] = m[7];
 	_Val[10] = m[8];
-	// Set last value as 1
+
+	_Val[0xF] = 1.0f;
+}
+Matrix4x4::Matrix4x4(Matrix3x3& m, const Vector3& center)
+{
+	Identity();
+
+	_Val[0x0] = m[0];
+	_Val[0x1] = m[1];
+	_Val[0x2] = m[2];
+	_Val[0x4] = m[3];
+	_Val[0x5] = m[4];
+	_Val[0x6] = m[5];
+	_Val[0x8] = m[6];
+	_Val[0x9] = m[7];
+	_Val[0xA] = m[8];
+
+	_Val[0x3] = center.x;
+	_Val[0x7] = center.y;
+	_Val[0xB] = center.z;
+
 	_Val[0xF] = 1.0f;
 }
 // Create mat4 from vec3 rows
@@ -143,42 +185,48 @@ void Matrix4x4::Identity()
 // Become View Matrix
 Matrix4x4& Matrix4x4::LookAt(Vector3 Eye, Vector3 Target, Vector3 Up = Vector3(0, 1, 0))
 {
-	Vector3 f = Vector3::Normalize(Target - Eye);
-	Vector3 u = Vector3::Normalize(Up);
-	Vector3 s = Vector3::Normalize(Vector3::Cross(f, u));
-	u = Vector3::Cross(s, f);
+	Vector3 n = Eye - Target;
+	Vector3 u = Up.Cross(n);
+	Vector3 v = n.Cross(u);
 
 	Matrix4x4 Result;
-	Result[0x0] = s.x;
-	Result[0x4] = s.y;
-	Result[0x8] = s.z;
+	Result[0x0] = u.x;
+	Result[0x1] = u.y;
+	Result[0x2] = u.z;
 
-	Result[0x1] = u.x;
-	Result[0x5] = u.y;
-	Result[0x9] = u.z;
+	Result[0x4] = v.x;
+	Result[0x5] = v.y;
+	Result[0x6] = v.z;
 
-	Result[0x2] = -f.x;
-	Result[0x6] = -f.y;
-	Result[0xA] = -f.z;
+	Result[0x8] = n.x;
+	Result[0x9] = n.y;
+	Result[0xA] = n.z;
 
-	Result[0xC] = -Vector3::Dot(s, Eye);
-	Result[0xD] = -Vector3::Dot(u, Eye);
-	Result[0xE] = +Vector3::Dot(f, Eye);
-	//Result[0][0] = s.x;
-	//Result[1][0] = s.y;
-	//Result[2][0] = s.z;
-	//
-	//Result[0][1] = u.x;
-	//Result[1][1] = u.y;
-	//Result[2][1] = u.z;
-	//
-	//Result[0][2] = -f.x;
-	//Result[1][2] = -f.y;
-	//Result[2][2] = -f.z;
-	//
-	//Result[3][0] = -Vector3::Dot(s, Eye);
-	//Result[3][1] = -Vector3::Dot(u, Eye);
-	//Result[3][2] = Vector3::Dot(f, Eye);
+	Result[0x3] = -Vector3::Dot(u, Eye);
+	Result[0x7] = -Vector3::Dot(v, Eye);
+	Result[0xB] = -Vector3::Dot(n, Eye);
+
+	//	Vector3 f = Vector3::Normalize(Target - Eye);
+	//	Vector3 u = Vector3::Normalize(Up);
+	//	Vector3 s = Vector3::Normalize(Vector3::Cross(f, u));
+	//	u = Vector3::Cross(s, f);
+	//	
+	//	Matrix4x4 Result;
+	//	Result[0x0] = s.x;
+	//	Result[0x4] = s.y;
+	//	Result[0x8] = s.z;
+	//	
+	//	Result[0x1] = u.x;
+	//	Result[0x5] = u.y;
+	//	Result[0x9] = u.z;
+	//	
+	//	Result[0x2] = -f.x;
+	//	Result[0x6] = -f.y;
+	//	Result[0xA] = -f.z;
+	//	
+	//	Result[0xC] = -Vector3::Dot(s, Eye);
+	//	Result[0xD] = -Vector3::Dot(u, Eye);
+	//	Result[0xE] = -Vector3::Dot(f, Eye);
 	return (*this = Result);
 }
 Matrix4x4 Matrix4x4::GetLookAt(Vector3 Eye, Vector3 Target, Vector3 Up = Vector3(0, 1, 0))
@@ -396,7 +444,7 @@ Vector4 Matrix4x4::GetColumn(int index) const
 		_Val[(index + 0x0)],
 		_Val[(index + 0x4)],
 		_Val[(index + 0x8)],
-		_Val[(index + 0xF)]
+		_Val[(index + 0xC)]
 	);
 }
 Vector4 Matrix4x4::GetColumn(const Matrix4x4& m, int index)
@@ -649,6 +697,7 @@ Vector4 operator*(const Matrix4x4& m, const Vector4& v)
 		m._Val[0xC] * v.x + m._Val[0xD] * v.y + m._Val[0xE] * v.z + m._Val[0xF] * v.w
 	);
 }
+// Treats vector lilke Vec2(x,y,z,1)
 Vector3 operator*(const Matrix4x4& m, const Vector3& v)
 {
 	return Vector3(
@@ -657,6 +706,15 @@ Vector3 operator*(const Matrix4x4& m, const Vector3& v)
 		m._Val[0x8] * v.x + m._Val[0x9] * v.y + m._Val[0xA] * v.z + m._Val[0xB]
 	);
 }
+// Treats vector lilke Vec2(x,y,0,1)
+Vector2 operator*(const Matrix4x4& m, const Vector2& v)
+{
+	return Vector2(
+		m._Val[0x0] * v.x + m._Val[0x1] * v.y + m._Val[0x3],
+		m._Val[0x4] * v.x + m._Val[0x5] * v.y + m._Val[0x7]
+	);
+}
+
 Vector4 operator*(const Vector4& v, const Matrix4x4& m)
 {
 	return Vector4(
@@ -669,9 +727,16 @@ Vector4 operator*(const Vector4& v, const Matrix4x4& m)
 Vector3 operator*(const Vector3& v, const Matrix4x4& m)
 {
 	return Vector3(
-		m._Val[0x0] * v.x + m._Val[0x1] * v.x + m._Val[0x2] * v.z + m._Val[0x3],
-		m._Val[0x4] * v.y + m._Val[0x5] * v.y + m._Val[0x6] * v.z + m._Val[0x7],
+		m._Val[0x0] * v.x + m._Val[0x1] * v.x + m._Val[0x2] * v.x + m._Val[0x3],
+		m._Val[0x4] * v.y + m._Val[0x5] * v.y + m._Val[0x6] * v.y + m._Val[0x7],
 		m._Val[0x8] * v.z + m._Val[0x9] * v.z + m._Val[0xA] * v.z + m._Val[0xB]
+	);
+}
+Vector2 operator*(const Vector2& v, const Matrix4x4& m)
+{
+	return Vector2(
+		m._Val[0x0] * v.x + m._Val[0x1] * v.x + m._Val[0x2] * v.x + m._Val[0x3],
+		m._Val[0x4] * v.y + m._Val[0x5] * v.y + m._Val[0x6] * v.y + m._Val[0x7]
 	);
 }
 // Matrix -- Matrix Multiplication

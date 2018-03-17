@@ -1,7 +1,7 @@
 ﻿  GameTest.cpp
 c:\users\100547971\desktop\nxt\gametest\app\logger.h(94): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
 c:\users\100547971\desktop\nxt\gametest\app\logger.h(94): warning C4244: 'argument': conversion from 'const int' to 'float', possible loss of data
-c:\users\100547971\desktop\nxt\gametest\game\gametest.cpp(72): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+  app.cpp
   Generating Code...
   Compiling...
   Renderer.cpp

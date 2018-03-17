@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../Math/Vector3.h"
+#include "../Math/Matrix4x4.h"
 #include "../Math/Vertex.h"
 #include "../Math/Color.h"
 
@@ -9,136 +10,141 @@
 class Renderer
 {
 public:
-	Renderer& setData(Vector3* position_ptr, u_int* size)
+	Renderer(){}
+	void setVertexArray(VertexArray* VA)
 	{
-		m_vertices = position_ptr;
-		m_size = size;
-		return *this;
+		m_vertexArray = VA;
+		updateRenderFunction(VA->getMode());
+		m_indexMode = VA->getIndicesArrayStart() != nullptr;
+		m_hasColor = VA->getColorsArrayStart() != nullptr;
+
+		// Update Temp Values
+		t_drawCount = m_vertexArray->getDrawCount();
+
+		if (m_indexMode)
+		{
+			t_positions = m_vertexArray->getIndexedPositionArrayStart();
+			t_colors = m_vertexArray->getIndexedColorsArrayStart();
+		}
+		else
+		{
+			t_positions = m_vertexArray->getPositionArrayStart();
+			t_colors = m_vertexArray->getColorsArrayStart();
+		}
 	}
-	Renderer& setColor(Color3F* color)
+	void deleteVertexArray()
 	{
-		m_color = color;
-		return *this;
+		if (m_vertexArray != nullptr)
+			delete[] m_vertexArray;
 	}
-	Renderer& setMode(VertexArray::Mode mode)
-	{
-		updateDrawFunction(mode);
-		return *this;
-	}
-	void draw()
-	{
-		// Prevents funcion from using a switch per call
-		(this->*DrawFunction)();
-	}
-private:
-	Vector3*	m_vertices;
-	u_int*		m_size;
-	Color3F*	m_color;
 	
-	void (Renderer::*DrawFunction)(void) = nullptr; // Function pointer
-	void updateDrawFunction(VertexArray::Mode mode) // Point function pointer to correct function
+private:
+	VertexArray* m_vertexArray = nullptr;
+	bool		 m_indexMode = false;
+	bool		 m_hasColor = false;
+protected:
+
+	float    m_pointSize = 1.0f;
+	float	 m_lineWidth = 1.0f;
+	bool	 m_wireframeMode = false;
+
+	Matrix4x4 t_modelMatrix;// Transform Data (Temp for draw call)
+	u_int	  t_drawCount;  // VertexArray Data (Temp for draw call)
+	Vector3*  t_positions;  //
+	Color3F*  t_colors;		//
+
+	void render(const Matrix4x4& _ModelMatrix)
+	{
+		t_modelMatrix = _ModelMatrix;
+		// Prevents funcion from using a switch per call
+		(this->*RenderFunction)();
+	}
+	void (Renderer::*RenderFunction)(void) = &Renderer::null; // Function pointer
+	void updateRenderFunction(VertexArray::Mode mode) // Point function pointer to correct function
 	{
 		switch (mode)
 		{
+		case VertexArray::Mode::POINTS:
+			RenderFunction = &Renderer::drawPoints;
+			break;
+
 		case VertexArray::Mode::LINES:
-			DrawFunction = &Renderer::drawLines;
+			RenderFunction = &Renderer::drawLines;
 			break;
 
 		case VertexArray::Mode::LINE_STRIPS:
-			DrawFunction = &Renderer::drawLineStrips;
+			RenderFunction = &Renderer::drawLineStrips;
 			break;
 
 		case VertexArray::Mode::TRIANGLE:
-			DrawFunction = &Renderer::drawTriangle;
-			break;
-
-		case VertexArray::Mode::QUAD:
-			DrawFunction = &Renderer::drawQuad;
+			RenderFunction = &Renderer::drawTriangle;
 			break;
 		}
 	}
 
+	// if enum for mode fails, it will update this function as a fail-safe
+	void null() {}
+
+	void drawPoints()
+	{
+		glPointSize(m_pointSize);
+
+		App::DrawPoints(
+			t_modelMatrix,
+			t_positions,
+			t_colors,
+			t_drawCount
+		
+		);
+	}
 	void drawLineStrips()
 	{
-		for (u_int i = 0; i < *m_size; i ++)
+		glLineWidth(m_lineWidth);
+
+		for (u_int i = 0; i < t_drawCount - 1; i++)
 		{
-			// Line 1
+			// Points
 			App::DrawLine(
-				m_vertices[i + 0].x, m_vertices[i + 0].y,
-				m_vertices[i + 1].x, m_vertices[i + 1].y,
-				m_color->r, m_color->g, m_color->b
+				t_modelMatrix * t_positions[i+0],
+				t_modelMatrix * t_positions[i+1],
+				(m_hasColor) ? t_colors[i+0] : Color::WHITE,
+				(m_hasColor) ? t_colors[i+1] : Color::WHITE
 			);
 		}
 	}
 	void drawLines()
 	{
-		assert(*m_size % 2 == 0); // Lines must have multiples of 2
+		assert(t_drawCount % 2 == 0); // Lines must have multiples of 2
 
-		for (u_int i = 0; i < *m_size; i += 2)
+		glLineWidth(m_lineWidth);
+
+		for (u_int i = 0; i < t_drawCount; i+=2)
 		{
-			// Line 1
+			// Points
 			App::DrawLine(
-				m_vertices[i + 0].x, m_vertices[i + 0].y,
-				m_vertices[i + 1].x, m_vertices[i + 1].y,
-				m_color->r, m_color->g, m_color->b
+				t_modelMatrix * t_positions[i + 0],
+				t_modelMatrix * t_positions[i + 1],
+				(m_hasColor) ? t_colors[i + 0] : Color::WHITE,
+				(m_hasColor) ? t_colors[i + 1] : Color::WHITE
 			);
 		}
 	}
 	void drawTriangle()
 	{
-		assert(*m_size % 3 == 0); // Triangles must have multiples of 3
+		assert(t_drawCount % 3 == 0); // Triangles must have multiples of 3
 
-		for (u_int i = 0; i < *m_size; i += 3)
-		{
-			// Line 1
-			App::DrawLine(
-				m_vertices[i + 0].x, m_vertices[i + 0].y,
-				m_vertices[i + 1].x, m_vertices[i + 1].y,
-				m_color->r, m_color->g, m_color->b
-			);
-			// Line 2
-			App::DrawLine(
-				m_vertices[i + 1].x, m_vertices[i + 1].y,
-				m_vertices[i + 2].x, m_vertices[i + 2].y,
-				m_color->r, m_color->g, m_color->b
-			);
-			// Line 3
-			App::DrawLine(
-				m_vertices[i + 2].x, m_vertices[i + 2].y,
-				m_vertices[i + 0].x, m_vertices[i + 0].y,
-				m_color->r, m_color->g, m_color->b
-			);
-		}
-	}
-	void drawQuad()
-	{
-		assert(*m_size % 4 == 0); // Quads must have multiples of 4
+		App::SetWireframeMode(m_wireframeMode);
 
-		for (u_int i = 0; i < *m_size; i += 4)
+		for (u_int i = 0; i < t_drawCount; i+=3)
 		{
-			// Line 1
-			App::DrawLine(
-				m_vertices[i + 0].x, m_vertices[i + 0].y,
-				m_vertices[i + 1].x, m_vertices[i + 1].y,
-				m_color->r, m_color->g, m_color->b
-			);
-			// Line 2
-			App::DrawLine(
-				m_vertices[i + 1].x, m_vertices[i + 1].y,
-				m_vertices[i + 2].x, m_vertices[i + 2].y,
-				m_color->r, m_color->g, m_color->b
-			);
-			// Line 3
-			App::DrawLine(
-				m_vertices[i + 2].x, m_vertices[i + 2].y,
-				m_vertices[i + 3].x, m_vertices[i + 3].y,
-				m_color->r, m_color->g, m_color->b
-			);
-			// Line 4
-			App::DrawLine(
-				m_vertices[i + 3].x, m_vertices[i + 3].y,
-				m_vertices[i + 0].x, m_vertices[i + 0].y,
-				m_color->r, m_color->g, m_color->b
+			// Points
+			App::DrawTriangle(
+				t_modelMatrix * t_positions[i + 0],
+				t_modelMatrix * t_positions[i + 1],
+				t_modelMatrix * t_positions[i + 2],
+				(m_hasColor) ? t_colors[i + 0] : Color::WHITE,
+				(m_hasColor) ? t_colors[i + 1] : Color::WHITE,
+				(m_hasColor) ? t_colors[i + 2] : Color::WHITE
 			);
 		}
 	}

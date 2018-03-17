@@ -2,6 +2,7 @@
 
 class Vector3;
 class Vector4;
+class Matrix3x3;
 class Matrix4x4;
 class Degrees;
 class Radians;
@@ -36,11 +37,10 @@ public:
 	static void ToEuler(const Quaternion& q, Degrees& roll, Degrees& pitch, Degrees& yaw);
 	static void ToEuler(const Quaternion& q, Radians& roll, Radians& pitch, Radians& yaw);
 
-	// Get Matrix4x4
-	Matrix4x4 GetMatrix() const;
-	Matrix4x4 GetMatrix(const Vector3& center) const;
-	static Matrix4x4 GetMatrix(const Quaternion& quat);
-	static Matrix4x4 GetMatrix(const Quaternion& quat, const Vector3& center);
+	// Get Matrix version of Quaternion
+	Matrix3x3 GetMatrix3x3() const;
+	Matrix4x4 GetMatrix4x4() const;
+	Matrix4x4 GetMatrix4x4(const Vector3& center) const;
 
 	// Create Angle Axis
 	static Quaternion AngleAxis(const Degrees& rotation, const Vector3& axis, RotationDirection = RotationDirection(0));
@@ -70,6 +70,7 @@ public:
 	Quaternion			operator-(const Quaternion&) const;
 	Quaternion			operator*(const Quaternion&) const;
 	Quaternion			operator*(const float) const;
+	// Rotate Vector
 	friend Vector3		operator*(const Quaternion&, const Vector3&);
 	// Operator Overload (Math Change)
 	Quaternion&			operator*=(const Quaternion& other);

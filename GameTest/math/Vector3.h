@@ -12,6 +12,14 @@ enum class Axis;
 class Vector3
 {
 public:
+	// Common Vector Types
+	static const Vector3 UP;
+	static const Vector3 DOWN;
+	static const Vector3 FORWARD;
+	static const Vector3 BACK;
+	static const Vector3 LEFT;
+	static const Vector3 RIGHT;
+
 	// Data
 	float x, y, z;
 

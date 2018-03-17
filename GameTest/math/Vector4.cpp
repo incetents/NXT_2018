@@ -16,12 +16,8 @@ Vector4::Vector4(void)
 	z = 0;
 	w = 0;
 }
-Vector4::Vector4(float all)
+Vector4::Vector4(float all) : x(all), y(all), z(all), w(all)
 {
-	x = all;
-	y = all;
-	z = all;
-	w = all;
 }
 Vector4::Vector4(Radians all)
 {

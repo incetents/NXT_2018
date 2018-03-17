@@ -37,6 +37,14 @@ public:
 			// Become default empty matrix
 			void Identity();
 
+			// Become Scale Matrix
+			Matrix3x3&   Scale(float size);
+			Matrix3x3&   Scale(float x, float y, float z);
+			Matrix3x3&   Scale(const Vector3& v);
+	static  Matrix3x3 GetScale(float size);
+	static  Matrix3x3 GetScale(float x, float y, float z);
+	static  Matrix3x3 GetScale(const Vector3& v);
+
 			// Become Rotation Matrix
 			Matrix3x3&   Rotation(Degrees&, Axis, RotationDirection = (RotationDirection)0);
 	static	Matrix3x3 GetRotation(Degrees&, Axis, RotationDirection = (RotationDirection)0);

@@ -10,6 +10,13 @@
 #include "SimpleSound.h"
 #include "SimpleController.h"
 
+#include "../Math/Vector2.h"
+#include "../Math/Vector3.h"
+#include "../Math/Vector4.h"
+#include "../Math/Matrix4x4.h"
+#include "../Math/Color.h"
+#include "../GameObject/CameraManager.h"
+
 //---------------------------------------------------------------------------------
 // Utils and externals for system info.
 #define APP_VIRTUAL_TO_NATIVE_COORDS(_x_,_y_)			_x_ = ((_x_ / APP_VIRTUAL_WIDTH )*2.0f) - 1.0f; _y_ = ((_y_ / APP_VIRTUAL_HEIGHT)*2.0f) - 1.0f;
@@ -17,17 +24,178 @@
 
 namespace App
 {	
-	void DrawLine(float sx, float sy, float ex, float ey, float r, float g, float b)
+	void SetWireframeMode(bool state)
 	{
-#if APP_USE_VIRTUAL_RES		
-		APP_VIRTUAL_TO_NATIVE_COORDS(sx, sy);
-		APP_VIRTUAL_TO_NATIVE_COORDS(ex, ey);
-#endif
-		glBegin(GL_LINES);
-		glColor3f(r, g, b); // Yellow
-		glVertex2f(sx, sy);
-		glVertex2f(ex, ey);
+		if (state)
+			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		else
+			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	}
+
+	void CullMode(CullType t)
+	{
+		switch (t)
+		{
+		case CullType::NONE:
+			glDisable(GL_CULL_FACE);
+			break;
+
+		case CullType::COUNTER_CLOCKWISE:
+			glEnable(GL_CULL_FACE);
+			glFrontFace(GL_CCW);
+			break;
+
+		case CullType::CLOCKWISE:
+			glEnable(GL_CULL_FACE);
+			glFrontFace(GL_CW);
+			break;
+		}
+	}
+
+	/* !!! Conflicts with Orthographic Camera !!! //
+	// Functions have been written to account for current camera matrix
+	#if APP_USE_VIRTUAL_RES
+	APP_VIRTUAL_TO_NATIVE_COORDS(sx, sy);
+	APP_VIRTUAL_TO_NATIVE_COORDS(ex, ey);
+	#endif
+	*/
+
+	// Draw Points //
+	void DrawPoints(Matrix4x4 Model, Vector3* points, Color3F* colors, u_int length)
+	{
+		Matrix4x4 MVP = CameraManager.getMain()->getViewProjection() * Model;
+
+		bool HasColor = (colors != nullptr);
+
+		glBegin(GL_POINTS);
+		if (HasColor)
+		{
+			for (u_int i = 0; i < length; i++)
+			{
+				Vector3 P = MVP * points[i];
+				glColor3f(colors[i].r, colors[i].g, colors[i].b);
+				glVertex3f(P.x, P.y, P.z);
+			}
+		}
+		else
+		{
+			for (u_int i = 0; i < length; i++)
+			{
+				Vector3 P = MVP * points[i];
+				glColor3f(1, 1, 1);
+				glVertex3f(P.x, P.y, P.z);
+			}
+		}
 		glEnd();
+	}
+
+	// Draw Point //
+	void DrawPoint(float x, float y, float z, Color3F c)
+	{
+		glBegin(GL_POINTS);
+		glColor3f(c.r, c.g, c.b);
+		glVertex3f(x, y, z);
+		glEnd();
+	}
+	void DrawPoint(Vector2 p1, Color3F color)
+	{
+		Matrix4x4 P = CameraManager.getMain()->getViewProjection();
+		p1 = P * p1;
+		DrawPoint(p1.x, p1.y, 0, color);
+	}
+	void DrawPoint(Vector3 p1, Color3F color)
+	{
+		Matrix4x4 P = CameraManager.getMain()->getViewProjection();
+		p1 = P * p1;
+		DrawPoint(p1.x, p1.y, p1.z, color);
+	}
+	void DrawPoint(Vector4 p1, Color3F color)
+	{
+		Matrix4x4 P = CameraManager.getMain()->getViewProjection();
+		p1 = P * p1;
+		DrawPoint(p1.x, p1.y, p1.z, color);
+	}
+
+	// Draw Lines //
+	void DrawLine(
+		float x1, float y1, float z1,
+		float x2, float y2, float z2,
+		Color3F c1, Color3F c2)
+	{
+		glBegin(GL_LINES);
+		glColor3f(c1.r, c1.g, c1.b);
+		glVertex3f(x1, y1, z1);
+		glColor3f(c2.r, c2.g, c2.b);
+		glVertex3f(x2, y2, z2);
+		glEnd();
+	}
+	void DrawLine(Vector2 p1, Vector2 p2, Color3F c1, Color3F c2)
+	{
+		Matrix4x4 P = CameraManager.getMain()->getViewProjection();
+		p1 = P * p1;
+		p2 = P * p2;
+		DrawLine(p1.x, p1.y, 0, p2.x, p2.y, 0, c1, c2);
+	}
+	void DrawLine(Vector3 p1, Vector3 p2, Color3F c1, Color3F c2)
+	{
+		Matrix4x4 P = CameraManager.getMain()->getViewProjection();
+		p1 = P * p1;
+		p2 = P * p2;
+		DrawLine(p1.x, p1.y, p1.z, p2.x, p2.y, p2.z, c1, c2);
+	}
+	void DrawLine(Vector4 p1, Vector4 p2, Color3F c1, Color3F c2)
+	{
+		Matrix4x4 P = CameraManager.getMain()->getViewProjection();
+		p1 = P * p1;
+		p2 = P * p2;
+		DrawLine(p1.x, p1.y, p1.z, p2.x, p2.y, p2.z, c1, c2);
+	}
+
+	void DrawTriangle(
+		float x1, float y1, float z1,
+		float x2, float y2, float z2,
+		float x3, float y3, float z3,
+		Color3F c1, Color3F c2, Color3F c3)
+	{
+		glBegin(GL_TRIANGLES);
+		glColor3f(c1.r, c1.g, c1.b);
+		glVertex3f(x1, y1, z1);
+		glColor3f(c2.r, c2.g, c2.b);
+		glVertex3f(x2, y2, z2);
+		glColor3f(c3.r, c3.g, c3.b);
+		glVertex3f(x3, y3, z3);
+		glEnd();
+	}
+
+	void DrawTriangle(
+		Vector3 p1, Vector3 p2, Vector3 p3,
+		Color3F c1, Color3F c2, Color3F c3)
+	{
+		Matrix4x4 P = CameraManager.getMain()->getViewProjection();
+		p1 = P * p1;
+		p2 = P * p2;
+		p3 = P * p3;
+		DrawTriangle(
+			p1.x, p1.y, p1.z,
+			p2.x, p2.y, p2.z,
+			p3.x, p3.y, p3.z,
+			c1, c2, c3
+		);
+	}
+	void DrawTriangle(
+		Vector4 p1, Vector4 p2, Vector4 p3,
+		Color3F c1, Color3F c2, Color3F c3)
+	{
+		Matrix4x4 P = CameraManager.getMain()->getViewProjection();
+		p1 = P * p1;
+		p2 = P * p2;
+		p3 = P * p3;
+		DrawTriangle(
+			p1.x, p1.y, p1.z,
+			p2.x, p2.y, p2.z,
+			p3.x, p3.y, p3.z,
+			c1, c2, c3
+		);
 	}
 
 	bool IsKeyPressed(int key)

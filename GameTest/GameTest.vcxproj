@@ -192,6 +192,7 @@
     <ClInclude Include="App\SimpleSound.h" />
     <ClInclude Include="Editor.h" />
     <ClInclude Include="GameObject\Camera.h" />
+    <ClInclude Include="GameObject\CameraManager.h" />
     <ClInclude Include="GameObject\GameObject.h" />
     <ClInclude Include="GameObject\Mesh.h" />
     <ClInclude Include="GameObject\Renderer.h" />
@@ -208,6 +209,8 @@
     <ClInclude Include="math\Vector3.h" />
     <ClInclude Include="math\Vector4.h" />
     <ClInclude Include="Math\Vertex.h" />
+    <ClInclude Include="Particle\Emitter.h" />
+    <ClInclude Include="Particle\Particle.h" />
     <ClInclude Include="Table.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />

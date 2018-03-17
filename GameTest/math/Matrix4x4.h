@@ -30,7 +30,9 @@ public:
 			// Constructors
 			 Matrix4x4(void);
 	explicit Matrix4x4(Matrix2x2& m);
+	explicit Matrix4x4(Matrix2x2& m, const Vector3& center);
 	explicit Matrix4x4(Matrix3x3& m);
+	explicit Matrix4x4(Matrix3x3& m, const Vector3& center);
 	explicit Matrix4x4(Vector3* Rows);
 	explicit Matrix4x4(Vector4* Rows);
 	explicit Matrix4x4(const Vector3& Row1, const Vector3& Row2, const Vector3& Row3);
@@ -56,10 +58,10 @@ public:
 	static	Matrix4x4  GetOrthographic(float xmin, float xmax, float ymin, float ymax, float znear, float zfar);
 
 			// Special Sets
-	inline  Matrix4x4& OverrideCenter(const Vector3& center);
-	inline  Matrix4x4& OverrideCenter(float x, float y, float z);
-	inline  Matrix4x4&  OverrideScale(const Vector3& scale);
-	inline  Matrix4x4&  OverrideScale(float x, float y, float z);
+			Matrix4x4& OverrideCenter(const Vector3& center);
+			Matrix4x4& OverrideCenter(float x, float y, float z);
+			Matrix4x4&  OverrideScale(const Vector3& scale);
+			Matrix4x4&  OverrideScale(float x, float y, float z);
 
 			// Become Rotation Matrix
 			Matrix4x4&   Rotation(Degrees&, Axis, RotationDirection = RotationDirection(0));
@@ -141,8 +143,10 @@ public:
 	// Matrix -- Vector Multiplication
 	friend Vector4 operator*(const Matrix4x4& m, const Vector4& v);
 	friend Vector3 operator*(const Matrix4x4& m, const Vector3& v);
+	friend Vector2 operator*(const Matrix4x4& m, const Vector2& v);
 	friend Vector4 operator*(const Vector4& v, const Matrix4x4& m);
 	friend Vector3 operator*(const Vector3& v, const Matrix4x4& m);
+	friend Vector2 operator*(const Vector2& v, const Matrix4x4& m);
 	// Matrix -- Matrix Multiplication
 	Matrix4x4 operator*(const Matrix4x4&) const;
 	Matrix4x4& operator*=(const Matrix4x4&);

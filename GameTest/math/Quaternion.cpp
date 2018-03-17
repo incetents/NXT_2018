@@ -5,6 +5,7 @@
 #include "Rotation.h"
 #include "Vector3.h"
 #include "Vector4.h"
+#include "Matrix3x3.h"
 #include "Matrix4x4.h"
 #include "MathCore.h"
 
@@ -88,6 +89,9 @@ void Quaternion::ToEuler(const Quaternion& q, Degrees& roll, Degrees& pitch, Deg
 }
 void Quaternion::ToEuler(const Quaternion& q, Radians& roll, Radians& pitch, Radians& yaw)
 {
+	// Formula retrieved from wiki link:
+	// ***
+
 	// roll (x-axis rotation)
 	float sinr = +2.0f * (q.w * q.x + q.y * q.z);
 	float cosr = +1.0f - 2.0f * (q.x * q.x + q.y * q.y);
@@ -106,48 +110,41 @@ void Quaternion::ToEuler(const Quaternion& q, Radians& roll, Radians& pitch, Rad
 	yaw = atan2f(siny, cosy);
 }
 
-// Get Matrix4x4
-Matrix4x4 Quaternion::GetMatrix() const
+// Get Matrix
+Matrix3x3 Quaternion::GetMatrix3x3() const
 {
-	return Quaternion::GetMatrix(Vector3(0,0,0));
-}
-Matrix4x4 Quaternion::GetMatrix(const Vector3& center) const
-{
-	Matrix4x4 matrix;
+	Matrix3x3 matrix;
 
 	matrix[0x0] = 1.0f - 2.0f*y*y - 2.0f*z*z;
 	matrix[0x1] = 2.0f*x*y + 2.0f*z*w;
 	matrix[0x2] = 2.0f*x*z - 2.0f*y*w;
-	matrix[0x3] = 0.0f;
 
-	matrix[0x4] = 2.0f*x*y - 2.0f*z*w;
-	matrix[0x5] = 1.0f - 2.0f*x*x - 2.0f*z*z;
-	matrix[0x6] = 2.0f*z*y + 2.0f*x*w;
-	matrix[0x7] = 0.0f;
+	matrix[0x3] = 2.0f*x*y - 2.0f*z*w;
+	matrix[0x4] = 1.0f - 2.0f*x*x - 2.0f*z*z;
+	matrix[0x5] = 2.0f*z*y + 2.0f*x*w;
 
-	matrix[0x8] = 2.0f*x*z + 2.0f*y*w;
-	matrix[0x9] = 2.0f*z*y - 2.0f*x*w;
-	matrix[0xA] = 1.0f - 2.0f*x*x - 2.0f*y*y;
-	matrix[0xB] = 0.0f;
-
-	//matrix[0xC] = center.x;
-	//matrix[0xD] = center.y;
-	//matrix[0xE] = center.z;
-	matrix[0x3] = center.x;
-	matrix[0x7] = center.y;
-	matrix[0xB] = center.z;
-	matrix[0xF] = 1.f;
+	matrix[0x6] = 2.0f*x*z + 2.0f*y*w;
+	matrix[0x7] = 2.0f*z*y - 2.0f*x*w;
+	matrix[0x8] = 1.0f - 2.0f*x*x - 2.0f*y*y;
 
 	return matrix;
 }
-Matrix4x4 Quaternion::GetMatrix(const Quaternion& quat)
+Matrix4x4 Quaternion::GetMatrix4x4() const
 {
-	return quat.GetMatrix();
+	return Quaternion::GetMatrix4x4(Vector3(0,0,0));
 }
-Matrix4x4 Quaternion::GetMatrix(const Quaternion& quat, const Vector3& center)
+Matrix4x4 Quaternion::GetMatrix4x4(const Vector3& center) const
 {
-	return quat.GetMatrix(center);
+	Matrix4x4 matrix(GetMatrix3x3());
+	
+	// Manually set position
+	matrix[0x3] = center.x;
+	matrix[0x7] = center.y;
+	matrix[0xB] = center.z;
+
+	return matrix;
 }
+
 
 // Create Angle Axis
 Quaternion Quaternion::AngleAxis(const Degrees& rotation, const Vector3& axis, RotationDirection direction)
@@ -262,19 +259,22 @@ Quaternion Quaternion::operator*(const float f) const
 Vector3 operator*(const Quaternion& q, const Vector3& v)
 {
 	// Extract the vector part of the quaternion
-	Vector3 u(q.x, q.y, q.z);
+	Vector3 u(-q.x, -q.y, -q.z); // Flip sign, matches up with matrix math
 
 	// Extract the scalar part of the quaternion
 	float s = q.w;
 
-	// Do the math
+	// Quaternion Formula
 	Vector3 vprime = 2.0f * Vector3::Dot(u, v) * u
 		+ (s*s - Vector3::Dot(u, u)) * v
 		+ 2.0f * s * Vector3::Cross(u, v);
 
 	return vprime;
 
-	//	// nVidia SDK implementation
+	// nVidia SDK implementation
+	// I'm not sure why i still have this reference here anymore
+	// I guess it makes me feel clever
+
 	//	Vector3 uv, uuv;
 	//	Vector3 qvec(q.x, q.y, q.z);
 	//	uv = qvec.Cross(v);

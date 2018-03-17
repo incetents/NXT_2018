@@ -12,6 +12,12 @@ enum class RotationDirection;
 class Vector2
 {
 public:
+	// Common Vector Types
+	static const Vector2 UP;
+	static const Vector2 DOWN;
+	static const Vector2 LEFT;
+	static const Vector2 RIGHT;
+
 	// Data
 	float x, y;
 

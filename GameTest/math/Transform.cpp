@@ -2,21 +2,39 @@
 #include "stdafx.h"
 
 #include "Transform.h"
+#include "../App/Logger.h"
+#include "../App/app.h"
 
-void Transform::updateEuler()
+const Matrix4x4 Transform::getModel()
 {
-	m_rotation = Quaternion::GetEuler(Degrees(m_euler_rotation.x), Degrees(m_euler_rotation.y), Degrees(m_euler_rotation.z));
-}
+	// If dirty is true, update values
+	if (isDirty)
+	{
+		// Update model matrix
+		m_rotation = Quaternion::GetEuler(Degrees(m_euler_rotation.x), Degrees(m_euler_rotation.y), Degrees(m_euler_rotation.z));
+		Matrix3x3 RotationScale = m_rotation.GetMatrix3x3() * Matrix3x3::GetScale(m_scale);
+		m_ModelMatrix = Matrix4x4(RotationScale, m_position);
 
-const Matrix4x4& Transform::getModel()
-{
-	// Apply Rotation and Translation at once	
-	updateEuler();
-	m_ModelMatrix = m_rotation.GetMatrix(m_position);
-	// Multiply by Scale
-	m_ModelMatrix[0x0] *= m_scale.x;
-	m_ModelMatrix[0x5] *= m_scale.y;
-	m_ModelMatrix[0xA] *= m_scale.z;
+		// Update directions
+		m_forward	= m_rotation * Vector3::FORWARD;
+		m_right		= m_rotation * Vector3::RIGHT; // (Vector3::UP.Cross(m_forward)).Normalize();
+		m_up		= m_forward.Cross(m_right);
+
+		// Set Flag
+		isDirty = false;
+	}
+
+	// Affected by parent
+	if (m_parent != nullptr)
+	{
+		Matrix4x4 Parent = m_parent->getModel();
+		Matrix4x4 Self = m_ModelMatrix;
+		Matrix4x4 Final = Parent * Self;
+
+		return m_parent->getModel() * m_ModelMatrix;
+	}
+
+	// Orphan
 	return m_ModelMatrix;
 }
 
@@ -31,4 +49,25 @@ Transform::Transform(const Vector3& position, const Vector3& euler_rotation, con
 	m_position = position;
 	m_scale = scale;
 	m_euler_rotation = euler_rotation;
+}
+
+void Transform::drawDirections()
+{
+	App::DrawLine(
+		getPosition(),
+		getPosition() + getForward() * 100.0f,
+		Color::RED, Color::RED
+	);
+
+	App::DrawLine(
+		getPosition(),
+		getPosition() + getUp() * 100.0f,
+		Color::BLUE, Color::BLUE
+	);
+
+	App::DrawLine(
+		getPosition(),
+		getPosition() + getRight() * 100.0f,
+		Color::GREEN, Color::GREEN
+	);
 }

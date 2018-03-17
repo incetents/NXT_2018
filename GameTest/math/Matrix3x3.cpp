@@ -22,8 +22,12 @@ Matrix3x3::Matrix3x3(Matrix2x2& m)
 {
 	_Val[0] = m[0];
 	_Val[1] = m[1];
+	_Val[2] = 0;
 	_Val[3] = m[2];
 	_Val[4] = m[3];
+	_Val[5] = 0;
+	_Val[6] = 0;
+	_Val[7] = 0;
 	// Set last value as 1
 	_Val[8]  = 1.0f;
 }
@@ -81,6 +85,45 @@ void Matrix3x3::Identity()
 	*this = Matrix3x3::_Identity;
 }
 
+// Become Scale Matrix
+Matrix3x3& Matrix3x3::Scale(float size)
+{
+	return(this->Scale(size, size, size));
+}
+Matrix3x3& Matrix3x3::Scale(float x, float y, float z)
+{
+	_Val[0] = x;
+	_Val[1] = 0;
+	_Val[2] = 0;
+	_Val[3] = 0;
+	_Val[4] = y;
+	_Val[5] = 0;
+	_Val[6] = 0;
+	_Val[7] = 0;
+	_Val[8] = z;
+	return *this;
+}
+Matrix3x3& Matrix3x3::Scale(const Vector3& v)
+{
+	return(this->Scale(v.x, v.y, v.z));
+}
+// Acquire Scale Matrix
+Matrix3x3 Matrix3x3::GetScale(float size)
+{
+	Matrix3x3 result;
+	return result.Scale(size);
+}
+Matrix3x3 Matrix3x3::GetScale(float x, float y, float z)
+{
+	Matrix3x3 result;
+	return result.Scale(x, y, z);
+}
+Matrix3x3 Matrix3x3::GetScale(const Vector3& v)
+{
+	Matrix3x3 result;
+	return result.Scale(v.x, v.y, v.z);
+}
+
 // Become Rotation Matrix
 Matrix3x3&   Matrix3x3::Rotation(Degrees& Deg, Axis Ax, RotationDirection Rot)
 {
@@ -91,7 +134,6 @@ Matrix3x3 Matrix3x3::GetRotation(Degrees& Deg, Axis Ax, RotationDirection Rot)
 {
 	// Create Rotated Matrix
 	Matrix3x3 Result;
-	// Return
 	return (Result.Rotation(Deg, Ax, Rot));
 }
 // Become Rotation Matrix

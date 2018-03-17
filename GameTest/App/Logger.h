@@ -70,7 +70,7 @@ public:
 		m_totalLines = 0;
 	}
 
-	LogMessage* addMessage(const std::string& message, Color3F color = Color3F(1))
+	LogMessage* addMessage(const std::string& message = "", Color3F color = Color3F(1))
 	{
 		LogMessage* L = new LogMessage(message, color);
 		m_data.push_back(L);

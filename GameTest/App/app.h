@@ -11,20 +11,64 @@
 #include "AppSettings.h"
 #include "SimpleController.h"
 
+#include "../Math/Color.h"
+
+// Forward Declaration
+class Vector2;
+class Vector3;
+class Vector4;
+class Matrix4x4;
+
+enum class CullType
+{
+	NONE,
+	COUNTER_CLOCKWISE,
+	CLOCKWISE
+};
+
 //---------------------------------------------------------------------------------
 // App namespace: These are the IO calls you can use for you game.
 //---------------------------------------------------------------------------------
 namespace App
 {
+	// Change Wireframe Mode
+	void SetWireframeMode(bool);
+
+	// Change Culling Mode
+	void CullMode(CullType);
+
 	//*******************************************************************************************
 	// Display Calls.
 	//*******************************************************************************************
+	
+	void DrawPoints(Matrix4x4 MVP, Vector3* points, Color3F* colors, u_int length);
+
+	void DrawPoint(float x, float y, float z, Color3F c);
+	void DrawPoint(Vector2 p1, Color3F color = Color::WHITE);
+	void DrawPoint(Vector3 p1, Color3F color = Color::WHITE);
+	void DrawPoint(Vector4 p1, Color3F color = Color::WHITE);
+	
 	//-------------------------------------------------------------------------------------------
 	// void DrawLine( float sx, float sy, float ex, float ey, float r = 1.0f, float g = 1.0f, float b = 1.0f );
 	//-------------------------------------------------------------------------------------------
 	// Draw a 2D Line from sx,sy to ex, ey using color r = red, g = green, b=blue.
 	//-------------------------------------------------------------------------------------------
-	void DrawLine( float sx, float sy, float ex, float ey, float r = 1.0f, float g = 1.0f, float b = 1.0f );
+	
+	void DrawLine(
+		float x1, float y1, float z1,
+		float x2, float y2, float z2,
+		Color3F c1 = Color::WHITE, Color3F c2 = Color::WHITE);
+	void DrawLine(Vector2 p1, Vector2 p2, Color3F c1 = Color::WHITE, Color3F c2 = Color::WHITE);
+	void DrawLine(Vector3 p1, Vector3 p2, Color3F c1 = Color::WHITE, Color3F c2 = Color::WHITE);
+	void DrawLine(Vector4 p1, Vector4 p2, Color3F c1 = Color::WHITE, Color3F c2 = Color::WHITE);
+
+	void DrawTriangle(
+		float x1, float y1, float z1,
+		float x2, float y2, float z2,
+		float x3, float y3, float z3,
+		Color3F c1 = Color::WHITE, Color3F c2 = Color::WHITE, Color3F c3 = Color::WHITE);
+	void DrawTriangle(Vector3 p1, Vector3 p2, Vector3 p3, Color3F c1 = Color::WHITE, Color3F c2 = Color::WHITE, Color3F c3 = Color::WHITE);
+	void DrawTriangle(Vector4 p1, Vector4 p2, Vector4 p3, Color3F c1 = Color::WHITE, Color3F c2 = Color::WHITE, Color3F c3 = Color::WHITE);
 
 	//-------------------------------------------------------------------------------------------
 	// void Print(float x, float y, const char *text, float r = 1.0f, float g = 1.0f, float b = 1.0f, void *font = GLUT_BITMAP_HELVETICA_18);

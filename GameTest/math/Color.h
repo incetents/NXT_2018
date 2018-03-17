@@ -1,23 +1,7 @@
 #pragma once
 
-enum ColorIndex
-{
-	WHITE,
-	BLACK,
-	RED,
-	GREEN,
-	YELLOW,
-	BLUE,
-	ORANGE,
-	PURPLE,
-	CYAN,
-	TOTAL
-};
-
 class Color3F
 {
-private:
-	static Color3F DefaultColors[];
 public:
 
 	float r, g, b;
@@ -34,8 +18,18 @@ public:
 	{
 
 	}
-
-	// Retrieve Basic Colors
-	static Color3F getColor(ColorIndex c);
 };
 
+// Default Colors
+namespace Color
+{
+	extern const Color3F WHITE;
+	extern const Color3F BLACK;
+	extern const Color3F RED;
+	extern const Color3F GREEN;
+	extern const Color3F YELLOW;
+	extern const Color3F BLUE;
+	extern const Color3F ORANGE;
+	extern const Color3F PURPLE;
+	extern const Color3F CYAN;
+}
