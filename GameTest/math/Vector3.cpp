@@ -7,6 +7,10 @@
 #include "Matrix3x3.h"
 #include "MathCore.h"
 
+const Vector3 Vector3::ZERO		= Vector3(0, 0, 0);
+const Vector3 Vector3::ONE		= Vector3(1, 1, 1);
+const Vector3 Vector3::N_ONE	= Vector3(-1,-1,-1);
+const Vector3 Vector3::HALF		= Vector3(0.5f,0.5f,0.5f);
 const Vector3 Vector3::UP		= Vector3(0, +1, 0);
 const Vector3 Vector3::DOWN		= Vector3(0, -1, 0);
 const Vector3 Vector3::FORWARD	= Vector3(0, 0, +1);
@@ -49,6 +53,18 @@ Vector3::Vector3(Degrees _x, Degrees _y, Degrees _z)
 	x = _x.Get();
 	y = _y.Get();
 	z = _z.Get();
+}
+Vector3::Vector3(Vector2 _v, float _z)
+{
+	x = _v.x;
+	y = _v.y;
+	z = _z;
+}
+Vector3::Vector3(float _x, Vector2 _v)
+{
+	x = _x;
+	y = _v.x;
+	z = _v.y;
 }
 
 // Inverse

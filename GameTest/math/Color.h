@@ -16,8 +16,24 @@ public:
 	}
 	Color3F(float _r, float _g, float _b) : r(_r), g(_g), b(_b)
 	{
-
 	}
+
+	static Color3F lerp(Color3F start, Color3F end, float t)
+	{
+		return (start * (1.0f - t) + end * t);
+	}
+
+	// Overloads
+	Color3F operator+(const Color3F& c) const;
+	Color3F operator-(const Color3F& c) const;
+	Color3F operator*(const Color3F& c) const;
+	Color3F operator/(const Color3F& c) const;
+
+	Color3F operator+(const float t) const;
+	Color3F operator-(const float t) const;
+	Color3F operator*(const float t) const;
+	Color3F operator/(const float t) const;
+	
 };
 
 // Default Colors

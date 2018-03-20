@@ -141,8 +141,17 @@ void Init()
 	log_x3 = logger.addMessage();
 	log_y3 = logger.addMessage();
 
-	VA_Box_Lines = new VertexArray(vertices, indices, colors, 8, 24, VertexArray::Mode::LINES);
-	VA_tri_line = new VertexArray(line_tri_vert, nullptr, nullptr, 6, -1, VertexArray::Mode::LINES);
+	VA_Box_Lines = new VertexArray(8, VertexArray::Mode::LINES);
+	VA_Box_Lines->
+		setPositions(vertices, 8)
+		.setColors(colors, 8)
+		.setIndices(indices, 24);
+
+	VA_tri_line = new VertexArray(6, VertexArray::Mode::LINES);
+	VA_tri_line->setPositions(line_tri_vert, 6);
+
+	//VA_Box_Lines = new VertexArray(vertices, indices, colors, 8, 24, VertexArray::Mode::LINES);
+	//VA_tri_line = new VertexArray(line_tri_vert, nullptr, nullptr, 6, -1, VertexArray::Mode::LINES);
 
 	G_Box1 = new GameObject(VA_Box_Lines);
 	G_Box2 = new GameObject(VA_Box_Lines);
@@ -154,7 +163,14 @@ void Init()
 	G_Box1->transform.setPosition(Vector3(+100, +100, 0));
 	G_Box2->transform.setPosition(Vector3(0, -200, 0));
 
-	E_1 = new Emitter(50);
+	E_1 = new Emitter(45, 30);
+	//E_1->setInheritVelocity(Vector3(1, 1, 0), 0.6f);
+
+	//E_1->setColor(Color::RED);
+	//E_1->setColorByLife(Color::GREEN, Color::RED);
+	E_1->setColorByLife(Color::YELLOW, Color::CYAN, Color::RED);
+
+	E_1->startEmitter();
 }
 
 //------------------------------------------------------------------------
@@ -172,6 +188,19 @@ void Update(float deltaTime)
 //------------------------------------------------------------------------
 void Render()
 {	
+	if (GetAsyncKeyState('1'))
+		E_1->play();
+	if (GetAsyncKeyState('2'))
+		E_1->pause();
+	if (GetAsyncKeyState('3'))
+		E_1->stop();
+
+	if (GetAsyncKeyState('4'))
+		E_1->setLooping(true);
+
+	if (GetAsyncKeyState('5'))
+		E_1->setLooping(false);
+
 	//App::DrawLine(0, 0, 0.5f, 0.5f, 1, 0, 0);
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -238,7 +267,7 @@ void Render()
 
 	if (GetAsyncKeyState(VK_SPACE))
 	{
-		G_Tri->transform.increasePosition(G_Tri->transform.getUp());
+		G_Tri->transform.increasePosition(G_Tri->transform.getUp() * 4.0f);
 		G_Box1->transform.increasePosition(G_Box1->transform.getUp());
 	}
 	
@@ -246,19 +275,21 @@ void Render()
 
 	//App::DrawPoint(Vector2(100, 100), Color::CYAN);
 
-	G_Box1->draw();
+	//G_Box1->draw();
 	//G_Box2->draw();
 	//G_Tri->draw();
 
 	E_1->transform.setPosition(Vector3(0));
+	E_1->update();
 	E_1->draw();
+	
 
 	//G_Box1->transform.drawDirections();
 
 	//App::DrawPoint(Vector2(200, 200), Color3F::CYAN);
 
-	log_x1->m_message = "Cam X: " + std::to_string(CameraManager.getMain()->m_transform.getPosition().x);
-	log_y1->m_message = "Cam Y: " + std::to_string(CameraManager.getMain()->m_transform.getPosition().y);
+	//log_x1->m_message = "Cam X: " + std::to_string(CameraManager.getMain()->m_transform.getPosition().x);
+	//log_y1->m_message = "Cam Y: " + std::to_string(CameraManager.getMain()->m_transform.getPosition().y);
 
 	//log_x1->m_message = "Forward X: " + std::to_string(G_Box1->transform.getForward().x);
 	//log_y1->m_message = "Forward Y: " + std::to_string(G_Box1->transform.getForward().y);

@@ -13,6 +13,10 @@ class Vector3
 {
 public:
 	// Common Vector Types
+	static const Vector3 ZERO;
+	static const Vector3 ONE;
+	static const Vector3 N_ONE;
+	static const Vector3 HALF;
 	static const Vector3 UP;
 	static const Vector3 DOWN;
 	static const Vector3 FORWARD;
@@ -38,6 +42,8 @@ public:
 	explicit Vector3(float _x, float _y, float _z);
 	explicit Vector3(Radians _x, Radians _y, Radians _z);
 	explicit Vector3(Degrees _x, Degrees _y, Degrees _z);
+	explicit Vector3(Vector2 v, float z);
+	explicit Vector3(float x, Vector2 v);
 
 	// Inverse
 	Vector3 Inverse() const;

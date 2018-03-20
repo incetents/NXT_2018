@@ -91,7 +91,7 @@ public:
 	{
 		for (int i = 0; i < m_totalLines; i++)
 		{
-			m_data[i]->display(x, y + i * (15 + m_verticalPadding));
+			m_data[i]->display(x, (y + (float)i * (15.0f + (float)m_verticalPadding)));
 		}
 	}
 

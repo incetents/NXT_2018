@@ -18,6 +18,7 @@ public:
 	GameObject(VertexArray* VA)
 	{
 		setVertexArray(VA);
+		updateVertexArray();
 	}
 	void draw()
 	{

@@ -41,7 +41,7 @@ namespace App
 	// Display Calls.
 	//*******************************************************************************************
 	
-	void DrawPoints(Matrix4x4 MVP, Vector3* points, Color3F* colors, u_int length);
+	void DrawPoints(Matrix4x4 MVP, Vector3* points, Color3F* colors, float* sizes, u_int length);
 
 	void DrawPoint(float x, float y, float z, Color3F c);
 	void DrawPoint(Vector2 p1, Color3F color = Color::WHITE);

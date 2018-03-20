@@ -61,32 +61,80 @@ namespace App
 	*/
 
 	// Draw Points //
-	void DrawPoints(Matrix4x4 Model, Vector3* points, Color3F* colors, u_int length)
+	void DrawPoints(
+		Matrix4x4 Model,
+		Vector3* points,
+		Color3F* colors,
+		float* sizes,
+		u_int length
+	)
 	{
 		Matrix4x4 MVP = CameraManager.getMain()->getViewProjection() * Model;
 
 		bool HasColor = (colors != nullptr);
+		bool HasSizes = (sizes != nullptr);
 
-		glBegin(GL_POINTS);
-		if (HasColor)
+		if (HasColor && HasSizes)
 		{
 			for (u_int i = 0; i < length; i++)
 			{
+				glPointSize(sizes[i]);
+
+				glBegin(GL_POINTS);
+
 				Vector3 P = MVP * points[i];
 				glColor3f(colors[i].r, colors[i].g, colors[i].b);
 				glVertex3f(P.x, P.y, P.z);
+
+				glEnd();
 			}
 		}
-		else
+		else if (!HasColor && HasSizes)
 		{
 			for (u_int i = 0; i < length; i++)
 			{
+				glPointSize(sizes[i]);
+
+				glBegin(GL_POINTS);
+
 				Vector3 P = MVP * points[i];
 				glColor3f(1, 1, 1);
 				glVertex3f(P.x, P.y, P.z);
+
+				glEnd();
 			}
 		}
-		glEnd();
+		else if (HasColor && !HasSizes)
+		{
+			glBegin(GL_POINTS);
+			for (u_int i = 0; i < length; i++)
+			{
+				
+
+				Vector3 P = MVP * points[i];
+				glColor3f(colors[i].r, colors[i].g, colors[i].b);
+				glVertex3f(P.x, P.y, P.z);
+
+				
+			}
+			glEnd();
+		}
+		else
+		{
+			glBegin(GL_POINTS);
+			for (u_int i = 0; i < length; i++)
+			{
+				
+
+				Vector3 P = MVP * points[i];
+				glColor3f(1, 1, 1);
+				glVertex3f(P.x, P.y, P.z);
+
+				
+			}
+			glEnd();
+		}
+		
 	}
 
 	// Draw Point //
