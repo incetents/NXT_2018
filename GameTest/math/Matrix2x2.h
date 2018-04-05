@@ -131,3 +131,6 @@ public:
 
 
 };
+
+// Shorthand
+typedef Matrix2x2 Mat2;

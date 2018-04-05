@@ -2,8 +2,9 @@
 #include "stdafx.h"
 
 #include "Transform.h"
-#include "../App/Logger.h"
+#include "../App/SimpleLogger.h"
 #include "../App/app.h"
+#include "../Math/Matrix4x4.h"
 
 const Matrix4x4 Transform::getModel()
 {
@@ -51,23 +52,25 @@ Transform::Transform(const Vector3& position, const Vector3& euler_rotation, con
 	m_euler_rotation = euler_rotation;
 }
 
-void Transform::drawDirections()
+void Transform::drawDirections(const Matrix4x4& model)
 {
+	Vector3 P   = model * Vec3::ZERO;
+	Vector3 P_F = model * (Vec3::FORWARD * 100.0f);
+	Vector3 P_U = model * (Vec3::UP * 100.0f);
+	Vector3 P_R = model * (Vec3::RIGHT * 100.0f);
+
 	App::DrawLine(
-		getPosition(),
-		getPosition() + getForward() * 100.0f,
+		P, P_F,
 		Color::RED, Color::RED
 	);
 
 	App::DrawLine(
-		getPosition(),
-		getPosition() + getUp() * 100.0f,
+		P, P_U,
 		Color::BLUE, Color::BLUE
 	);
 
 	App::DrawLine(
-		getPosition(),
-		getPosition() + getRight() * 100.0f,
+		P, P_R,
 		Color::GREEN, Color::GREEN
 	);
 }

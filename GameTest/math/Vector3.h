@@ -73,6 +73,10 @@ public:
 	float Dot(const Vector3&) const;
 	static float Dot(const Vector3&, const Vector3&);
 
+	// Reflect Vector
+	Vector3 Reflect(const Vector3& Normal);
+	static Vector3 Reflect(const Vector3& Incident, const Vector3& Normal);
+
 	// Project Vector
 	Vector3 Project(const Vector3&) const;
 	static Vector3 Project(const Vector3&, const Vector3&);
@@ -178,3 +182,6 @@ public:
 	// Return Vec2
 	Vector2 GetVector2(int index1, int index2) const;
 };
+
+// Shorthand
+typedef Vector3 Vec3;

@@ -293,6 +293,11 @@ namespace App
 			glutBitmapCharacter(font, st[i]); // Print a character on the screen
 		}
 	}
+	void Print(float x, float y, const char *st, Color3F color, void *font)
+	{
+		Print(x, y, st, color.r, color.g, color.b, font);
+	}
+
 	const CController &GetController( int pad )
 	{
 		return CSimpleControllers::GetInstance().GetController(pad);

@@ -149,3 +149,6 @@ public:
 	// Cout Overload
 	friend std::ostream &operator<<(std::ostream &stream, const Matrix3x3&);
 };
+
+// Shorthand
+typedef Matrix3x3 Mat3;

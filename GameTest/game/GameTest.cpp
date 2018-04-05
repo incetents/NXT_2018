@@ -9,25 +9,20 @@
 //------------------------------------------------------------------------
 #include "../app/app.h"
 #include "../App/AppSettings.h"
-#include "../app/Logger.h"
+#include "../app/SimpleLogger.h"
 
+#include "../Math/MatrixStack.h"
 #include "../math/Transform.h"
 #include "../GameObject/GameObject.h"
 #include "../GameObject/CameraManager.h"
+#include "../GameObject/RenderQueue.h"
 #include "../Particle/Emitter.h"
+#include "../Math/Vector3.h"
+#include "../game/GameStateManager.h"
 
 int ScreenWidth = APP_VIRTUAL_WIDTH;
 int ScreenHeight = APP_VIRTUAL_HEIGHT;
 
-Logger logger(5, 5, 3);
-
-LogData<float>* log_angle;
-LogMessage* log_x1;
-LogMessage* log_y1;
-LogMessage* log_x2;
-LogMessage* log_y2;
-LogMessage* log_x3;
-LogMessage* log_y3;
 //LogMessage* log_info1;
 
 Vector3 vertices[] =
@@ -102,17 +97,27 @@ VertexArray* VA_Box_Lines;
 
 VertexArray* VA_tri_line;
 
+GameObject* G_Box0;
 GameObject* G_Box1;
 GameObject* G_Box2;
+GameObject* G_Box3;
+GameObject* G_Box4;
+GameObject* G_Box5;
 GameObject* G_Tri;
 
-Emitter* E_1;
 
+Emitter* E_1;
+	
 //------------------------------------------------------------------------
 // Called before first update. Do any initial setup here.
 //------------------------------------------------------------------------
 void Init()
 {
+	GameStateManager.Init();
+
+	SLogStart(10, 10);
+	SLogSpacing(20);
+
 	Color3F colors[] =
 	{
 		Color::WHITE,
@@ -132,15 +137,6 @@ void Init()
 	//log_tri_y = logger.addDataMessage("Y: ", 0.0f);
 	//log_info1 = logger.addMessage("-");
 
-	log_x1 = logger.addMessage();
-	log_y1 = logger.addMessage();
-
-	log_x2 = logger.addMessage();
-	log_y2 = logger.addMessage();
-
-	log_x3 = logger.addMessage();
-	log_y3 = logger.addMessage();
-
 	VA_Box_Lines = new VertexArray(8, VertexArray::Mode::LINES);
 	VA_Box_Lines->
 		setPositions(vertices, 8)
@@ -153,15 +149,31 @@ void Init()
 	//VA_Box_Lines = new VertexArray(vertices, indices, colors, 8, 24, VertexArray::Mode::LINES);
 	//VA_tri_line = new VertexArray(line_tri_vert, nullptr, nullptr, 6, -1, VertexArray::Mode::LINES);
 
-	G_Box1 = new GameObject(VA_Box_Lines);
-	G_Box2 = new GameObject(VA_Box_Lines);
-	G_Tri = new GameObject(VA_tri_line);
+	G_Box0 = GameObject::addGameObject(VA_Box_Lines, "NODE0");
+	G_Box1 = GameObject::addGameObject(VA_Box_Lines, "NODE1");
+	G_Box2 = GameObject::addGameObject(VA_Box_Lines, "NODE2");
+	G_Box3 = GameObject::addGameObject(VA_Box_Lines, "NODE3");
+	G_Box4 = GameObject::addGameObject(VA_Box_Lines, "NODE4");
+	G_Box5 = GameObject::addGameObject(VA_Box_Lines, "NODE5");
+	G_Tri  = GameObject::addGameObject(VA_tri_line,  "NODE6");
 
-	G_Box2->transform.setParent(&G_Box1->transform);
+	// Parent Hierarchy 
+	//G_Box0->transform.addChild(&G_Box1->transform);
+
+	G_Box1->transform->addChild(G_Box2->transform);
+	G_Box1->transform->addChild(G_Box3->transform);
+
+	G_Box2->transform->addChild(G_Box4->transform);
+	G_Box2->transform->addChild(G_Box5->transform);
 
 	// DEBUG
-	G_Box1->transform.setPosition(Vector3(+100, +100, 0));
-	G_Box2->transform.setPosition(Vector3(0, -200, 0));
+	G_Box1->transform->setPosition(Vector3(0, 0, 0));
+	G_Box2->transform->setPosition(Vector3(50, 0, 0));
+	G_Box3->transform->setPosition(Vector3(-50, 0, 0));
+	G_Box4->transform->setPosition(Vector3(0, +50, 0));
+	G_Box5->transform->setPosition(Vector3(0, -50, 0));
+
+	
 
 	E_1 = new Emitter(45, 30);
 	//E_1->setInheritVelocity(Vector3(1, 1, 0), 0.6f);
@@ -171,6 +183,14 @@ void Init()
 	E_1->setColorByLife(Color::YELLOW, Color::CYAN, Color::RED);
 
 	E_1->startEmitter();
+
+	// Put all GameObjects in the renderQueue
+
+	RenderQueue.add(G_Box1);
+	RenderQueue.add(G_Box2);
+	RenderQueue.add(G_Box3);
+	RenderQueue.add(G_Box4);
+	RenderQueue.add(G_Box5);
 }
 
 //------------------------------------------------------------------------
@@ -188,6 +208,50 @@ void Update(float deltaTime)
 //------------------------------------------------------------------------
 void Render()
 {	
+	SLogPrint("Node0 Child Count: " + std::to_string(G_Box0->transform->getChildCount()), Color::WHITE);
+	SLogPrint("Node1 Child Count: " + std::to_string(G_Box1->transform->getChildCount()), Color::WHITE);
+	SLogPrint("Node2 Child Count: " + std::to_string(G_Box2->transform->getChildCount()), Color::WHITE);
+	SLogPrint("Node3 Child Count: " + std::to_string(G_Box3->transform->getChildCount()), Color::WHITE);
+	SLogPrint("Node4 Child Count: " + std::to_string(G_Box4->transform->getChildCount()), Color::WHITE);
+	SLogPrint("Node5 Child Count: " + std::to_string(G_Box5->transform->getChildCount()), Color::WHITE);
+
+	Transform* Node0_Parent = G_Box0->transform->getParent();
+	if (Node0_Parent == nullptr)
+		SLogPrint("Node0 Has No Parent", Color::RED);
+	else
+		SLogPrint("Node0 Parent = " + Node0_Parent->getGameObjectReference()->name, Color::RED);
+
+	Transform* Node1_Parent = G_Box1->transform->getParent();
+	if(Node1_Parent == nullptr)
+		SLogPrint("Node1 Has No Parent", Color::RED);
+	else
+		SLogPrint("Node1 Parent = " + Node1_Parent->getGameObjectReference()->name, Color::RED);
+
+	Transform* Node2_Parent = G_Box2->transform->getParent();
+	if (Node2_Parent == nullptr)
+		SLogPrint("Node2 Has No Parent", Color::RED);
+	else
+		SLogPrint("Node2 Parent = " + Node2_Parent->getGameObjectReference()->name, Color::RED);
+
+	Transform* Node3_Parent = G_Box3->transform->getParent();
+	if (Node3_Parent == nullptr)
+		SLogPrint("Node3 Has No Parent", Color::RED);
+	else
+		SLogPrint("Node3 Parent = " + Node3_Parent->getGameObjectReference()->name, Color::RED);
+
+	Transform* Node4_Parent = G_Box4->transform->getParent();
+	if (Node4_Parent == nullptr)
+		SLogPrint("Node4 Has No Parent", Color::RED);
+	else
+		SLogPrint("Node4 Parent = " + Node4_Parent->getGameObjectReference()->name, Color::RED);
+
+	Transform* Node5_Parent = G_Box5->transform->getParent();
+	if (Node5_Parent == nullptr)
+		SLogPrint("Node5 Has No Parent", Color::RED);
+	else
+		SLogPrint("Node5 Parent = " + Node5_Parent->getGameObjectReference()->name, Color::RED);
+
+	
 	if (GetAsyncKeyState('1'))
 		E_1->play();
 	if (GetAsyncKeyState('2'))
@@ -203,17 +267,7 @@ void Render()
 
 	//App::DrawLine(0, 0, 0.5f, 0.5f, 1, 0, 0);
 
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	
-	glLoadIdentity();
-
-	//glClearDepth(0.0f);
-
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-	glEnable(GL_DEPTH_TEST);
-	glDepthFunc(GL_LEQUAL);
 
 	// Move Camera
 	static float CamSpeed = 5.0f;
@@ -231,116 +285,77 @@ void Render()
 	//G_Box1->transform.setScale(Vector3(3, 3, 3));
 	//G_Box2->transform.setScale(Vector3(3, 1, 3));
 
+	if (App::GetController(0).CheckButton(XButton::A, false))
+	{
+		G_Box1->transform->increasePosition(Vector3(+5, 0, 0));
+		G_Box1->transform->increaseRotation(Vector3(0, 0, +4));
+	}
+	if (App::GetController(1).CheckButton(XButton::A, false))
+	{
+		G_Box1->transform->increasePosition(Vector3(-5, 0, 0));
+		G_Box1->transform->increaseRotation(Vector3(0, 0, -4));
+	}
+
 	if (GetAsyncKeyState(VK_RIGHT))
 	{
-		G_Box1->transform.increasePosition(Vector3(+5, 0, 0));
-		G_Box1->transform.increaseRotation(Vector3(0, 0, +4));
+		G_Box1->transform->increasePosition(Vector3(+5, 0, 0));
+		G_Box1->transform->increaseRotation(Vector3(0, 0, +4));
 	}
 	else if (GetAsyncKeyState(VK_LEFT))
 	{
-		G_Box1->transform.increasePosition(Vector3(-5, 0, 0));
-		G_Box1->transform.increaseRotation(Vector3(0, 0, -4));
+		G_Box1->transform->increasePosition(Vector3(-5, 0, 0));
+		G_Box1->transform->increaseRotation(Vector3(0, 0, -4));
 	}
 	
 	if (GetAsyncKeyState(VK_UP))
 	{
-		G_Box1->transform.increasePosition(Vector3(0, +5, 0));
-		G_Box1->transform.increaseRotation(Vector3(+4, 0, 0));
+		G_Box1->transform->increasePosition(Vector3(0, +5, 0));
+		G_Box1->transform->increaseRotation(Vector3(+4, 0, 0));
 	}
 	else if (GetAsyncKeyState(VK_DOWN))
 	{
-		G_Box1->transform.increasePosition(Vector3(0, -5, 0));
-		G_Box1->transform.increaseRotation(Vector3(-4, 0, 0));
+		G_Box1->transform->increasePosition(Vector3(0, -5, 0));
+		G_Box1->transform->increaseRotation(Vector3(-4, 0, 0));
 	}
 
 	if (GetAsyncKeyState('Z'))
 	{
-		G_Tri->transform.increaseRotation(Vector3(0, 0, +4));
-		G_Box1->transform.increaseRotation(Vector3(0, +4, 0));
+		G_Tri->transform->increaseRotation(Vector3(0, 0, +4));
+		G_Box1->transform->increaseRotation(Vector3(0, +4, 0));
 	}
 	else if (GetAsyncKeyState('X'))
 	{
-		G_Tri->transform.increaseRotation(Vector3(0, 0, -4));
-		G_Box1->transform.increaseRotation(Vector3(0, -4, 0));
+		G_Tri->transform->increaseRotation(Vector3(0, 0, -4));
+		G_Box1->transform->increaseRotation(Vector3(0, -4, 0));
 	}
 	//
 
 	if (GetAsyncKeyState(VK_SPACE))
 	{
-		G_Tri->transform.increasePosition(G_Tri->transform.getUp() * 4.0f);
-		G_Box1->transform.increasePosition(G_Box1->transform.getUp());
+		G_Tri->transform->increasePosition(G_Tri->transform->getUp() * 4.0f);
+		G_Box1->transform->increasePosition(G_Box1->transform->getUp());
 	}
 	
 	//G_Box2->transform.increaseRotation(Vector3(-4, 0, 3));
 
 	//App::DrawPoint(Vector2(100, 100), Color::CYAN);
 
-	//G_Box1->draw();
-	//G_Box2->draw();
+	//	G_Box1->draw();
+	//	G_Box1->transform.drawDirections();
+	//	G_Box2->draw();
+	//	G_Box3->draw();
+	//	G_Box4->draw();
+	//	G_Box5->draw();
 	//G_Tri->draw();
 
-	E_1->transform.setPosition(Vector3(0));
-	E_1->update();
-	E_1->draw();
+	//E_1->update();
+	//E_1->draw();
+
+	// Draw All GameObjects
+	RenderQueue.drawAll();
 	
-
-	//G_Box1->transform.drawDirections();
-
-	//App::DrawPoint(Vector2(200, 200), Color3F::CYAN);
-
-	//log_x1->m_message = "Cam X: " + std::to_string(CameraManager.getMain()->m_transform.getPosition().x);
-	//log_y1->m_message = "Cam Y: " + std::to_string(CameraManager.getMain()->m_transform.getPosition().y);
-
-	//log_x1->m_message = "Forward X: " + std::to_string(G_Box1->transform.getForward().x);
-	//log_y1->m_message = "Forward Y: " + std::to_string(G_Box1->transform.getForward().y);
-	//
-	//log_x2->m_message = "Up X: " + std::to_string(G_Box1->transform.getUp().x);
-	//log_y2->m_message = "Up Y: " + std::to_string(G_Box1->transform.getUp().y);
-	//
-	//log_x3->m_message = "Right X: " + std::to_string(G_Box1->transform.getRight().x);
-	//log_y3->m_message = "Right Y: " + std::to_string(G_Box1->transform.getRight().y);
-
-	//log_val1->m_message = "ASD";
-	//log_val2->m_value = 99;
-
-	//	Vector3 P1 = Vector3(-50, -30, 0);
-	//	Vector3 P2 = Vector3(50, -30, 0);
-	//	Vector3 P3 = Vector3(0, 30, 0);
-	//	
-	//	static float angle = 0.0f;
-	//	static Vector3 move = Vector3();
-	//	
-	//	log_tri_x->m_value = P3.x;
-	//	log_tri_y->m_value = P3.y;
-	//	
-	//	if (GetAsyncKeyState(VK_LEFT))
-	//		angle -= 1.0f;
-	//	else if (GetAsyncKeyState(VK_RIGHT))
-	//		angle += 1.0f;
-	//	
-	//	if (GetAsyncKeyState(VK_UP))
-	//		move += 1.0f;
-	//	else if (GetAsyncKeyState(VK_DOWN))
-	//		move -= 1.0f;
-	//	
-	//	log_angle->m_value = angle;
-	//	
-	//	
-	//	Transform T(move, Vector3(0, 0, angle), Vector3(1));
-	//	
-	//	Matrix4x4 R = T.getModel();
-	//	
-	//	//Matrix4x4 R = Matrix4x4::GetRotation(Degrees(angle), Vector3(0, 0, 1));
-	//	
-	//	P1 = R * P1;
-	//	P2 = R * P2;
-	//	P3 = R * P3;
-	//	
-	//	App::DrawLine(P1.x, P1.y, P2.x, P2.y, 1, 0, 1);
-	//	App::DrawLine(P2.x, P2.y, P3.x, P3.y, 0, 1, 1);
-	//	App::DrawLine(P3.x, P3.y, P1.x, P1.y, 0, 0, 1);
-
-	logger.displayText();
+	// Draw all text from logger
+	SLogDraw;
 }
 
 //------------------------------------------------------------------------

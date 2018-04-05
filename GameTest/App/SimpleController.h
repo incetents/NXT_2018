@@ -11,6 +11,25 @@
 
 #define MAX_CONTROLLERS 4  // XInput handles up to 4 controllers 
 
+// Added to simplify button pressing
+enum XButton
+{
+	A			= XINPUT_GAMEPAD_A,
+	B			= XINPUT_GAMEPAD_B,
+	X			= XINPUT_GAMEPAD_X,
+	Y			= XINPUT_GAMEPAD_Y,
+	START		= XINPUT_GAMEPAD_START,
+	SELECT		= XINPUT_GAMEPAD_BACK,
+	LEFT		= XINPUT_GAMEPAD_DPAD_LEFT,
+	RIGHT		= XINPUT_GAMEPAD_DPAD_RIGHT,
+	UP			= XINPUT_GAMEPAD_DPAD_UP,
+	DOWN		= XINPUT_GAMEPAD_DPAD_DOWN,
+	BUMPER_L	= XINPUT_GAMEPAD_LEFT_SHOULDER,
+	BUMPER_R	= XINPUT_GAMEPAD_RIGHT_SHOULDER,
+	THUMB_L		= XINPUT_GAMEPAD_LEFT_THUMB,
+	THUMB_R		= XINPUT_GAMEPAD_RIGHT_THUMB
+};
+
 class CController
 {
 public:
@@ -20,6 +39,17 @@ public:
 		ZeroMemory(&m_state, sizeof(XINPUT_STATE));
 	}	
 
+	// Fancier button options
+	bool GetButtonHold(XButton button) const
+	{
+		return (m_lastButtons & button) != 0;
+	}
+	bool GetButtonPress(XButton button) const
+	{
+		return (m_debouncedButtons & button) != 0;
+	}
+
+	// Original Check Button
 	bool CheckButton(int button, bool onPress = true ) const
 	{
 		if (onPress)

@@ -1,28 +1,65 @@
 #pragma once
 
 #include <string>
+#include <algorithm>
 
 #include "../Math/Transform.h"
 #include "../Math/Vertex.h"
 #include "../app/app.h"
 #include "../Math/Color.h"
+#include "../Math/Matrix4x4.h"
 #include "Renderer.h"
+#include "Entity.h"
 
 #include "../GameObject/CameraManager.h"
 
-class GameObject : public Renderer
+class GameObject : public Entity
 {
-public:
-	Transform transform;
+private:
+	// Reference to all other GameObjects
+	static std::vector<GameObject*> m_allGameObjects;
 
-	GameObject(VertexArray* VA)
+	// Constructor only called from static member
+	GameObject(VertexArray* VA, std::string _name = "");
+
+public:
+	// Core Data
+	std::string name = "";
+	Transform*	transform;
+	Renderer*	renderer;
+
+	// Create GameObject
+	static GameObject* addGameObject(VertexArray* _VA, std::string _name = "")
 	{
-		setVertexArray(VA);
-		updateVertexArray();
+		return new GameObject(_VA, _name);
 	}
-	void draw()
+
+	virtual void Delete() override
 	{
+		// Remove from list
+		m_allGameObjects.erase(std::remove(m_allGameObjects.begin(), m_allGameObjects.end(), this), m_allGameObjects.end());
+	}
+	
+	virtual void Init() override
+	{
+
+	}
+
+	virtual void Update(float delta) override
+	{
+
+	}
+
+	virtual void Draw() override
+	{
+		// MVP
+		Matrix4x4 MVP = transform->getModel();
+
 		// Send Model View Matrix for renderning
-		render(transform.getModel());
+		renderer->render(MVP);
+		// Draw Transform
+#if _DEBUG
+		transform->drawDirections(MVP);
+#endif
 	}
 };

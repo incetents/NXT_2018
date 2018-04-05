@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vector>
+
 namespace Utility
 {
 	template<typename T>
@@ -12,6 +14,12 @@ namespace Utility
 	void CopyArray(T* array_src, T* array_dst, int length)
 	{
 		memcpy(array_dst, array_src, sizeof(T) * length);
+	}
+
+	template<typename T>
+	void EraseVectorByValue(std::vector<T>& vector, T value)
+	{
+		vector.erase(std::remove(vector.begin(), vector.end(), value), vector.end());
 	}
 }
 

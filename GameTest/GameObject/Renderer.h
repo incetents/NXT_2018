@@ -8,7 +8,9 @@
 #include "../App/app.h"
 #include <string>
 
-class Renderer
+#include "../GameObject/Component.h"
+
+class Renderer : public Component
 {
 public:
 	Renderer(){}

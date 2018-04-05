@@ -153,6 +153,16 @@ float Vector2::Dot(const Vector2& v1, const Vector2& v2)
 	return v1.Dot(v2);
 }
 
+// Reflect Vector
+Vector2 Vector2::Reflect(const Vector2& Normal)
+{
+	return Reflect(*this, Normal);
+}
+Vector2 Vector2::Reflect(const Vector2& Incident, const Vector2& Normal)
+{
+	return Incident - 2 * (Incident.Dot(Normal)) * Normal;
+}
+
 // Project Vector
 Vector2 Vector2::Project(const Vector2& v) const
 {

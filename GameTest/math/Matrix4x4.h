@@ -173,3 +173,6 @@ public:
 	// Cout Overload
 	friend std::ostream &operator<<(std::ostream &stream, const Matrix4x4&);
 };
+
+// Shorthand
+typedef Matrix4x4 Mat4;

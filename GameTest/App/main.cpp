@@ -98,6 +98,14 @@ void InitGL()
 	gLastTime = GetCounter();
 	// Set "clearing" or background color
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f); // Black and opaque
+
+	// Default Blending Mode
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	// Default Depth Test Mode
+	glEnable(GL_DEPTH_TEST);
+	glDepthFunc(GL_LEQUAL);
 }
 
 //---------------------------------------------------------------------------------
@@ -106,9 +114,11 @@ void InitGL()
 //---------------------------------------------------------------------------------
 void Display()
 {
-	glClear(GL_COLOR_BUFFER_BIT);   // Clear the color buffer with current clearing color
+	// Clear the color buffer with current clearing color
+	// Also clear the depth buffer too
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 
 
-	gUserRenderProfiler.Start();	
+	//gUserRenderProfiler.Start();	
 	if (gEditorMode)
 	{
 		EditorRender();					// Call user defined render.
@@ -117,12 +127,12 @@ void Display()
 	{
 		Render();						// Call user defined render.
 	}
-	gUserRenderProfiler.Stop();
+	//gUserRenderProfiler.Stop();
 	if (gRenderUpdateTimes)
 	{
-		gUpdateDeltaTime.Print	 (10, 40, "Update");
-		gUserRenderProfiler.Print(10, 25, "User Render");
-		gUserUpdateProfiler.Print(10, 10, "User Update");
+		//gUpdateDeltaTime.Print	 (10, 40, "Update");
+		//gUserRenderProfiler.Print(10, 25, "User Render");
+		//gUserUpdateProfiler.Print(10, 10, "User Update");
 	}
 	glFlush();  // Render now						 
 }
@@ -162,10 +172,10 @@ void Idle()
 			WINDOW_HEIGHT = tileClientArea.bottom - tileClientArea.top;
 		}
 
-		if (App::GetController().CheckButton(APP_ENABLE_DEBUG_INFO_BUTTON) )
-		{
-			gRenderUpdateTimes = !gRenderUpdateTimes;
-		}
+		//	if (App::GetController().CheckButton(APP_ENABLE_DEBUG_INFO_BUTTON) )
+		//	{
+		//		gRenderUpdateTimes = !gRenderUpdateTimes;
+		//	}
 
 		if (App::IsKeyPressed(APP_QUIT_KEY))
 		{		

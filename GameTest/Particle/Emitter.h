@@ -78,7 +78,7 @@ public:
 		// General Data
 		m_maxParticles  = maxParticles;
 		m_lifeCount		= lifetime;
-		m_lifeCountRandomness = (lifetime * 0.85f);
+		m_lifeCountRandomness = static_cast<int>((float)lifetime * 0.85f);
 		m_looping		= looping;
 
 		// Buffers of Data
@@ -141,7 +141,7 @@ public:
 	void setLifeCount(int time)
 	{
 		m_lifeCount = time;
-		m_lifeCountRandomness = (time * 0.85f);
+		m_lifeCountRandomness = static_cast<int>((float)time * 0.85f);
 	}
 
 	// Timeline
