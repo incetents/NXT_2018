@@ -7,7 +7,7 @@
 #include <vector>
 #include <algorithm>
 
-static class _RenderQueue : Singleton<class _RenderQueue>
+class RenderQueue
 {
 	friend class GameObject;
 	friend class Emitter;
@@ -23,13 +23,15 @@ public:
 	bool checkDuplicate(T* object);
 
 	template<typename T>
-	_RenderQueue& add(T* object);
+	RenderQueue& add(T* object);
 
 	template<typename T>
-	_RenderQueue& remove(T* object);
+	RenderQueue& remove(T* object);
 
+	// Update Objects
+	void updateAll(float delta);
 	// Draw Objects
-	void			drawAll();
+	void drawAll();
 
 
-} &RenderQueue = Singleton<class _RenderQueue>::instanceRef;
+};

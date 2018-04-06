@@ -89,11 +89,11 @@ public:
 	const Matrix4x4 getModel();
 
 	// GameObject Reference
-	void				setGameObjectReference(GameObject* G)
+	void		setGameObjectReference(GameObject* G)
 	{
 		m_gameObject = G;
 	}
-	const GameObject*	getGameObjectReference() const
+	GameObject*	getGameObjectReference() const
 	{
 		return m_gameObject;
 	}

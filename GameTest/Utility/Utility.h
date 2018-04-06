@@ -2,6 +2,8 @@
 
 #include <vector>
 
+#define toString(x) std::to_string(x)
+
 namespace Utility
 {
 	template<typename T>

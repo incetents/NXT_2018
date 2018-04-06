@@ -13,7 +13,7 @@
 #define SLogStart(x, y) SimpleLogger.SetInitialPosition(x, y)
 #define SLogSpacing(x) SimpleLogger.SetVerticalSpacing(x)
 
-#define MaxSimpleLoggerMessages 128
+#define MaxSimpleLoggerMessages 48
 
 struct SimpleMessage
 {
@@ -33,7 +33,11 @@ private:
 	int m_InitialY = 0;
 	int m_verticalSpacing = 10;
 	SimpleMessage* m_messages = new SimpleMessage[MaxSimpleLoggerMessages];
+	SimpleMessage* m_errorsTemp = new SimpleMessage[MaxSimpleLoggerMessages];
+	SimpleMessage* m_errorsStatic = new SimpleMessage[MaxSimpleLoggerMessages];
 	u_int m_totalMessages = 0;
+	u_int m_totalErrorTemp = 0;
+	u_int m_totalErrorStatic = 0;
 public:
 	void SetVerticalSpacing(int v)
 	{
@@ -44,18 +48,59 @@ public:
 		m_InitialX = x;
 		m_InitialY = y;
 	}
-	void Print(std::string message, Color3F color = Color::WHITE)
+	void Print(std::string message, Color3F color = Color3F::WHITE())
 	{
-		assert(m_totalMessages != 256);
+		if (m_totalMessages >= MaxSimpleLoggerMessages)
+			return;
 
 		m_messages[m_totalMessages++] = SimpleMessage(message, color);
 	}
+	// Error temp gets cleared at the end of the frame like normal messages
+	void ErrorTemp(std::string message)
+	{
+		if (m_totalErrorTemp >= MaxSimpleLoggerMessages)
+			return;
+
+		m_errorsTemp[m_totalErrorTemp++] = SimpleMessage(message);
+	}
+	// Static error never gets cleared
+	void ErrorStatic(std::string message)
+	{
+		if (m_totalErrorStatic >= MaxSimpleLoggerMessages)
+			return;
+
+		m_errorsStatic[m_totalErrorStatic++] = SimpleMessage(message);
+	}
+
+	// Manually clear errors from screen
+	inline void ClearAllErrors()
+	{
+		m_totalErrorStatic = 0;
+	}
+
 	void Draw()
 	{
+		// Item count
+		int TotalLogs = 0;
+		// Draw Errors
+		for (u_int i = 0; i < m_totalErrorTemp; i++)
+		{
+			App::Print(m_InitialX, m_InitialY + m_verticalSpacing * TotalLogs, m_errorsTemp[i].m_text.c_str(), Color3F::RED());
+			TotalLogs++;
+		}
+		for (u_int i = 0; i < m_totalErrorStatic; i++)
+		{
+			App::Print(m_InitialX, m_InitialY + m_verticalSpacing * TotalLogs, m_errorsStatic[i].m_text.c_str(), Color3F::RED());
+			TotalLogs++;
+		}
+		// Draw Messages
 		for (u_int i = 0; i < m_totalMessages; i++)
 		{
-			App::Print(m_InitialX, m_InitialY + m_verticalSpacing * i, m_messages[i].m_text.c_str(), m_messages[i].m_color);
+			App::Print(m_InitialX, m_InitialY + m_verticalSpacing * TotalLogs, m_messages[i].m_text.c_str(), m_messages[i].m_color);
+			TotalLogs++;
 		}
+		// Clear temp errors and messages
+		m_totalErrorTemp = 0;
 		m_totalMessages = 0;
 	}
 

@@ -4,6 +4,8 @@
 #include <iostream>
 #include <sstream>
 
+class Vector3;
+class Vector4;
 class Matrix2x2;
 class Radians;
 class Degrees;
@@ -31,6 +33,8 @@ public:
 	// Empty Constructor
 	explicit Vector2(void);
 	explicit Vector2(float all);
+	explicit Vector2(Vector3 v);
+	explicit Vector2(Vector4 v);
 	explicit Vector2(Radians all);
 	explicit Vector2(Degrees all);
 	explicit Vector2(float _x, float _y);
@@ -73,6 +77,9 @@ public:
 	// Reflect Vector
 	Vector2 Reflect(const Vector2& Normal);
 	static Vector2 Reflect(const Vector2& Incident, const Vector2& Normal);
+
+	// Perpendicular
+	Vector2 Perpendicular();
 
 	// Project Vector
 	Vector2 Project(const Vector2&) const;
@@ -164,6 +171,8 @@ public:
 
 	// Operator Comparison Overloading
 	Vector2& operator= (const Vector2&);
+	Vector2& operator= (const Vector3&);
+	Vector2& operator= (const Vector4&);
 	bool operator== (const Vector2&) const;
 	bool operator!= (const Vector2&) const;
 

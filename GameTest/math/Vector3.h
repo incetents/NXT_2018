@@ -3,6 +3,7 @@
 #include <string>
 
 class Vector2;
+class Vector4;
 class Matrix3x3;
 class Radians;
 class Degrees;
@@ -37,6 +38,8 @@ public:
 	// Constructors
 	Vector3(void);
 	explicit Vector3(float all);
+	explicit Vector3(Vector2 all);
+	explicit Vector3(Vector4 all);
 	explicit Vector3(Radians all);
 	explicit Vector3(Degrees all);
 	explicit Vector3(float _x, float _y, float _z);
@@ -170,7 +173,9 @@ public:
 	Vector3& operator/= (const float);
 
 	// Operator Comparison Overloading
+	Vector3& operator= (const Vector2&);
 	Vector3& operator= (const Vector3&);
+	Vector3& operator= (const Vector4&);
 	bool operator== (const Vector3&) const;
 	bool operator!= (const Vector3&) const;
 

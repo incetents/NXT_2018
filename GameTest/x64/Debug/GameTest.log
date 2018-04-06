@@ -1,9 +1,10 @@
-﻿  GameTest.cpp
-c:\users\100547971\desktop\nxt\gametest\app\simplelogger.h(57): warning C4244: 'argument': conversion from 'u_int' to 'float', possible loss of data
-c:\users\100547971\desktop\nxt\gametest\app\simplelogger.h(57): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-  GameStateManager.cpp
-c:\users\100547971\desktop\nxt\gametest\app\simplelogger.h(57): warning C4244: 'argument': conversion from 'u_int' to 'float', possible loss of data
-c:\users\100547971\desktop\nxt\gametest\app\simplelogger.h(57): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+﻿  GameStateManager.cpp
+c:\users\100547971\desktop\nxt\gametest\game\gamestatemanager.cpp(156): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+c:\users\100547971\desktop\nxt\gametest\game\gamestatemanager.cpp(305): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+  Generating Code...
+  Compiling...
+  GameTest.cpp
+  RenderQueue.cpp
   Generating Code...
   GameTest.vcxproj -> C:\Users\100547971\Desktop\NXT\x64\Debug\GameTest.exe
   GameTest.vcxproj -> C:\Users\100547971\Desktop\NXT\x64\Debug\GameTest.pdb (Partial PDB)

@@ -26,6 +26,8 @@ public:
 	// Constructors
 	Vector4(void);
 	explicit Vector4(float all);
+	explicit Vector4(Vector2 v);
+	explicit Vector4(Vector3 v);
 	explicit Vector4(Radians all);
 	explicit Vector4(Degrees all);
 	explicit Vector4(float _x, float _y, float _z, float _w);
@@ -158,6 +160,8 @@ public:
 	Vector4& operator/= (const float);
 
 	// Operator Comparison Overloading
+	Vector4& operator= (const Vector2&);
+	Vector4& operator= (const Vector3&);
 	Vector4& operator= (const Vector4&);
 	bool operator== (const Vector4&) const;
 	bool operator!= (const Vector4&) const;

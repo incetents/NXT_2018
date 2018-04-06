@@ -5,35 +5,33 @@
 #include "../Math/Vector3.h"
 #include "../Math/Vector4.h"
 
-class GameObject;
-class Transform;
 
 class Rigidbody : public Component
 {
+	friend class GameObject;
+	friend class Transform;
 private:
 	// Object References
 	GameObject* m_gameObject = nullptr;
 	Transform* m_transform = nullptr;
 
 	// Data
-	Vector3 m_gravity = Vector3(0, -1, 0);;
+	Vector3 m_gravity = Vector3(0, -1, 0);
 	float	m_gravityScale = 0.0f;
+	const float m_terminalspeed = 20.0f;
 
 	Vector3 m_velocity = Vector3(0, 0, 0);
 
 public:
+	// Requires GameObject as reference
+	Rigidbody(Transform* reference);
+
 	// GameObject Reference
-	void				setGameObjectReference(GameObject* G)
+	Transform*  getTransformReference() const
 	{
-		if (m_gameObject == nullptr)
-			return;
-
-		m_gameObject = G;
-
-		if (m_gameObject->GetComponent<Transform>() != nullptr)
-			m_transform = m_gameObject->GetComponent<Transform>();
+		return m_transform;
 	}
-	const GameObject*	getGameObjectReference() const
+	GameObject*	getGameObjectReference() const
 	{
 		return m_gameObject;
 	}
@@ -56,6 +54,16 @@ public:
 		m_gravityScale = f;
 	}
 	
+	// Increasers
+	inline void increaseVelocity(Vector3 v)
+	{
+		m_velocity += v;
+	}
+	inline void increaseVelocity(Vector2 v)
+	{
+
+	}
+
 	// Get Data
 	inline Vector3 getVelocity() const
 	{

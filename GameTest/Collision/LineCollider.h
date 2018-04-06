@@ -1,38 +1,54 @@
 #pragma once
 
-#include "../Math/Vector2.h"
-#include "../Math/Matrix4x4.h"
-#include "../GameObject/CameraManager.h"
 #include "../GameObject/Component.h"
-#include "../App/app.h"
+#include "../Math/Vector2.h"
 
 class LineCollider2D : public Component
 {
+	friend class Vector2;
+	friend class GameObject;
+	friend class Transform;
 private:
+	// Object References
+	GameObject* m_gameObject = nullptr;
+	Transform* m_transform = nullptr;
 	
-public:
-	LineCollider2D(){}
-
+	// Data
 	Vector2 m_p1;
 	Vector2 m_p2;
+public:
+	LineCollider2D(Transform* T);
 
-
-
-	void Draw()
+	// Get Object Reference
+	GameObject*	getGameObjectReference() const
 	{
-		App::DrawLine(
-			m_p1,
-			m_p2,
-			Color::RED, Color::GREEN
-		);
+		return m_gameObject;
 	}
-	void Draw(const Matrix4x4& model)
+	Transform*	getTransformReference() const
 	{
-		App::DrawLine(
-			model* m_p1,
-			model* m_p2,
-			Color::RED, Color::GREEN
-		);
+		return m_transform;
 	}
+
+	// Set Points
+	void setPoint1(Vector2 v);
+	void setPoint2(Vector2 v);
+	void setPoints(Vector2 v1, Vector2 v2);
+
+	// Get Points
+	Vector2 getPoint1() const
+	{
+		return m_p1;
+	}
+	Vector2 getPoint2() const
+	{
+		return m_p2;
+	}
+
+	// Get Data
+	Vector2 getDirection() const;
+	Vector2 getNormal() const;
+
+
+
 
 };

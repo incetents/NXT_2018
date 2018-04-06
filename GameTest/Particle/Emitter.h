@@ -98,7 +98,8 @@ public:
 			// Initial Delay
 			//m_life[i] = Random::Float(-1.f, -m_lifeCount);
 		}
-
+		
+		
 	}
 
 	void startEmitter()
@@ -201,7 +202,7 @@ public:
 		m_inheritVelocityBias = bias;
 	}
 	
-	void update()
+	void Update()
 	{
 		if (m_paused || !m_isSetup)
 			return;
@@ -246,61 +247,11 @@ public:
 					m_velocities[i] = getInitialVelocity();
 				}
 			}
-
-			/*
-			// Delay is negative life going upwards
-			if (m_life[i] < 0)
-			{
-				m_positions[i] = Vector3::ZERO;
-
-				m_life[i]++;
-
-				if (m_life[i] == 0)
-				{
-					m_life[i] = (int)getTimeAlive();
-				}
-			}
-
-			// Die overtime
-			if (m_life[i] > 0)
-			{
-				// Color animation
-				float t = (float)m_life[i] / (float)m_lifeCount;
-				if (m_colorMode == ColorMode::LIFE_LERP2)
-				{
-					m_colors[i] = Color3F::lerp(m_color2, m_color1, t);
-				}
-				else if (m_colorMode == ColorMode::LIFE_LERP3)
-				{
-					m_colors[i] = Color3F::lerp(m_color2, m_color1, t);
-					m_colors[i] = Color3F::lerp(m_color3, m_colors[i], t);
-				}
-
-
-				m_life[i]--;
-			}
-
-			// Dead
-			if (m_life[i] == 0)
-			{
-				// Revive
-				if (m_looping && !m_stopped)
-				{
-					m_life[i] = (int)getTimeAlive();
-					m_positions[i] = transform.getPosition();
-					m_velocities[i] = getInitialVelocity();
-				}
-				else if (!m_looping || m_stopped)
-				{
-					//m_positions[i] = transform.getPosition();
-				}
-			}
-			*/
 		}
 	}
 
 	// Drawing here instead of app because it's more convenient due to all the buffers
-	void draw()
+	void Draw()
 	{
 		Matrix4x4 ViewProjection = CameraManager.getMain()->getViewProjection();
 

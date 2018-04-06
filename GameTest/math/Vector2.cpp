@@ -3,6 +3,8 @@
 #include "stdafx.h"
 
 #include "Vector2.h"
+#include "Vector3.h"
+#include "Vector4.h"
 #include "Matrix2x2.h"
 #include "MathCore.h"
 
@@ -13,9 +15,10 @@ const Vector2 Vector2::RIGHT = Vector2(+1, 0);
 
 // Empty Constructor
 Vector2::Vector2(void) : x(0), y(0) {}
-Vector2::Vector2(float all) : x(all), y(all)
-{
-}
+Vector2::Vector2(float all) : x(all), y(all){}
+Vector2::Vector2(Vector3 v) : x(v.x), y(v.y) {}
+Vector2::Vector2(Vector4 v) : x(v.x), y(v.y) {}
+
 Vector2::Vector2(Radians all)
 {
 	x = all.Get();
@@ -161,6 +164,12 @@ Vector2 Vector2::Reflect(const Vector2& Normal)
 Vector2 Vector2::Reflect(const Vector2& Incident, const Vector2& Normal)
 {
 	return Incident - 2 * (Incident.Dot(Normal)) * Normal;
+}
+
+// Perpendicular
+Vector2 Vector2::Perpendicular()
+{
+	return Vector2(y, -x);
 }
 
 // Project Vector
@@ -500,6 +509,18 @@ Vector2& Vector2::operator/= (const float f)
 
 // Operator Comparison Overloading
 Vector2& Vector2::operator= (const Vector2& v)
+{
+	x = v.x;
+	y = v.y;
+	return *this;
+}
+Vector2& Vector2::operator= (const Vector3& v)
+{
+	x = v.x;
+	y = v.y;
+	return *this;
+}
+Vector2& Vector2::operator= (const Vector4& v)
 {
 	x = v.x;
 	y = v.y;

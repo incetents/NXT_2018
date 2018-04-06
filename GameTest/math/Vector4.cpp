@@ -9,16 +9,10 @@
 #include "MathCore.h"
 
 // Constructors
-Vector4::Vector4(void)
-{
-	x = 0;
-	y = 0;
-	z = 0;
-	w = 0;
-}
-Vector4::Vector4(float all) : x(all), y(all), z(all), w(all)
-{
-}
+Vector4::Vector4(void) : x(0), y(0), z(0), w(0) {}
+Vector4::Vector4(float all) : x(all), y(all), z(all), w(all) {}
+Vector4::Vector4(Vector2 v) : x(v.x), y(v.y), z(0), w(0) {}
+Vector4::Vector4(Vector3 v) : x(v.x), y(v.y), z(v.z), w(0) {}
 Vector4::Vector4(Radians all)
 {
 	x = all.Get();
@@ -611,6 +605,19 @@ Vector4& Vector4::operator/= (float f)
 	return *this;
 }
 
+Vector4& Vector4::operator= (const Vector2& v)
+{
+	x = v.x;
+	y = v.y;
+	return *this;
+}
+Vector4& Vector4::operator= (const Vector3& v)
+{
+	x = v.x;
+	y = v.y;
+	z = v.z;
+	return *this;
+}
 Vector4& Vector4::operator= (const Vector4& v)
 {
 	x = v.x;

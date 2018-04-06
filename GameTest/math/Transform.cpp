@@ -55,22 +55,34 @@ Transform::Transform(const Vector3& position, const Vector3& euler_rotation, con
 void Transform::drawDirections(const Matrix4x4& model)
 {
 	Vector3 P   = model * Vec3::ZERO;
-	Vector3 P_F = model * (Vec3::FORWARD * 100.0f);
-	Vector3 P_U = model * (Vec3::UP * 100.0f);
-	Vector3 P_R = model * (Vec3::RIGHT * 100.0f);
+	Vector3 P_F = model * (Vec3::FORWARD);
+	Vector3 P_U = model * (Vec3::UP);
+	Vector3 P_R = model * (Vec3::RIGHT);
+
+	// Resize Vectors to only be 100 units away from P regardless of scale
+	Vector3 F = P_F - P;
+	Vector3 U = P_U - P;
+	Vector3 R = P_R - P;
+	F.NormalizeSelf();
+	U.NormalizeSelf();
+	R.NormalizeSelf();
+	P_F = P + F * 100.0f;
+	P_U = P + U * 100.0f;
+	P_R = P + R * 100.0f;
+	//
 
 	App::DrawLine(
 		P, P_F,
-		Color::RED, Color::RED
+		Color3F::RED(), Color3F::RED()
 	);
 
 	App::DrawLine(
 		P, P_U,
-		Color::BLUE, Color::BLUE
+		Color3F::BLUE(), Color3F::BLUE()
 	);
 
 	App::DrawLine(
 		P, P_R,
-		Color::GREEN, Color::GREEN
+		Color3F::GREEN(), Color3F::GREEN()
 	);
 }

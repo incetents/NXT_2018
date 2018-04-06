@@ -140,27 +140,24 @@ namespace App
 	// Draw Point //
 	void DrawPoint(float x, float y, float z, Color3F c)
 	{
+		Matrix4x4 P = CameraManager.getMain()->getViewProjection();
+		Vector3 P1 = P * Vector3(x, y, z);
+
 		glBegin(GL_POINTS);
 		glColor3f(c.r, c.g, c.b);
-		glVertex3f(x, y, z);
+		glVertex3f(P1.x, P1.y, P1.z);
 		glEnd();
 	}
 	void DrawPoint(Vector2 p1, Color3F color)
 	{
-		Matrix4x4 P = CameraManager.getMain()->getViewProjection();
-		p1 = P * p1;
 		DrawPoint(p1.x, p1.y, 0, color);
 	}
 	void DrawPoint(Vector3 p1, Color3F color)
 	{
-		Matrix4x4 P = CameraManager.getMain()->getViewProjection();
-		p1 = P * p1;
 		DrawPoint(p1.x, p1.y, p1.z, color);
 	}
 	void DrawPoint(Vector4 p1, Color3F color)
 	{
-		Matrix4x4 P = CameraManager.getMain()->getViewProjection();
-		p1 = P * p1;
 		DrawPoint(p1.x, p1.y, p1.z, color);
 	}
 
@@ -170,33 +167,63 @@ namespace App
 		float x2, float y2, float z2,
 		Color3F c1, Color3F c2)
 	{
+		Matrix4x4 P = CameraManager.getMain()->getViewProjection();
+		Vector3 P1 = P * Vector3(x1, y1, z1);
+		Vector3 P2 = P * Vector3(x2, y2, z2);
+
 		glBegin(GL_LINES);
 		glColor3f(c1.r, c1.g, c1.b);
-		glVertex3f(x1, y1, z1);
+		glVertex3f(P1.x, P1.y, P1.z);
 		glColor3f(c2.r, c2.g, c2.b);
-		glVertex3f(x2, y2, z2);
+		glVertex3f(P2.x, P2.y, P2.z);
 		glEnd();
 	}
 	void DrawLine(Vector2 p1, Vector2 p2, Color3F c1, Color3F c2)
 	{
-		Matrix4x4 P = CameraManager.getMain()->getViewProjection();
-		p1 = P * p1;
-		p2 = P * p2;
 		DrawLine(p1.x, p1.y, 0, p2.x, p2.y, 0, c1, c2);
 	}
 	void DrawLine(Vector3 p1, Vector3 p2, Color3F c1, Color3F c2)
 	{
-		Matrix4x4 P = CameraManager.getMain()->getViewProjection();
-		p1 = P * p1;
-		p2 = P * p2;
 		DrawLine(p1.x, p1.y, p1.z, p2.x, p2.y, p2.z, c1, c2);
 	}
 	void DrawLine(Vector4 p1, Vector4 p2, Color3F c1, Color3F c2)
 	{
-		Matrix4x4 P = CameraManager.getMain()->getViewProjection();
-		p1 = P * p1;
-		p2 = P * p2;
 		DrawLine(p1.x, p1.y, p1.z, p2.x, p2.y, p2.z, c1, c2);
+	}
+
+	void DrawLineQuad(float x, float y, float z, float w, float h, Color3F c)
+	{
+		float w2 = w * 0.5f;
+		float h2 = h * 0.5f;
+
+		Matrix4x4 P = CameraManager.getMain()->getViewProjection();
+		Vector3 P1 = P * Vector3(x - w2, y - h2, z);
+		Vector3 P2 = P * Vector3(x + w2, y - h2, z);
+		Vector3 P3 = P * Vector3(x + w2, y + h2, z);
+		Vector3 P4 = P * Vector3(x - w2, y + h2, z);
+
+		glBegin(GL_LINE_STRIP);
+		glColor3f(c.r, c.g, c.b);
+
+		glVertex3f(P1.x, P1.y, P1.z);
+		glVertex3f(P2.x, P2.y, P2.z);
+		glVertex3f(P3.x, P3.y, P3.z);
+		glVertex3f(P4.x, P4.y, P4.z);
+		glVertex3f(P1.x, P1.y, P1.z);
+
+		glEnd();
+	}
+	void DrawLineQuad(Vector2 p, float w, float h, Color3F c)
+	{
+		DrawLineQuad(p.x, p.y, 0, w, h, c);
+	}
+	void DrawLineQuad(Vector3 p, float w, float h, Color3F c)
+	{
+		DrawLineQuad(p.x, p.y, p.z, w, h, c);
+	}
+	void DrawLineQuad(Vector4 p, float w, float h, Color3F c)
+	{
+		DrawLineQuad(p.x, p.y, p.z, w, h, c);
 	}
 
 	void DrawTriangle(
@@ -296,6 +323,10 @@ namespace App
 	void Print(float x, float y, const char *st, Color3F color, void *font)
 	{
 		Print(x, y, st, color.r, color.g, color.b, font);
+	}
+	void Print(int x, int y, const char *st, Color3F color, void *font)
+	{
+		Print((float)x, (float)y, st, color.r, color.g, color.b, font);
 	}
 
 	const CController &GetController( int pad )

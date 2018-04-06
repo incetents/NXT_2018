@@ -4,33 +4,35 @@
 #include "RenderQueue.h"
 #include "GameObject.h"
 #include "../Particle/Emitter.h"
+#include "../App/SimpleLogger.h"
 
 template<typename T>
-bool _RenderQueue::checkDuplicate(T* object)
+bool RenderQueue::checkDuplicate(T* object)
 {
 	// Empty
 	return false;
 }
 
 template<>
-bool _RenderQueue::checkDuplicate(GameObject* object)
+bool RenderQueue::checkDuplicate(GameObject* object)
 {
 	return (std::find(m_gameobjects.begin(), m_gameobjects.end(), object) != m_gameobjects.end());
 }
 template<>
-bool _RenderQueue::checkDuplicate(Emitter* object)
+bool RenderQueue::checkDuplicate(Emitter* object)
 {
 	return (std::find(m_emitters.begin(), m_emitters.end(), object) != m_emitters.end());
 }
 
 template<typename T>
-_RenderQueue& _RenderQueue::add(T* object)
+RenderQueue& RenderQueue::add(T* object)
 {
+	SimpleLogger.ErrorStatic("Attempting to add object of unknown type");
 	// Do nothing
 	return *this;
 }
 template<>
-_RenderQueue& _RenderQueue::add(GameObject* object)
+RenderQueue& RenderQueue::add(GameObject* object)
 {
 	if (checkDuplicate<GameObject>(object))
 		return *this;
@@ -40,7 +42,7 @@ _RenderQueue& _RenderQueue::add(GameObject* object)
 	return *this;
 }
 template<>
-_RenderQueue& _RenderQueue::add(Emitter* object)
+RenderQueue& RenderQueue::add(Emitter* object)
 {
 	if (checkDuplicate<Emitter>(object))
 		return *this;
@@ -51,26 +53,40 @@ _RenderQueue& _RenderQueue::add(Emitter* object)
 }
 
 template<typename T>
-_RenderQueue& _RenderQueue::remove(T* object)
+RenderQueue& RenderQueue::remove(T* object)
 {
+	SimpleLogger.ErrorStatic("Attempting to remove object of unknown type");
 	return *this;
 }
 template<>
-_RenderQueue& _RenderQueue::remove(GameObject* object)
+RenderQueue& RenderQueue::remove(GameObject* object)
 {
 	Utility::EraseVectorByValue(m_gameobjects, object);
 	m_totalObjects = (u_int)m_gameobjects.size();
 	return *this;
 }
 template<>
-_RenderQueue& _RenderQueue::remove(Emitter* object)
+RenderQueue& RenderQueue::remove(Emitter* object)
 {
 	Utility::EraseVectorByValue(m_emitters, object);
 	m_totalEmitters = (u_int)m_emitters.size();
 	return *this;
 }
 
-void _RenderQueue::drawAll()
+void RenderQueue::updateAll(float delta)
+{
+	for (u_int i = 0; i < m_totalObjects; i++)
+	{
+		m_gameobjects[i]->Update(delta);
+	}
+
+	for (u_int i = 0; i < m_totalEmitters; i++)
+	{
+		m_emitters[i]->Update();
+	}
+}
+
+void RenderQueue::drawAll()
 {
 	for (u_int i = 0; i < m_totalObjects; i++)
 	{
@@ -79,7 +95,6 @@ void _RenderQueue::drawAll()
 
 	for (u_int i = 0; i < m_totalEmitters; i++)
 	{
-		m_emitters[i]->update();
-		m_emitters[i]->draw();
+		m_emitters[i]->Draw();
 	}
 }

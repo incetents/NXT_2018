@@ -130,8 +130,8 @@ private:
 			App::DrawLine(
 				t_modelMatrix * t_positions[i+0],
 				t_modelMatrix * t_positions[i+1],
-				(HasColor) ? t_colors[i+0] : Color::WHITE,
-				(HasColor) ? t_colors[i+1] : Color::WHITE
+				(HasColor) ? t_colors[i+0] : Color3F::WHITE(),
+				(HasColor) ? t_colors[i+1] : Color3F::WHITE()
 			);
 		}
 	}
@@ -147,8 +147,8 @@ private:
 			App::DrawLine(
 				t_modelMatrix * t_positions[i + 0],
 				t_modelMatrix * t_positions[i + 1],
-				(HasColor) ? t_colors[i + 0] : Color::WHITE,
-				(HasColor) ? t_colors[i + 1] : Color::WHITE
+				(HasColor) ? t_colors[i + 0] : Color3F::WHITE(),
+				(HasColor) ? t_colors[i + 1] : Color3F::WHITE()
 			);
 		}
 	}
@@ -166,9 +166,9 @@ private:
 				t_modelMatrix * t_positions[i + 0],
 				t_modelMatrix * t_positions[i + 1],
 				t_modelMatrix * t_positions[i + 2],
-				(HasColor) ? t_colors[i + 0] : Color::WHITE,
-				(HasColor) ? t_colors[i + 1] : Color::WHITE,
-				(HasColor) ? t_colors[i + 2] : Color::WHITE
+				(HasColor) ? t_colors[i + 0] : Color3F::WHITE(),
+				(HasColor) ? t_colors[i + 1] : Color3F::WHITE(),
+				(HasColor) ? t_colors[i + 2] : Color3F::WHITE()
 			);
 		}
 	}

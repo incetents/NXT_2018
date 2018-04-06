@@ -4,6 +4,7 @@
 
 #include "Vector2.h"
 #include "Vector3.h"
+#include "Vector4.h"
 #include "Matrix3x3.h"
 #include "MathCore.h"
 
@@ -19,15 +20,10 @@ const Vector3 Vector3::LEFT		= Vector3(-1, 0, 0);
 const Vector3 Vector3::RIGHT	= Vector3(+1, 0, 0);
 
 // Constructors
-Vector3::Vector3(void)
-{
-	x = 0;
-	y = 0;
-	z = 0;
-}
-Vector3::Vector3(float all) : x(all), y(all), z(all)
-{
-}
+Vector3::Vector3(void) : x(0), y(0), z(0) {}
+Vector3::Vector3(float all) : x(all), y(all), z(all){}
+Vector3::Vector3(Vector2 v) : x(v.x), y(v.y), z(0) {}
+Vector3::Vector3(Vector4 v) : x(v.x), y(v.y), z(v.z) {}
 Vector3::Vector3(Radians all)
 {
 	x = all.Get();
@@ -588,7 +584,20 @@ Vector3& Vector3::operator/= (float f)
 	return *this;
 }
 
+Vector3& Vector3::operator= (const Vector2& v)
+{
+	x = v.x;
+	y = v.y;
+	return *this;
+}
 Vector3& Vector3::operator= (const Vector3& v)
+{
+	x = v.x;
+	y = v.y;
+	z = v.z;
+	return *this;
+}
+Vector3& Vector3::operator= (const Vector4& v)
 {
 	x = v.x;
 	y = v.y;

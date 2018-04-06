@@ -10,6 +10,7 @@
 #include "../Math/Matrix4x4.h"
 #include "Renderer.h"
 #include "Entity.h"
+#include "../App/SimpleLogger.h"
 
 #include "../GameObject/CameraManager.h"
 
@@ -50,6 +51,7 @@ public:
 		// Update all components
 		for (auto it : m_components)
 		{
+
 		//	std::cout << " " << it.first << ":" << it.second;
 			it.second->Update(delta);
 		}

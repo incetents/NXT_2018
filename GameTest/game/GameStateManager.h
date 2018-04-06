@@ -1,6 +1,11 @@
 #pragma once
 
+#include <vector>
+
 #include "../Utility/Singleton.h"
+#include "../GameObject/GameObject.h"
+#include "../GameObject/RenderQueue.h"
+#include "../Particle/Emitter.h"
 
 static class GameStateManager : public Singleton<class GameStateManager>
 {
@@ -17,7 +22,11 @@ public:
 	};
 	struct GlobalData
 	{
-		float test;
+		RenderQueue rq_testscene;
+		RenderQueue rq_menuscene;
+		RenderQueue rq_gameplayscene;
+		GameObject* ball;
+		std::vector<GameObject*> walls;
 	};
 	GameState	m_currentState = GameState::NONE;
 	
@@ -42,8 +51,8 @@ public:
 	void RenderGameplay();
 
 public:
-	GlobalData	m_data;
-	float m_deltaTime = 0.0f;
+	GlobalData data;
+	float m_Time = 0.0f;
 
 	const GameState& getState() const
 	{
@@ -55,10 +64,8 @@ public:
 		if (state == GameState::NONE || state == GameState::TOTAL)
 			return;
 
-
 		bool SceneChange = (m_currentState != state);
 		m_currentState = state;
-
 
 		// Set Update Function
 		switch (m_currentState)
@@ -80,11 +87,6 @@ public:
 			UpdateFunction = &GameStateManager::UpdateGameplay;
 			RenderFunction = &GameStateManager::RenderGameplay;
 			break;
-
-		default:
-			// ERROR
-			break;
-			
 		}
 
 		if (SceneChange)
@@ -107,4 +109,4 @@ public:
 	}
 
 
-} &GameStateManager = Singleton<class GameStateManager>::instanceRef;;
+} &GameStateManager = Singleton<class GameStateManager>::instanceRef;

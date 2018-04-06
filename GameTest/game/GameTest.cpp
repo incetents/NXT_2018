@@ -37,6 +37,9 @@ void Update(float deltaTime)
 {
 	// Update Current Game State
 	GameStateManager.Update(deltaTime);
+
+	// Update Time
+	GameStateManager.m_Time += deltaTime;
 }
 
 //------------------------------------------------------------------------

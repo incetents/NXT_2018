@@ -120,9 +120,6 @@
     <ClInclude Include="Utility\Singleton.h">
       <Filter>Source Files\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="GameObject\Mesh.h">
-      <Filter>Source Files\GameObject</Filter>
-    </ClInclude>
     <ClInclude Include="GameObject\Camera.h">
       <Filter>Source Files\GameObject</Filter>
     </ClInclude>
@@ -161,6 +158,15 @@
     </ClInclude>
     <ClInclude Include="Collision\Rigidbody.h">
       <Filter>Source Files\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Collision\AABB.h">
+      <Filter>Source Files\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Collision\Circle.h">
+      <Filter>Source Files\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\SimpleShapes.h">
+      <Filter>Source Files\Math</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -221,9 +227,6 @@
     <ClCompile Include="GameObject\GameObject.cpp">
       <Filter>Source Files\GameObject</Filter>
     </ClCompile>
-    <ClCompile Include="GameObject\Mesh.cpp">
-      <Filter>Source Files\GameObject</Filter>
-    </ClCompile>
     <ClCompile Include="GameObject\Camera.cpp">
       <Filter>Source Files\GameObject</Filter>
     </ClCompile>
@@ -249,6 +252,18 @@
       <Filter>Source Files\Game</Filter>
     </ClCompile>
     <ClCompile Include="Collision\Rigidbody.cpp">
+      <Filter>Source Files\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="Collision\AABB.cpp">
+      <Filter>Source Files\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="Collision\Circle.cpp">
+      <Filter>Source Files\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\SimpleShapes.cpp">
+      <Filter>Source Files\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Collision\LineCollider.cpp">
       <Filter>Source Files\Collision</Filter>
     </ClCompile>
   </ItemGroup>

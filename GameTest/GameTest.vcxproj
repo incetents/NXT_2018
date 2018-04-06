@@ -190,6 +190,8 @@
     <ClInclude Include="App\SimpleController.h" />
     <ClInclude Include="App\SimpleLogger.h" />
     <ClInclude Include="App\SimpleSound.h" />
+    <ClInclude Include="Collision\AABB.h" />
+    <ClInclude Include="Collision\Circle.h" />
     <ClInclude Include="Collision\LineCollider.h" />
     <ClInclude Include="Collision\Rigidbody.h" />
     <ClInclude Include="Editor.h" />
@@ -198,7 +200,6 @@
     <ClInclude Include="GameObject\Component.h" />
     <ClInclude Include="GameObject\Entity.h" />
     <ClInclude Include="GameObject\GameObject.h" />
-    <ClInclude Include="GameObject\Mesh.h" />
     <ClInclude Include="GameObject\Renderer.h" />
     <ClInclude Include="GameObject\RenderQueue.h" />
     <ClInclude Include="game\GameStateManager.h" />
@@ -210,6 +211,7 @@
     <ClInclude Include="math\Quaternion.h" />
     <ClInclude Include="math\Random.h" />
     <ClInclude Include="math\Rotation.h" />
+    <ClInclude Include="Math\SimpleShapes.h" />
     <ClInclude Include="math\Transform.h" />
     <ClInclude Include="Math\MatrixStack.h" />
     <ClInclude Include="math\Vector2.h" />
@@ -229,13 +231,15 @@
     <ClCompile Include="App\main.cpp" />
     <ClCompile Include="App\SimpleController.cpp" />
     <ClCompile Include="App\SimpleSound.cpp" />
+    <ClCompile Include="Collision\AABB.cpp" />
+    <ClCompile Include="Collision\Circle.cpp" />
+    <ClCompile Include="Collision\LineCollider.cpp" />
     <ClCompile Include="Collision\Rigidbody.cpp" />
     <ClCompile Include="Editor.cpp" />
     <ClCompile Include="GameObject\Camera.cpp" />
     <ClCompile Include="GameObject\Component.cpp" />
     <ClCompile Include="GameObject\Entity.cpp" />
     <ClCompile Include="GameObject\GameObject.cpp" />
-    <ClCompile Include="GameObject\Mesh.cpp" />
     <ClCompile Include="GameObject\Renderer.cpp" />
     <ClCompile Include="GameObject\RenderQueue.cpp" />
     <ClCompile Include="game\GameStateManager.cpp" />
@@ -247,6 +251,7 @@
     <ClCompile Include="Math\MatrixStack.cpp" />
     <ClCompile Include="math\Quaternion.cpp" />
     <ClCompile Include="math\Rotation.cpp" />
+    <ClCompile Include="Math\SimpleShapes.cpp" />
     <ClCompile Include="math\Transform.cpp" />
     <ClCompile Include="math\Vector2.cpp" />
     <ClCompile Include="math\Vector3.cpp" />
