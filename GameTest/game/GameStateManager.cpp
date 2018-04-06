@@ -20,6 +20,8 @@
 #include "../Math/Vector3.h"
 #include "../game/GameStateManager.h"
 #include "../Collision/LineCollider.h"
+#include "../Collision/Rigidbody.h"
+#include "../Collision/AABB.h"
 
 int ScreenWidth = APP_VIRTUAL_WIDTH;
 int ScreenHeight = APP_VIRTUAL_HEIGHT;
@@ -164,6 +166,8 @@ void GameStateManager::InitTest()
 	G_Box4->transform->setPosition(Vector3(0, +50, 0));
 	G_Box5->transform->setPosition(Vector3(0, -50, 0));
 
+	G_Box1->AddComponent<Rigidbody>(new Rigidbody());
+	G_Box1->GetComponent<Rigidbody>()->setGameObjectReference(G_Box1);
 
 
 	E_1 = new Emitter(45, 30);

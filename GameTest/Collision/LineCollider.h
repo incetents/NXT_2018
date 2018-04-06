@@ -16,6 +16,8 @@ public:
 	Vector2 m_p1;
 	Vector2 m_p2;
 
+
+
 	void Draw()
 	{
 		App::DrawLine(
