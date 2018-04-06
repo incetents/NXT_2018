@@ -29,7 +29,7 @@ public:
 	Renderer*	renderer;
 
 	// Create GameObject
-	static GameObject* addGameObject(VertexArray* _VA, std::string _name = "")
+	static GameObject* createGameObject(VertexArray* _VA, std::string _name = "")
 	{
 		return new GameObject(_VA, _name);
 	}
@@ -47,7 +47,12 @@ public:
 
 	virtual void Update(float delta) override
 	{
-
+		// Update all components
+		for (auto it : m_components)
+		{
+		//	std::cout << " " << it.first << ":" << it.second;
+			it.second->Update(delta);
+		}
 	}
 
 	virtual void Draw() override

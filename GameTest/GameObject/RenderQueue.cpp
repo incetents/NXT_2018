@@ -1,7 +1,9 @@
 #include "stdafx.h"
 
+#include <algorithm>
 #include "RenderQueue.h"
 #include "GameObject.h"
+#include "../Particle/Emitter.h"
 
 template<typename T>
 bool _RenderQueue::checkDuplicate(T* object)
@@ -13,22 +15,12 @@ bool _RenderQueue::checkDuplicate(T* object)
 template<>
 bool _RenderQueue::checkDuplicate(GameObject* object)
 {
-	for (u_int i = 0; i < m_totalObjects; i++)
-	{
-		if (m_objects[i] == object)
-			return true;
-	}
-	return false;
+	return (std::find(m_gameobjects.begin(), m_gameobjects.end(), object) != m_gameobjects.end());
 }
 template<>
 bool _RenderQueue::checkDuplicate(Emitter* object)
 {
-	for (u_int i = 0; i < m_totalEmitters; i++)
-	{
-		if (m_emitters[i] == object)
-			return true;
-	}
-	return false;
+	return (std::find(m_emitters.begin(), m_emitters.end(), object) != m_emitters.end());
 }
 
 template<typename T>
@@ -43,7 +35,7 @@ _RenderQueue& _RenderQueue::add(GameObject* object)
 	if (checkDuplicate<GameObject>(object))
 		return *this;
 
-	m_objects.push_back(object);
+	m_gameobjects.push_back(object);
 	m_totalObjects++;
 	return *this;
 }
@@ -66,8 +58,8 @@ _RenderQueue& _RenderQueue::remove(T* object)
 template<>
 _RenderQueue& _RenderQueue::remove(GameObject* object)
 {
-	Utility::EraseVectorByValue(m_objects, object);
-	m_totalObjects = (u_int)m_objects.size();
+	Utility::EraseVectorByValue(m_gameobjects, object);
+	m_totalObjects = (u_int)m_gameobjects.size();
 	return *this;
 }
 template<>
@@ -82,6 +74,12 @@ void _RenderQueue::drawAll()
 {
 	for (u_int i = 0; i < m_totalObjects; i++)
 	{
-		m_objects[i]->Draw();
+		m_gameobjects[i]->Draw();
+	}
+
+	for (u_int i = 0; i < m_totalEmitters; i++)
+	{
+		m_emitters[i]->update();
+		m_emitters[i]->draw();
 	}
 }

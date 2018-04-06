@@ -13,7 +13,7 @@ static class _RenderQueue : Singleton<class _RenderQueue>
 	friend class Emitter;
 private:
 	// Objects to draw
-	std::vector<GameObject*> m_objects;
+	std::vector<GameObject*> m_gameobjects;
 	u_int					 m_totalObjects = 0;
 
 	std::vector<Emitter*>	m_emitters;

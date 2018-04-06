@@ -190,6 +190,8 @@
     <ClInclude Include="App\SimpleController.h" />
     <ClInclude Include="App\SimpleLogger.h" />
     <ClInclude Include="App\SimpleSound.h" />
+    <ClInclude Include="Collision\LineCollider.h" />
+    <ClInclude Include="Collision\Rigidbody.h" />
     <ClInclude Include="Editor.h" />
     <ClInclude Include="GameObject\Camera.h" />
     <ClInclude Include="GameObject\CameraManager.h" />
@@ -227,6 +229,7 @@
     <ClCompile Include="App\main.cpp" />
     <ClCompile Include="App\SimpleController.cpp" />
     <ClCompile Include="App\SimpleSound.cpp" />
+    <ClCompile Include="Collision\Rigidbody.cpp" />
     <ClCompile Include="Editor.cpp" />
     <ClCompile Include="GameObject\Camera.cpp" />
     <ClCompile Include="GameObject\Component.cpp" />
@@ -235,6 +238,7 @@
     <ClCompile Include="GameObject\Mesh.cpp" />
     <ClCompile Include="GameObject\Renderer.cpp" />
     <ClCompile Include="GameObject\RenderQueue.cpp" />
+    <ClCompile Include="game\GameStateManager.cpp" />
     <ClCompile Include="game\GameTest.cpp" />
     <ClCompile Include="math\Color.cpp" />
     <ClCompile Include="math\Matrix2x2.cpp" />

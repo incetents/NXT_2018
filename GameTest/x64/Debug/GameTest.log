@@ -1,19 +1,9 @@
 ﻿  GameTest.cpp
 c:\users\100547971\desktop\nxt\gametest\app\simplelogger.h(57): warning C4244: 'argument': conversion from 'u_int' to 'float', possible loss of data
 c:\users\100547971\desktop\nxt\gametest\app\simplelogger.h(57): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-c:\users\100547971\desktop\nxt\gametest\game\gamestatemanager.h(48): warning C4060: switch statement contains no 'case' or 'default' labels
-  Generating Code...
-  Compiling...
-  Transform.cpp
+  GameStateManager.cpp
 c:\users\100547971\desktop\nxt\gametest\app\simplelogger.h(57): warning C4244: 'argument': conversion from 'u_int' to 'float', possible loss of data
 c:\users\100547971\desktop\nxt\gametest\app\simplelogger.h(57): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-  Renderer.cpp
-  RenderQueue.cpp
-  GameObject.cpp
-  Editor.cpp
-  main.cpp
-  app.cpp
-  SimpleController.cpp
   Generating Code...
   GameTest.vcxproj -> C:\Users\100547971\Desktop\NXT\x64\Debug\GameTest.exe
   GameTest.vcxproj -> C:\Users\100547971\Desktop\NXT\x64\Debug\GameTest.pdb (Partial PDB)

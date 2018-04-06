@@ -156,6 +156,12 @@
     <ClInclude Include="GameObject\Component.h">
       <Filter>Source Files\GameObject</Filter>
     </ClInclude>
+    <ClInclude Include="Collision\LineCollider.h">
+      <Filter>Source Files\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Collision\Rigidbody.h">
+      <Filter>Source Files\Collision</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -238,6 +244,12 @@
     </ClCompile>
     <ClCompile Include="GameObject\Component.cpp">
       <Filter>Source Files\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="game\GameStateManager.cpp">
+      <Filter>Source Files\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Collision\Rigidbody.cpp">
+      <Filter>Source Files\Collision</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -3,5 +3,6 @@
 
 class Component
 {
-
+public:
+	virtual void Update(float delta) {}
 };

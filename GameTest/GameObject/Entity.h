@@ -14,7 +14,7 @@
 
 class Entity
 {
-private:
+protected:
 	// Components
 	std::unordered_map<const std::type_info*, Component*> m_components;
 
