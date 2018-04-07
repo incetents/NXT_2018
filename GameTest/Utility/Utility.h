@@ -23,6 +23,11 @@ namespace Utility
 	{
 		vector.erase(std::remove(vector.begin(), vector.end(), value), vector.end());
 	}
+
+	// Referenced from
+	// https://stackoverflow.com/questions/1903954/is-there-a-standard-sign-function-signum-sgn-in-c-c
+	template <typename T>
+	int Sign(T val) { return (T(0) < val) - (val < T(0)); }
 }
 
 namespace Random

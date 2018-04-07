@@ -6,6 +6,10 @@
 #include "../GameObject/GameObject.h"
 #include "../GameObject/RenderQueue.h"
 #include "../Particle/Emitter.h"
+#include "../game/Scene.h"
+#include "../game/SceneGameplay.h"
+#include "../game/SceneMenu.h"
+#include "../game/SceneTest.h"
 
 static class GameStateManager : public Singleton<class GameStateManager>
 {
@@ -22,33 +26,30 @@ public:
 	};
 	struct GlobalData
 	{
-		RenderQueue rq_testscene;
-		RenderQueue rq_menuscene;
-		RenderQueue rq_gameplayscene;
-		GameObject* ball;
-		std::vector<GameObject*> walls;
+	
 	};
 	GameState	m_currentState = GameState::NONE;
+	Scene* scene = nullptr;
 	
 	// Function Pointers
-	void (GameStateManager::*Initfunction)(void) = &GameStateManager::null;
-	void (GameStateManager::*UpdateFunction)(float) = &GameStateManager::nullf;
-	void (GameStateManager::*RenderFunction)(void) = &GameStateManager::null;
-
-	void null(){}
-	void nullf(float) {}
-
-	void InitTest();
-	void InitMenu();
-	void InitGameplay();
-
-	void UpdateTest(float delta);
-	void UpdateMenu(float delta);
-	void UpdateGameplay(float delta);
-
-	void RenderTest();
-	void RenderMenu();
-	void RenderGameplay();
+	//	void (GameStateManager::*Initfunction)(void) = &GameStateManager::null;
+	//	void (GameStateManager::*UpdateFunction)(float) = &GameStateManager::nullf;
+	//	void (GameStateManager::*RenderFunction)(void) = &GameStateManager::null;
+	//	
+	//	void null(){}
+	//	void nullf(float) {}
+	//	
+	//	void InitTest();
+	//	void InitMenu();
+	//	void InitGameplay();
+	//	
+	//	void UpdateTest(float delta);
+	//	void UpdateMenu(float delta);
+	//	void UpdateGameplay(float delta);
+	//	
+	//	void RenderTest();
+	//	void RenderMenu();
+	//	void RenderGameplay();
 
 public:
 	GlobalData data;
@@ -67,45 +68,47 @@ public:
 		bool SceneChange = (m_currentState != state);
 		m_currentState = state;
 
-		// Set Update Function
+		// Delete existing scene
+		if (scene != nullptr)
+		{
+			// Delete function called
+			scene->Delete();
+
+			delete scene;
+			scene = nullptr;
+		}
+
+		// Update Scene
 		switch (m_currentState)
 		{
 		case GameState::TEST:
-			Initfunction = &GameStateManager::InitTest;
-			UpdateFunction = &GameStateManager::UpdateTest;
-			RenderFunction = &GameStateManager::RenderTest;
+			scene = new SceneTest();
 			break;
 
 		case GameState::MENU:
-			Initfunction = &GameStateManager::InitMenu;
-			UpdateFunction = &GameStateManager::UpdateMenu;
-			RenderFunction = &GameStateManager::RenderMenu;
 			break;
 
 		case GameState::GAMEPLAY:
-			Initfunction = &GameStateManager::InitGameplay;
-			UpdateFunction = &GameStateManager::UpdateGameplay;
-			RenderFunction = &GameStateManager::RenderGameplay;
 			break;
 		}
 
 		if (SceneChange)
 		{
-			// Run Init Function
-			(this->*Initfunction)();
+			if (scene != nullptr)
+				scene->Init();
 		}
 	}
 
 	void Update(float delta)
 	{
-		// Run Update Function
-		(this->*UpdateFunction)(delta);
+		if (scene != nullptr)
+			scene->Update(delta);
 	}
 
 	void Render()
 	{
-		// Run Render Function
-		(this->*RenderFunction)();
+		if (scene != nullptr)
+			scene->Render();
 	}
 
 

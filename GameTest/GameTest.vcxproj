@@ -203,6 +203,10 @@
     <ClInclude Include="GameObject\Renderer.h" />
     <ClInclude Include="GameObject\RenderQueue.h" />
     <ClInclude Include="game\GameStateManager.h" />
+    <ClInclude Include="game\Scene.h" />
+    <ClInclude Include="game\SceneGameplay.h" />
+    <ClInclude Include="game\SceneMenu.h" />
+    <ClInclude Include="game\SceneTest.h" />
     <ClInclude Include="math\Color.h" />
     <ClInclude Include="math\MathCore.h" />
     <ClInclude Include="math\Matrix2x2.h" />
@@ -244,6 +248,9 @@
     <ClCompile Include="GameObject\RenderQueue.cpp" />
     <ClCompile Include="game\GameStateManager.cpp" />
     <ClCompile Include="game\GameTest.cpp" />
+    <ClCompile Include="game\SceneGameplay.cpp" />
+    <ClCompile Include="game\SceneMenu.cpp" />
+    <ClCompile Include="game\SceneTest.cpp" />
     <ClCompile Include="math\Color.cpp" />
     <ClCompile Include="math\Matrix2x2.cpp" />
     <ClCompile Include="math\Matrix3x3.cpp" />

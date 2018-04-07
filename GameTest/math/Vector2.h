@@ -79,7 +79,7 @@ public:
 	static Vector2 Reflect(const Vector2& Incident, const Vector2& Normal);
 
 	// Perpendicular
-	Vector2 Perpendicular();
+	Vector2 Perpendicular() const;
 
 	// Project Vector
 	Vector2 Project(const Vector2&) const;

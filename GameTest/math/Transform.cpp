@@ -73,7 +73,7 @@ void Transform::drawDirections(const Matrix4x4& model)
 
 	App::DrawLine(
 		P, P_F,
-		Color3F::RED(), Color3F::RED()
+		Color3F::GREEN(), Color3F::GREEN()
 	);
 
 	App::DrawLine(
@@ -83,6 +83,6 @@ void Transform::drawDirections(const Matrix4x4& model)
 
 	App::DrawLine(
 		P, P_R,
-		Color3F::GREEN(), Color3F::GREEN()
+		Color3F::RED(), Color3F::RED()
 	);
 }

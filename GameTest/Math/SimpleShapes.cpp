@@ -56,15 +56,15 @@ void SimpleShapes::createBox()
 	Vector3 box_vertices[] =
 	{
 		// Back 4 vertices
-		Vector3(-1, -1, -1), // 0
-		Vector3(-1, +1, -1), // 1
-		Vector3(+1, +1, -1), // 2
-		Vector3(+1, -1, -1), // 3
+		Vector3(-0.5f, -0.5f, -0.5f), // 0
+		Vector3(-0.5f, +0.5f, -0.5f), // 1
+		Vector3(+0.5f, +0.5f, -0.5f), // 2
+		Vector3(+0.5f, -0.5f, -0.5f), // 3
 	    // Front 4 vertices
-	    Vector3(-1, -1, +1), // 4
-	    Vector3(-1, +1, +1), // 5
-	    Vector3(+1, +1, +1), // 6
-	    Vector3(+1, -1, +1)  // 7
+	    Vector3(-0.5f, -0.5f, +0.5f), // 4
+	    Vector3(-0.5f, +0.5f, +0.5f), // 5
+	    Vector3(+0.5f, +0.5f, +0.5f), // 6
+	    Vector3(+0.5f, -0.5f, +0.5f)  // 7
 	};
 	unsigned int box_indices[] =
 	{
@@ -129,32 +129,33 @@ void SimpleShapes::createCircle()
 	// 25 vertices for all points of a circle using all 360 degrees converted to radians
 	Vector3 circle_vertices[] =
 	{
-		Vector3(sinf(Deg_To_Rad(000.f)), cosf(Deg_To_Rad(000.f)), 0),
-		Vector3(sinf(Deg_To_Rad(015.f)), cosf(Deg_To_Rad(015.f)), 0),
-		Vector3(sinf(Deg_To_Rad(030.f)), cosf(Deg_To_Rad(030.f)), 0),
-		Vector3(sinf(Deg_To_Rad(045.f)), cosf(Deg_To_Rad(045.f)), 0),
-		Vector3(sinf(Deg_To_Rad(060.f)), cosf(Deg_To_Rad(060.f)), 0),
-		Vector3(sinf(Deg_To_Rad(075.f)), cosf(Deg_To_Rad(075.f)), 0),
-		Vector3(sinf(Deg_To_Rad(090.f)), cosf(Deg_To_Rad(090.f)), 0),
-		Vector3(sinf(Deg_To_Rad(105.f)), cosf(Deg_To_Rad(105.f)), 0),
-		Vector3(sinf(Deg_To_Rad(120.f)), cosf(Deg_To_Rad(120.f)), 0),
-		Vector3(sinf(Deg_To_Rad(135.f)), cosf(Deg_To_Rad(135.f)), 0),
-		Vector3(sinf(Deg_To_Rad(150.f)), cosf(Deg_To_Rad(150.f)), 0),
-		Vector3(sinf(Deg_To_Rad(165.f)), cosf(Deg_To_Rad(165.f)), 0),
-		Vector3(sinf(Deg_To_Rad(180.f)), cosf(Deg_To_Rad(180.f)), 0),
-		Vector3(sinf(Deg_To_Rad(195.f)), cosf(Deg_To_Rad(195.f)), 0),
-		Vector3(sinf(Deg_To_Rad(210.f)), cosf(Deg_To_Rad(210.f)), 0),
-		Vector3(sinf(Deg_To_Rad(225.f)), cosf(Deg_To_Rad(225.f)), 0),
-		Vector3(sinf(Deg_To_Rad(240.f)), cosf(Deg_To_Rad(240.f)), 0),
-		Vector3(sinf(Deg_To_Rad(255.f)), cosf(Deg_To_Rad(255.f)), 0),
-		Vector3(sinf(Deg_To_Rad(270.f)), cosf(Deg_To_Rad(270.f)), 0),
-		Vector3(sinf(Deg_To_Rad(285.f)), cosf(Deg_To_Rad(285.f)), 0),
-		Vector3(sinf(Deg_To_Rad(300.f)), cosf(Deg_To_Rad(300.f)), 0),
-		Vector3(sinf(Deg_To_Rad(315.f)), cosf(Deg_To_Rad(315.f)), 0),
-		Vector3(sinf(Deg_To_Rad(330.f)), cosf(Deg_To_Rad(330.f)), 0),
-		Vector3(sinf(Deg_To_Rad(345.f)), cosf(Deg_To_Rad(345.f)), 0),
-		Vector3(sinf(Deg_To_Rad(360.f)), cosf(Deg_To_Rad(360.f)), 0)
+		Vector3(sinf(Deg_To_Rad(000.f)), cosf(Deg_To_Rad(000.f)), 0) * 0.5f,
+		Vector3(sinf(Deg_To_Rad(015.f)), cosf(Deg_To_Rad(015.f)), 0) * 0.5f,
+		Vector3(sinf(Deg_To_Rad(030.f)), cosf(Deg_To_Rad(030.f)), 0) * 0.5f,
+		Vector3(sinf(Deg_To_Rad(045.f)), cosf(Deg_To_Rad(045.f)), 0) * 0.5f,
+		Vector3(sinf(Deg_To_Rad(060.f)), cosf(Deg_To_Rad(060.f)), 0) * 0.5f,
+		Vector3(sinf(Deg_To_Rad(075.f)), cosf(Deg_To_Rad(075.f)), 0) * 0.5f,
+		Vector3(sinf(Deg_To_Rad(090.f)), cosf(Deg_To_Rad(090.f)), 0) * 0.5f,
+		Vector3(sinf(Deg_To_Rad(105.f)), cosf(Deg_To_Rad(105.f)), 0) * 0.5f,
+		Vector3(sinf(Deg_To_Rad(120.f)), cosf(Deg_To_Rad(120.f)), 0) * 0.5f,
+		Vector3(sinf(Deg_To_Rad(135.f)), cosf(Deg_To_Rad(135.f)), 0) * 0.5f,
+		Vector3(sinf(Deg_To_Rad(150.f)), cosf(Deg_To_Rad(150.f)), 0) * 0.5f,
+		Vector3(sinf(Deg_To_Rad(165.f)), cosf(Deg_To_Rad(165.f)), 0) * 0.5f,
+		Vector3(sinf(Deg_To_Rad(180.f)), cosf(Deg_To_Rad(180.f)), 0) * 0.5f,
+		Vector3(sinf(Deg_To_Rad(195.f)), cosf(Deg_To_Rad(195.f)), 0) * 0.5f,
+		Vector3(sinf(Deg_To_Rad(210.f)), cosf(Deg_To_Rad(210.f)), 0) * 0.5f,
+		Vector3(sinf(Deg_To_Rad(225.f)), cosf(Deg_To_Rad(225.f)), 0) * 0.5f,
+		Vector3(sinf(Deg_To_Rad(240.f)), cosf(Deg_To_Rad(240.f)), 0) * 0.5f,
+		Vector3(sinf(Deg_To_Rad(255.f)), cosf(Deg_To_Rad(255.f)), 0) * 0.5f,
+		Vector3(sinf(Deg_To_Rad(270.f)), cosf(Deg_To_Rad(270.f)), 0) * 0.5f,
+		Vector3(sinf(Deg_To_Rad(285.f)), cosf(Deg_To_Rad(285.f)), 0) * 0.5f,
+		Vector3(sinf(Deg_To_Rad(300.f)), cosf(Deg_To_Rad(300.f)), 0) * 0.5f,
+		Vector3(sinf(Deg_To_Rad(315.f)), cosf(Deg_To_Rad(315.f)), 0) * 0.5f,
+		Vector3(sinf(Deg_To_Rad(330.f)), cosf(Deg_To_Rad(330.f)), 0) * 0.5f,
+		Vector3(sinf(Deg_To_Rad(345.f)), cosf(Deg_To_Rad(345.f)), 0) * 0.5f,
+		Vector3(sinf(Deg_To_Rad(360.f)), cosf(Deg_To_Rad(360.f)), 0) * 0.5f
 	};
+	// circle size is 1
 
 	// Create Circle
 	v_circle = new VertexArray(25, VertexArray::Mode::LINE_STRIPS);

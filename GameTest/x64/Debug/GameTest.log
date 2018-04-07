@@ -1,11 +1,14 @@
-﻿  GameStateManager.cpp
-c:\users\100547971\desktop\nxt\gametest\game\gamestatemanager.cpp(156): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-c:\users\100547971\desktop\nxt\gametest\game\gamestatemanager.cpp(305): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+﻿  SceneTest.cpp
+c:\users\100547971\desktop\nxt\gametest\game\scenetest.cpp(144): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+c:\users\100547971\desktop\nxt\gametest\game\scenetest.cpp(176): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+  Rigidbody.cpp
+  Circle.cpp
   Generating Code...
   Compiling...
   GameTest.cpp
-  RenderQueue.cpp
   Generating Code...
+  Skipping... (no relevant changes detected)
+  GameStateManager.cpp
   GameTest.vcxproj -> C:\Users\100547971\Desktop\NXT\x64\Debug\GameTest.exe
   GameTest.vcxproj -> C:\Users\100547971\Desktop\NXT\x64\Debug\GameTest.pdb (Partial PDB)
   C:\Users\100547971\Desktop\NXT\\GameTest\glut\bin\x64\freeglut.dll

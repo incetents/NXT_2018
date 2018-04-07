@@ -167,7 +167,7 @@ Vector2 Vector2::Reflect(const Vector2& Incident, const Vector2& Normal)
 }
 
 // Perpendicular
-Vector2 Vector2::Perpendicular()
+Vector2 Vector2::Perpendicular() const
 {
 	return Vector2(y, -x);
 }
@@ -244,13 +244,13 @@ Radians Vector2::GetAngleRadians(Vector2& v)
 {
 	Radians Rad(
 		// Faster Method
-		atan2f(x, y) - atan2f(v.x, v.y)
+		atan2f(v.x, v.y) - atan2f(x, y)
 		// Original Method
-		/*
-		acosf(
-			Dot(v) / (Magnitude() * v.Magnitude())
-		)
-		*/
+		
+		//acosf(
+		//	Dot(v) / (Magnitude() * v.Magnitude())
+		//)
+		
 	);
 	return Rad;
 }
@@ -291,13 +291,14 @@ bool Vector2::FixDenormals(Vector2& v)
 void Vector2::Resize(float length)
 {
 	// If length is zero, return empty vector
-	if (!length)
+	if (length == 0.0f)
 	{
 		*this = Vector2();
+		return;
 	}
 
 	// Normalize then multiply length
-	*this = Normalize() * length;
+	*this = (Normalize() * length);
 
 }
 Vector2 Vector2::Resize(Vector2 v, float length)

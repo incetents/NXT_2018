@@ -241,6 +241,12 @@ public:
 	}
 
 	// Setters
+	inline Transform& setPosition(const Vector2& position)
+	{
+		m_position = position;
+		isDirty = true;
+		return *this;
+	}
 	inline Transform& setPosition(const Vector3& position)
 	{
 		m_position = position;
@@ -267,6 +273,12 @@ public:
 	}
 
 	// Increasers
+	inline Transform& increasePosition(const Vector2& translate)
+	{
+		m_position += Vector3(translate);
+		isDirty = true;
+		return *this;
+	}
 	inline Transform& increasePosition(const Vector3& translate)
 	{
 		m_position += translate;

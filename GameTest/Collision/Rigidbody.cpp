@@ -5,7 +5,7 @@
 #include "../App/SimpleLogger.h"
 #include "Rigidbody.h"
 
-Rigidbody::Rigidbody(Transform* T)
+Rigidbody2D::Rigidbody2D(Transform* T)
 {
 	if (T == nullptr)
 		return;
@@ -14,10 +14,23 @@ Rigidbody::Rigidbody(Transform* T)
 	m_gameObject = T->getGameObjectReference();
 }
 
-void Rigidbody::Update(float delta)
+void Rigidbody2D::Update(float delta)
 {
 	if (m_transform != nullptr)
 	{
+		Vec2 velocityQueue;
+		// Add Velocity from queue
+		if (m_velocityQueueCount > 0)
+		{
+			for (int i = 0; i < m_velocityQueueCount; i++)
+			{
+				velocityQueue += m_velocityQueue[i];
+			}
+			velocityQueue /= m_velocityQueueCount;
+			m_velocityQueue.clear();
+			m_velocityQueueCount = 0;
+		}
+
 		//SimpleLogger.Print("TEST: " + std::to_string(m_velocity.x));
 
 		// Increase Velocity
@@ -27,7 +40,7 @@ void Rigidbody::Update(float delta)
 			m_velocity.Resize(m_terminalspeed);
 
 		// Increase Position
-		m_transform->increasePosition(m_velocity);
+		m_transform->increasePosition(m_velocity + velocityQueue);
 
 	}
 }

@@ -6,7 +6,7 @@
 #include "../Math/Vector4.h"
 
 
-class Rigidbody : public Component
+class Rigidbody2D : public Component
 {
 	friend class GameObject;
 	friend class Transform;
@@ -16,15 +16,19 @@ private:
 	Transform* m_transform = nullptr;
 
 	// Data
-	Vector3 m_gravity = Vector3(0, -1, 0);
+	Vector2 m_gravity = Vector2(0, -1);
 	float	m_gravityScale = 0.0f;
 	const float m_terminalspeed = 20.0f;
 
-	Vector3 m_velocity = Vector3(0, 0, 0);
+	Vector2 m_velocity = Vector2(0, 0);
+
+	// Velocity Queue
+	float m_velocityQueueCount = 0;
+	std::vector<Vector2> m_velocityQueue;
 
 public:
 	// Requires GameObject as reference
-	Rigidbody(Transform* reference);
+	Rigidbody2D(Transform* reference);
 
 	// GameObject Reference
 	Transform*  getTransformReference() const
@@ -36,16 +40,19 @@ public:
 		return m_gameObject;
 	}
 
-	// Set Data
-	inline void setVelocity(Vector3 v)
+	// Add Reaction Velocity - Adds To Queue (only changes velocity in update)
+	inline void addVelocityQueue(Vector2 v)
 	{
-		m_velocity = v;
+		m_velocityQueue.push_back(v);
+		m_velocityQueueCount++;
 	}
+
+	// Set Data
 	inline void setVelocity(Vector2 v)
 	{
 		m_velocity = Vector3(v, 0);
 	}
-	inline void setGravityDirection(Vector3 v)
+	inline void setGravityDirection(Vector2 v)
 	{
 		m_gravity = v.Normalize();
 	}
@@ -55,17 +62,13 @@ public:
 	}
 	
 	// Increasers
-	inline void increaseVelocity(Vector3 v)
+	inline void increaseVelocity(Vector2 v)
 	{
 		m_velocity += v;
 	}
-	inline void increaseVelocity(Vector2 v)
-	{
-
-	}
 
 	// Get Data
-	inline Vector3 getVelocity() const
+	inline Vector2 getVelocity() const
 	{
 		return m_velocity;
 	}

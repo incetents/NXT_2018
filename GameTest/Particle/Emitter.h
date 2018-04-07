@@ -99,16 +99,10 @@ public:
 			//m_life[i] = Random::Float(-1.f, -m_lifeCount);
 		}
 		
-		
-	}
-
-	void startEmitter()
-	{
-		if (m_isSetup)
-			return;
-
+		// Set Emitter to start
 		reset();
 
+		// Setup Flag
 		m_isSetup = true;
 	}
 

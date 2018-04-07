@@ -34,5 +34,5 @@ Vector2 LineCollider2D::getDirection() const
 }
 Vector2 LineCollider2D::getNormal() const
 {
-	return (m_p2 - m_p1).Perpendicular().Normalize();
+	return (m_p1 - m_p2).Perpendicular().Normalize();
 }
