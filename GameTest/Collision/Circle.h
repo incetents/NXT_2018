@@ -19,12 +19,14 @@ private:
 	// Data
 	Vector2 m_position;
 	float	m_radius = 0.0f;
-	float	m_normalfactor = 0.98f; // Closest to 1 is at 1.020073f due to floating point nonsense
-	float   m_tangentfactor = 0.98f;
+	float   m_mass = 0.0f;
+	float   m_bounciness = 1.8f;
+	float	m_normalfactor = 0.96f; // Closest to 1 is at 1.020073f due to floating point nonsense
+	float   m_tangentfactor = 0.96f;
 
 	// Projection Point
-public:
 	Vector2 calculateCollisionPoint(const LineCollider2D& c);
+public:
 	CircleCollider2D(Transform* T);
 
 	// Get Object Reference
@@ -39,9 +41,13 @@ public:
 	
 	// Collision Check
 	bool checkCollision(const LineCollider2D& c);
+	bool checkCollision(const CircleCollider2D& c);
+
 	void collisionResponse(const LineCollider2D& c);
+	void collisionResponse(const CircleCollider2D& c);
 
 	// Update
+	void Init() override;
 	void Update(float delta) override;
 
 	// Debug Draw

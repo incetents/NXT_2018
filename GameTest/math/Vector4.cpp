@@ -367,22 +367,15 @@ bool Vector4::FixDenormals(Vector4& v)
 }
 
 // Resize
-void Vector4::Resize(float length)
+Vector4 Vector4::Resize(float length)
 {
 	// If length is zero, return empty vector
 	if (!length)
-	{
-		*this = Vector4();
-	}
+		return Vector4();
 
 	// Normalize then multiply length
-	*this = Normalize() * length;
+	return Normalize() * length;
 
-}
-Vector4 Vector4::Resize(Vector4 v, float length)
-{
-	v.Resize(length);
-	return v;
 }
 
 // Clamp

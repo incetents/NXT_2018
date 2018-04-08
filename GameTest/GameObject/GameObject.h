@@ -43,7 +43,11 @@ public:
 	
 	virtual void Init() override
 	{
-
+		// Init all components
+		for (auto it : m_components)
+		{
+			it.second->Init();
+		}
 	}
 
 	virtual void Update(float delta) override
@@ -51,8 +55,6 @@ public:
 		// Update all components
 		for (auto it : m_components)
 		{
-
-		//	std::cout << " " << it.first << ":" << it.second;
 			it.second->Update(delta);
 		}
 	}

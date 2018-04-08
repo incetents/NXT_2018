@@ -73,6 +73,16 @@ RenderQueue& RenderQueue::remove(Emitter* object)
 	return *this;
 }
 
+void RenderQueue::initAll()
+{
+	for (u_int i = 0; i < m_totalObjects; i++)
+	{
+		m_gameobjects[i]->Init();
+	}
+
+	// Emitter Init
+}
+
 void RenderQueue::updateAll(float delta)
 {
 	for (u_int i = 0; i < m_totalObjects; i++)

@@ -28,6 +28,8 @@ public:
 	template<typename T>
 	RenderQueue& remove(T* object);
 
+	// Init Objects
+	void initAll();
 	// Update Objects
 	void updateAll(float delta);
 	// Draw Objects

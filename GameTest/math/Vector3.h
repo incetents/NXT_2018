@@ -113,8 +113,7 @@ public:
 	static bool FixDenormals(Vector3&);
 
 	// Resize Vector
-	void Resize(float length);
-	static Vector3 Resize(Vector3, float length);
+	Vector3 Resize(float length);
 
 	// Clamp
 	void Clamp(const Vector3& min, const Vector3& max);

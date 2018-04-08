@@ -26,6 +26,10 @@ private:
 	float m_velocityQueueCount = 0;
 	std::vector<Vector2> m_velocityQueue;
 
+	// Forces
+	size_t m_velocityForcesCount = 0;
+	std::vector<Vector2> m_velocityForces;
+
 public:
 	// Requires GameObject as reference
 	Rigidbody2D(Transform* reference);
@@ -47,10 +51,21 @@ public:
 		m_velocityQueueCount++;
 	}
 
+	// Add Force
+	inline void addForce(Vector2 v)
+	{
+		m_velocityForces.push_back(v);
+		m_velocityForcesCount++;
+	}
+
 	// Set Data
+	inline void setVelocity()
+	{
+		m_velocity = Vec2(0, 0);
+	}
 	inline void setVelocity(Vector2 v)
 	{
-		m_velocity = Vector3(v, 0);
+		m_velocity = v;
 	}
 	inline void setGravityDirection(Vector2 v)
 	{

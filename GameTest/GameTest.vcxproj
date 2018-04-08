@@ -202,11 +202,7 @@
     <ClInclude Include="GameObject\GameObject.h" />
     <ClInclude Include="GameObject\Renderer.h" />
     <ClInclude Include="GameObject\RenderQueue.h" />
-    <ClInclude Include="game\GameStateManager.h" />
-    <ClInclude Include="game\Scene.h" />
-    <ClInclude Include="game\SceneGameplay.h" />
-    <ClInclude Include="game\SceneMenu.h" />
-    <ClInclude Include="game\SceneTest.h" />
+    <ClInclude Include="game\Bumper.h" />
     <ClInclude Include="math\Color.h" />
     <ClInclude Include="math\MathCore.h" />
     <ClInclude Include="math\Matrix2x2.h" />
@@ -224,6 +220,11 @@
     <ClInclude Include="Math\Vertex.h" />
     <ClInclude Include="Particle\Emitter.h" />
     <ClInclude Include="Particle\Particle.h" />
+    <ClInclude Include="Scene\GameStateManager.h" />
+    <ClInclude Include="Scene\Scene.h" />
+    <ClInclude Include="Scene\SceneGameplay.h" />
+    <ClInclude Include="Scene\SceneMenu.h" />
+    <ClInclude Include="Scene\SceneTest.h" />
     <ClInclude Include="Table.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
@@ -246,11 +247,7 @@
     <ClCompile Include="GameObject\GameObject.cpp" />
     <ClCompile Include="GameObject\Renderer.cpp" />
     <ClCompile Include="GameObject\RenderQueue.cpp" />
-    <ClCompile Include="game\GameStateManager.cpp" />
-    <ClCompile Include="game\GameTest.cpp" />
-    <ClCompile Include="game\SceneGameplay.cpp" />
-    <ClCompile Include="game\SceneMenu.cpp" />
-    <ClCompile Include="game\SceneTest.cpp" />
+    <ClCompile Include="game\Bumper.cpp" />
     <ClCompile Include="math\Color.cpp" />
     <ClCompile Include="math\Matrix2x2.cpp" />
     <ClCompile Include="math\Matrix3x3.cpp" />
@@ -263,6 +260,10 @@
     <ClCompile Include="math\Vector2.cpp" />
     <ClCompile Include="math\Vector3.cpp" />
     <ClCompile Include="math\Vector4.cpp" />
+    <ClCompile Include="Scene\GameTest.cpp" />
+    <ClCompile Include="Scene\SceneGameplay.cpp" />
+    <ClCompile Include="Scene\SceneMenu.cpp" />
+    <ClCompile Include="Scene\SceneTest.cpp" />
     <ClCompile Include="Table.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

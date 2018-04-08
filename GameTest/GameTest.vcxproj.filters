@@ -40,6 +40,9 @@
     <Filter Include="Source Files\Collision">
       <UniqueIdentifier>{35591aaa-bead-4eb8-9ded-bb83e85526ee}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Scene">
+      <UniqueIdentifier>{2c9735a8-8da8-4a18-bc00-f0f62f39e031}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -144,9 +147,6 @@
     <ClInclude Include="GameObject\RenderQueue.h">
       <Filter>Source Files\GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="game\GameStateManager.h">
-      <Filter>Source Files\Game</Filter>
-    </ClInclude>
     <ClInclude Include="GameObject\Entity.h">
       <Filter>Source Files\GameObject</Filter>
     </ClInclude>
@@ -168,16 +168,22 @@
     <ClInclude Include="Math\SimpleShapes.h">
       <Filter>Source Files\Math</Filter>
     </ClInclude>
-    <ClInclude Include="game\Scene.h">
-      <Filter>Source Files\Game</Filter>
+    <ClInclude Include="Scene\GameStateManager.h">
+      <Filter>Source Files\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="game\SceneGameplay.h">
-      <Filter>Source Files\Game</Filter>
+    <ClInclude Include="Scene\Scene.h">
+      <Filter>Source Files\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="game\SceneMenu.h">
-      <Filter>Source Files\Game</Filter>
+    <ClInclude Include="Scene\SceneGameplay.h">
+      <Filter>Source Files\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="game\SceneTest.h">
+    <ClInclude Include="Scene\SceneMenu.h">
+      <Filter>Source Files\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\SceneTest.h">
+      <Filter>Source Files\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="game\Bumper.h">
       <Filter>Source Files\Game</Filter>
     </ClInclude>
   </ItemGroup>
@@ -205,9 +211,6 @@
     </ClCompile>
     <ClCompile Include="math\Color.cpp">
       <Filter>Source Files\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="game\GameTest.cpp">
-      <Filter>Source Files\Game</Filter>
     </ClCompile>
     <ClCompile Include="math\Matrix2x2.cpp">
       <Filter>Source Files\Math</Filter>
@@ -260,9 +263,6 @@
     <ClCompile Include="GameObject\Component.cpp">
       <Filter>Source Files\GameObject</Filter>
     </ClCompile>
-    <ClCompile Include="game\GameStateManager.cpp">
-      <Filter>Source Files\Game</Filter>
-    </ClCompile>
     <ClCompile Include="Collision\Rigidbody.cpp">
       <Filter>Source Files\Collision</Filter>
     </ClCompile>
@@ -278,13 +278,19 @@
     <ClCompile Include="Collision\LineCollider.cpp">
       <Filter>Source Files\Collision</Filter>
     </ClCompile>
-    <ClCompile Include="game\SceneTest.cpp">
-      <Filter>Source Files\Game</Filter>
+    <ClCompile Include="Scene\GameTest.cpp">
+      <Filter>Source Files\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="game\SceneGameplay.cpp">
-      <Filter>Source Files\Game</Filter>
+    <ClCompile Include="Scene\SceneGameplay.cpp">
+      <Filter>Source Files\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="game\SceneMenu.cpp">
+    <ClCompile Include="Scene\SceneMenu.cpp">
+      <Filter>Source Files\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\SceneTest.cpp">
+      <Filter>Source Files\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="game\Bumper.cpp">
       <Filter>Source Files\Game</Filter>
     </ClCompile>
   </ItemGroup>

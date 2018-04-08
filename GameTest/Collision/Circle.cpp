@@ -20,9 +20,6 @@ CircleCollider2D::CircleCollider2D(Transform* T)
 	m_transform = T;
 	m_gameObject = T->getGameObjectReference();
 	m_rigidbody = m_gameObject->GetComponent<Rigidbody2D>();
-
-	if (m_rigidbody == nullptr)
-		SimpleLogger.ErrorStatic("Rigidbody missing");
 }
 
 // Projection Point
@@ -32,6 +29,72 @@ Vector2 CircleCollider2D::calculateCollisionPoint(const LineCollider2D& c)
 	Vec2 Projection_Local = LineToCircle_Local.Project(c.getDirection());
 	return Projection_Local + c.getPoint1();
 }
+bool CircleCollider2D::checkCollision(const CircleCollider2D& c)
+{
+	return ((m_position - c.m_position).Length() < m_radius + c.m_radius);
+}
+void CircleCollider2D::collisionResponse(const CircleCollider2D& c)
+{
+	// If it does not have a rigidbody (simple bounce)
+	if (c.m_rigidbody == nullptr)
+	{
+		Vector2 Velocity = m_rigidbody->getVelocity();
+		Vector2 Difference = (m_position - c.m_position);
+		Vector2 NewVel = Vector2::Reflect(Velocity, Difference.Normalize());
+		float ratio = (m_mass / max(c.m_mass, m_mass));
+		ratio += ratio * c.m_bounciness;
+		
+		// Fix Velocity
+		m_rigidbody->addVelocityQueue(NewVel * ratio);
+
+		// Fix position
+		float offsetAmount = (m_radius + c.m_radius) - Difference.Length();
+		Vector2 offset = Difference.Resize(offsetAmount);
+
+		m_transform->increasePosition(offset);
+		m_position = m_transform->getPosition();
+	}
+
+
+	// If it has a rigidbody
+	else
+	{
+		// Data
+		Vector2 NewDirection = m_position - c.m_position;
+
+		Vec2 Velocity = m_rigidbody->getVelocity();
+		Vector2 NormalV1 = Velocity.Project(NewDirection);
+		Vector2 NormalV2 = (c.m_rigidbody->getVelocity()).Project(NewDirection);
+		Vector2 TangentV = Velocity - NormalV1;
+
+		// Fix position
+		float L = m_radius + c.m_radius - NewDirection.Length();
+		float Vfix = (NormalV1 - NormalV2).Length();
+		Vector2 Move = NormalV1.Resize(-L / Vfix);
+
+		m_transform->increasePosition(Move);
+		m_position = Move;
+
+		// normal velocity components after the impact
+		float m1 = m_mass;
+		float m2 = c.m_mass;
+		float u1 = NormalV1.ProjectLength(NewDirection);
+		float u2 = NormalV2.ProjectLength(NewDirection);
+		float v1 = ((m1 - m2)*u1 + 2 * m2*u2) / (m1 + m2);
+		float v2 = ((m2 - m1)*u2 + 2 * m1*u1) / (m1 + m2);
+
+		// normal velocity vectors after collision
+		NormalV1 = NewDirection.Resize(v1);
+		NormalV2 = NewDirection.Resize(v2);
+
+		// Fix velocity
+		m_rigidbody->addVelocityQueue(NormalV1 + TangentV);
+		//ball1.velo2D = add(normalVelo1, tangentVelo1);
+		//ball2.velo2D = add(normalVelo2, tangentVelo2);
+	}
+}
+
+
 bool CircleCollider2D::checkCollision(const LineCollider2D& c)
 {
 	// Data
@@ -46,8 +109,22 @@ bool CircleCollider2D::checkCollision(const LineCollider2D& c)
 	float Projection_Distance = (m_position - CollisionTarget).Length();
 	Check1 = Projection_Distance < m_radius;
 
+	// Check for tunnelling instead
 	if (!Check1)
-		return false;
+	{
+		Vec2 P1 = m_position;
+		Vec2 P2 = m_position - m_rigidbody->getVelocity();
+		int CurrentSign = Utility::Sign(c.getNormal().Dot((P1 - W1).Normalize()));
+		int NextSign	= Utility::Sign(c.getNormal().Dot((P2 - W1).Normalize()));
+		// If current and next sides of the line are the same, tunnelling has not occurred.
+		if (CurrentSign == NextSign)
+			return false;
+		else
+		{
+			// Tunnel Safety
+			m_transform->setPosition(CollisionTarget);
+		}
+	}
 
 	// Draw Collision Point
 #if _DEBUG
@@ -83,18 +160,36 @@ void CircleCollider2D::collisionResponse(const LineCollider2D& c)
 		// Data
 		Vec2 CollisionTarget = calculateCollisionPoint(c);
 		Vec2 CircleToTarget = CollisionTarget - m_position;
-		Vec2 Velocity = m_rigidbody->getVelocity();
 		
 		// Fix position
-		float amountoffset1 = m_radius + CircleToTarget.Length();
-		float amountoffset2 = m_radius - CircleToTarget.Length();
+		// https://gamedev.stackexchange.com/questions/105296/calculation-correct-position-of-object-after-collision-2d?rq=1
+		Vec2 LineDirection = c.getDirection().Normalize();
+		Vec2 toCenter = (m_position - c.getPoint1());
 
-		int direction = Utility::Sign(CircleToTarget.Dot(Velocity));
+		Vec2 perpComponent = toCenter - Vec2::Dot(toCenter, LineDirection) * LineDirection; //toCenter - Projection
 
-		if(direction < 0) // -
-			m_transform->increasePosition(Vec2::Resize(Velocity, -amountoffset1));
-		else // +
-			m_transform->increasePosition(Vec2::Resize(Velocity, -amountoffset2));
+		float penetrationDepth = m_radius - perpComponent.Length();
+
+		Vec2 mvmtToCorrectPosition = penetrationDepth * perpComponent.Normalize();
+		m_transform->increasePosition(mvmtToCorrectPosition);
+		m_position = m_transform->getPosition();
+
+		// Fix position (also breaks, math is hard)
+		/*
+		float amountoffset = 0.0f;
+		//int direction = Utility::Sign(CircleToTarget.Dot(Velocity));
+		float d = (CircleToTarget.Normalize()).Dot(Velocity.Normalize());
+
+		// - (center went past line)
+		if (d < -0.95f)
+			amountoffset = m_radius + CircleToTarget.Length();
+		// + (center did not cross line)
+		else
+			amountoffset = m_radius - CircleToTarget.Length();
+
+		Vec2 Move = Velocity.Resize(-(amountoffset));
+		m_transform->increasePosition(Move);
+		*/
 
 		// Fix Position (doesn't work all the time for some reason)
 		/*
@@ -115,17 +210,31 @@ void CircleCollider2D::collisionResponse(const LineCollider2D& c)
 		*/
 
 		// Fix Velocity
+		Vec2 Velocity = m_rigidbody->getVelocity();
 		Vector2 NormalV =  Velocity.Project(CircleToTarget);
 		Vector2 TangentV = Velocity - NormalV;
 		Vector2 NewVelocity = (TangentV * m_tangentfactor) - (NormalV * m_normalfactor);
 
-		m_rigidbody->addVelocityQueue(NewVelocity);
+		// add to queue so it only updates after all collisions have occurred
+		m_rigidbody->addVelocityQueue(NewVelocity); 
+
+		// Original
 		//m_rigidbody->setVelocity(NewVelocity);
 	}
+}
+
+void CircleCollider2D::Init()
+{
+	m_position = m_transform->getPosition();
+	m_radius = m_transform->getScale().x * 0.5f;
+	// a bit of a simplifcation for now
+	m_mass = m_radius;
 }
 
 void CircleCollider2D::Update(float delta)
 {
 	m_position = m_transform->getPosition();
 	m_radius = m_transform->getScale().x * 0.5f;
+	// a bit of a simplifcation for now
+	m_mass = m_radius;
 }

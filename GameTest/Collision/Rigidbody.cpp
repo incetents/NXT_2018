@@ -29,18 +29,30 @@ void Rigidbody2D::Update(float delta)
 			velocityQueue /= m_velocityQueueCount;
 			m_velocityQueue.clear();
 			m_velocityQueueCount = 0;
+			// Override previous velocity
+			m_velocity = Vec2();
 		}
 
-		//SimpleLogger.Print("TEST: " + std::to_string(m_velocity.x));
-
 		// Increase Velocity
-		m_velocity += m_gravity * m_gravityScale;
+		m_velocity += (m_gravity * m_gravityScale) + velocityQueue;
+
+		// Add Forces
+		if (m_velocityForcesCount > 0)
+		{
+			for (int i = 0; i < m_velocityForcesCount; i++)
+			{
+				m_velocity += m_velocityForces[i];
+			}
+			m_velocityForces.clear();
+			m_velocityForcesCount = 0;
+		}
+
 		// Cap Velocity
 		if (m_velocity.Length() > m_terminalspeed)
 			m_velocity.Resize(m_terminalspeed);
 
 		// Increase Position
-		m_transform->increasePosition(m_velocity + velocityQueue);
+		m_transform->increasePosition(m_velocity);
 
 	}
 }
