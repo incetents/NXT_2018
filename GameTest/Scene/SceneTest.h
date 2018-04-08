@@ -11,7 +11,7 @@ class SceneTest : public Scene
 {
 protected:
 	Ball* ball;
-	Bumper* bumper1;
+	std::vector<Bumper*> bumpers;
 	std::vector<Wall*> walls;
 	std::vector<Bouncer*> bouncers;
 

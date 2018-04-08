@@ -13,4 +13,7 @@ public:
 		Vector2 position = Vector2(0, 0),
 		Vector2 velocity = Vector2(0, 0)
 	);
+
+	void OnCollide(const Collider& c) override;
+	void OnTrigger(const Collider& c) override;
 };

@@ -23,3 +23,12 @@ Ball::Ball(std::string _name, float scale, Vector2 position, Vector2 velocity) :
 	GetComponent<Transform>()->setScale(scale);
 	GetComponent<Rigidbody2D>()->setVelocity(velocity);
 }
+
+void Ball::OnCollide(const Collider& c)
+{
+	SimpleLogger.Print("COLLIDE");
+}
+void Ball::OnTrigger(const Collider& c)
+{
+	SimpleLogger.Print("TRIGGER");
+}

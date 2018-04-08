@@ -57,6 +57,6 @@
 
 #define FRAND	(static_cast <float> (rand()) / static_cast <float> (RAND_MAX))
 #define FRAND_RANGE(_MIN_, _MAX_ ) (FRAND * ((_MAX_)-(_MIN_)) + (_MIN_))
-#define PI		(3.14159265359f)
+//#define PI		(3.14159265359f)
 
 #endif

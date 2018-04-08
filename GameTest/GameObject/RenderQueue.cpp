@@ -5,6 +5,9 @@
 #include "GameObject.h"
 #include "../Particle/Emitter.h"
 #include "../App/SimpleLogger.h"
+#include "../Collision/Rigidbody.h"
+#include "../Collision/LineCollider.h"
+#include "../Collision/Circle.h"
 
 template<typename T>
 bool RenderQueue::checkDuplicate(T* object)
@@ -34,6 +37,21 @@ RenderQueue& RenderQueue::add(T* object)
 template<>
 RenderQueue& RenderQueue::add(GameObject* object)
 {
+	// Ignore nullptr
+	if (object == nullptr)
+	{
+		SimpleLogger.ErrorStatic("Attempting to add nullptr to renderqueue");
+		return *this;
+	}
+
+	// Add all of its children first
+	std::vector<Transform*> children = object->transform->getChildren();
+	size_t total_children = children.size();
+	for (int i = 0; i < total_children; i++)
+	{
+		add<GameObject>(children[i]->getGameObjectReference());
+	}
+
 	if (checkDuplicate<GameObject>(object))
 		return *this;
 
@@ -88,6 +106,26 @@ void RenderQueue::updateAll(float delta)
 	for (u_int i = 0; i < m_totalObjects; i++)
 	{
 		m_gameobjects[i]->Update(delta);
+
+		// If Circle Rigidbody
+		auto R = m_gameobjects[i]->GetComponent<Rigidbody2D>();
+		if(R != nullptr)
+		{
+			// A bit hacky since only circle colliders have rigidbodies
+			auto C = m_gameobjects[i]->GetComponent<CircleCollider2D>();
+			if (C != nullptr)
+			{
+				// Compare with all other objects that have colliders
+				for (int j = 0; j < m_totalObjects; j++)
+				{
+					// Ignore self
+					if (m_gameobjects[i] == m_gameobjects[j])
+						continue;
+
+					C->updateCollisions(m_gameobjects[j]);
+				}
+			}
+		}
 	}
 
 	for (u_int i = 0; i < m_totalEmitters; i++)

@@ -1,5 +1,7 @@
-﻿  SceneTest.cpp
-c:\users\100547971\desktop\nxt\gametest\scene\scenetest.cpp(192): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+﻿  Circle.cpp
+  Generating Code...
+  Skipping... (no relevant changes detected)
+  CollisionMath.cpp
   GameTest.vcxproj -> C:\Users\100547971\Desktop\NXT\x64\Debug\GameTest.exe
   GameTest.vcxproj -> C:\Users\100547971\Desktop\NXT\x64\Debug\GameTest.pdb (Partial PDB)
   C:\Users\100547971\Desktop\NXT\\GameTest\glut\bin\x64\freeglut.dll

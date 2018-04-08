@@ -11,11 +11,15 @@ protected:
 
 	void createCube();
 	void createBox();
+	void createBoxLeft(); // offset anchor to left
+	void createBoxRight(); // offset anchor to right
 	void createTriangle();
 	void createCircle();
 public:
 	VertexArray* v_cube;
 	VertexArray* v_box;
+	VertexArray* v_box_left;
+	VertexArray* v_box_right;
 	VertexArray* v_tri;
 	VertexArray* v_circle;
 

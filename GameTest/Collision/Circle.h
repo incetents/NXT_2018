@@ -3,14 +3,17 @@
 #include "../GameObject/Component.h"
 #include "Collider.h"
 #include "../App/SimpleLogger.h"
+#include "../GameObject/RenderQueue.h"
+#include "../Math/Color.h"
+#include "../Math/Vector2.h"
 
 class CircleCollider2D : public Component, public Collider
 {
-	friend class Vector2;
 	friend class GameObject;
 	friend class Transform;
 	friend class Rigidbody2D;
 	friend class LineCollider2D;
+	friend class OBB2D;
 
 private:
 	// Object References
@@ -28,6 +31,7 @@ private:
 
 	// Projection Point
 	Vector2 calculateCollisionPoint(const LineCollider2D& c);
+
 public:
 	CircleCollider2D(Transform* T);
 
@@ -40,33 +44,39 @@ public:
 	{
 		return m_transform;
 	}
-
-	// Get Position
-	Vec2 getPosition() const
+	Rigidbody2D*	getRigidbodyReference() const
 	{
-		if (m_transform == nullptr)
-		{
-			SimpleLogger.ErrorStatic("Getting Position from null Transform");
-			return Vec2();
-		}
-		return Vec2(m_transform->getPosition());
+		return m_rigidbody;
+	}
+
+	// Get Data
+	Vec2 getPosition() const;
+	float getRadius() const
+	{
+		return m_radius;
+	}
+	float getNormalFactor() const
+	{
+		return m_normalfactor;
+	}
+	float getTangentFactor() const
+	{
+		return m_tangentfactor;
+	}
+	float getMass() const
+	{
+		return m_mass;
+	}
+	float getBounciness() const
+	{
+		return m_bounciness;
 	}
 	
 	// Collision Check
-	bool checkCollision(const LineCollider2D& c);
-	bool checkCollision(const CircleCollider2D& c);
-
-	void collisionResponse(const LineCollider2D& c);
-	void collisionResponse(const CircleCollider2D& c);
+	void updateCollisions(GameObject* g);
 
 	// Update
 	void Init() override;
 	void Update(float delta) override;
-
-	// Debug Draw
-	void DrawOutline()
-	{
-		// A bit dumb, basically just an AABB box around a circle, but drawing circles in immediate mode aren't convenient
-		App::DrawLineQuad(m_transform->getPosition(), m_radius * 2, m_radius * 2);
-	}
+	void Draw(Color3F color = Color3F::WHITE()) const override;
 };

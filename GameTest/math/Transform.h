@@ -86,6 +86,7 @@ public:
 	Transform();
 	Transform(const Vector3& position, const Vector3& euler_rotation, const Vector3& scale);
 
+	// Turn object into a 4x4 matrix for math
 	const Matrix4x4 getModel();
 
 	// GameObject Reference
@@ -99,7 +100,7 @@ public:
 	}
 
 	// Returns index of child in list of children (-1 = child does not exist)
-	bool					checkChildDuplicate(Transform* c)
+	bool checkChildDuplicate(Transform* c)
 	{
 		for (u_int i = 0; i < m_totalChildren; i++)
 		{
@@ -107,6 +108,10 @@ public:
 				return true;
 		}
 		return false;
+	}
+	bool checkParentExists()
+	{
+		return m_parent != nullptr;
 	}
 
 	// Get Children Data
@@ -268,6 +273,62 @@ public:
 	inline Transform& setScale(float scaleAll)
 	{
 		m_scale = Vector3(scaleAll);
+		isDirty = true;
+		return *this;
+	}
+
+	// Specific Setters
+	inline Transform& setX(float x)
+	{
+		m_position.x = x;
+		isDirty = true;
+		return *this;
+	}
+	inline Transform& setY(float y)
+	{
+		m_position.y = y;
+		isDirty = true;
+		return *this;
+	}
+	inline Transform& setZ(float z)
+	{
+		m_position.z = z;
+		isDirty = true;
+		return *this;
+	}
+	inline Transform& setRotationX(float x)
+	{
+		m_euler_rotation.x = x;
+		isDirty = true;
+		return *this;
+	}
+	inline Transform& setRotationY(float y)
+	{
+		m_euler_rotation.y = y;
+		isDirty = true;
+		return *this;
+	}
+	inline Transform& setRotationZ(float z)
+	{
+		m_euler_rotation.z = z;
+		isDirty = true;
+		return *this;
+	}
+	inline Transform& setScaleX(float x)
+	{
+		m_scale.x = x;
+		isDirty = true;
+		return *this;
+	}
+	inline Transform& setScaleY(float y)
+	{
+		m_scale.y = y;
+		isDirty = true;
+		return *this;
+	}
+	inline Transform& setScaleZ(float z)
+	{
+		m_scale.z = z;
 		isDirty = true;
 		return *this;
 	}

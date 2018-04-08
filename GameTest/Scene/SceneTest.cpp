@@ -20,6 +20,7 @@
 #include "../Collision/Rigidbody.h"
 #include "../Collision/AABB.h"
 #include "../Collision/Circle.h"
+#include "../Collision/OBB.h"
 #include "../Math/SimpleShapes.h"
 
 #include "SceneTest.h"
@@ -77,37 +78,23 @@ void SceneTest::Init()
 		walls.push_back(NewWall);
 	}
 
+	// Add Bumper
+	Bumper* bumper1 = new Bumper("Bumper1", Bumper::Side::LEFT, 0.0f, -45.0f, Vec2(-220, -320), Vec2(130, 40));
+	Bumper* bumper2 = new Bumper("Bumper2", Bumper::Side::RIGHT, 0.0f, +45.0f, Vec2(+220, -320), Vec2(130, 40));
+	bumpers.push_back(bumper1);
+	bumpers.push_back(bumper2);
+
 	// Add Circle Ball for testing
 	Bouncer* bouncer = new Bouncer("Bouncer1", 150.0f, Vec2(0, -300));
-
-	//GameObject* ball_test = new GameObject(SimpleShapes.v_circle);
-	//ball_test->AddComponent<>(new CircleCollider2D(ball_test->transform));
-	//ball_test->GetComponent<Transform>()->setPosition(Vec2(0, -300));
-	//ball_test->GetComponent<Transform>()->setScale(150.0f);
 	bouncers.push_back(bouncer);
 
-	//	// Create Wall
-	//	VertexArray* V_Wall1 = new VertexArray(2, VertexArray::LINES);
-	//	Vector3 V_Wall1_P[] =
-	//	{
-	//		Vector3(-250, -300, 0),
-	//		Vector3(250, -200, 0)
-	//	};
-	//	Color3F V_Wall1_C[] =
-	//	{
-	//		Color3F::RED(),
-	//		Color3F::BLUE()
-	//	};
-	//	V_Wall1->setPositions(V_Wall1_P, 2);
-	//	V_Wall1->setColors(V_Wall1_C, 2);
-	//	
-	//	GameObject* W1 = GameObject::createGameObject(V_Wall1);
-	//	W1->AddComponent(new LineCollider2D(W1->transform));
-	//	W1->GetComponent<LineCollider2D>()->setPoints(Vector2(-250, -300), Vector2(250, -200));
-	//	data.walls.push_back(W1);
 	
 	// Add GameObjects to render queue
 	rq.add<GameObject>(ball);
+
+	size_t totalBumpers = bumpers.size();
+	for (size_t i = 0; i < totalBumpers; i++)
+		rq.add<GameObject>(bumpers[i]);
 
 	size_t totalWalls = walls.size();
 	for (size_t i = 0; i < totalWalls; i++)
@@ -144,41 +131,23 @@ GameState SceneTest::Update(float delta)
 	if (GetAsyncKeyState('D'))
 		CameraManager.getMain()->m_transform.increasePosition(Vector3(+CamSpeed, 0, 0));
 
-	// Collision Test
-	size_t total_walls = walls.size();
-	for (int i = 0; i < total_walls; i++)
+
+	if (GetAsyncKeyState(VK_SPACE))
 	{
-		// Ball Collides with line
-		auto L = walls[i]->GetComponent<LineCollider2D>();
-		if (L != nullptr && ball->GetComponent<CircleCollider2D>()->checkCollision(*L))
-		{
-			SimpleLogger.Print("COLLISION LINE");
-			ball->GetComponent<CircleCollider2D>()->collisionResponse(*L);
-		}
+		bumpers[0]->Action();
+		bumpers[1]->Action();
 	}
 
-	size_t total_bouncers = bouncers.size();
-	for (int i = 0; i < total_bouncers; i++)
-	{
-		// Ball colliders with circles
-		auto C = bouncers[i]->GetComponent<CircleCollider2D>();
-		if (C != nullptr && ball->GetComponent<CircleCollider2D>()->checkCollision(*C))
-		{
-			SimpleLogger.Print("COLLISION CIRCLE");
-			ball->GetComponent<CircleCollider2D>()->collisionResponse(*C);
-		}
-	}
-
-	static float speed = 2.0f;
-
-	if (GetAsyncKeyState(VK_UP))
-		ball->transform->increasePosition(Vector2(0, +speed));
-	if (GetAsyncKeyState(VK_DOWN))
-		ball->transform->increasePosition(Vector2(0, -speed));
-	if (GetAsyncKeyState(VK_RIGHT))
-		ball->transform->increasePosition(Vector2(+speed, 0));
-	if (GetAsyncKeyState(VK_LEFT))
-		ball->transform->increasePosition(Vector2(-speed, 0));
+	//static float speed = 2.0f;
+	//
+	//if (GetAsyncKeyState(VK_UP))
+	//	ball->transform->increasePosition(Vector2(0, +speed));
+	//if (GetAsyncKeyState(VK_DOWN))
+	//	ball->transform->increasePosition(Vector2(0, -speed));
+	//if (GetAsyncKeyState(VK_RIGHT))
+	//	ball->transform->increasePosition(Vector2(+speed, 0));
+	//if (GetAsyncKeyState(VK_LEFT))
+	//	ball->transform->increasePosition(Vector2(-speed, 0));
 
 
 	// Update All Objects
@@ -188,17 +157,9 @@ GameState SceneTest::Update(float delta)
 }
 void SceneTest::Render()
 {
-	// Draw Collision Boxes of Circles
-	int total_walls = walls.size();
-	for (int i = 0; i < total_walls; i++)
-	{
-		//data.ball->GetComponent<CircleCollider2D>()->DrawOutline();
-
-		//data.ball->GetComponent<CircleCollider2D>()->checkCollision(*data.walls[i]->GetComponent<LineCollider2D>());
-	}
-
 	// Draw All Objects
 	rq.drawAll();
+
 }
 void SceneTest::Delete()
 {

@@ -193,7 +193,9 @@
     <ClInclude Include="Collision\AABB.h" />
     <ClInclude Include="Collision\Circle.h" />
     <ClInclude Include="Collision\Collider.h" />
+    <ClInclude Include="Collision\CollisionMath.h" />
     <ClInclude Include="Collision\LineCollider.h" />
+    <ClInclude Include="Collision\OBB.h" />
     <ClInclude Include="Collision\Rigidbody.h" />
     <ClInclude Include="Editor.h" />
     <ClInclude Include="GameObject\Camera.h" />
@@ -242,7 +244,9 @@
     <ClCompile Include="App\SimpleSound.cpp" />
     <ClCompile Include="Collision\AABB.cpp" />
     <ClCompile Include="Collision\Circle.cpp" />
+    <ClCompile Include="Collision\CollisionMath.cpp" />
     <ClCompile Include="Collision\LineCollider.cpp" />
+    <ClCompile Include="Collision\OBB.cpp" />
     <ClCompile Include="Collision\Rigidbody.cpp" />
     <ClCompile Include="Editor.cpp" />
     <ClCompile Include="GameObject\Camera.cpp" />

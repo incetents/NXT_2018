@@ -33,7 +33,8 @@ public:
 	GameObject( std::string _name = ""); // Vertex Array
 	GameObject(VertexArray* VA, std::string _name = ""); // Init Vertex Array
 
-	virtual void onCollide(const Collider& c) {}
+	virtual void OnCollide(const Collider& c) {}
+	virtual void OnTrigger(const Collider& c) {}
 
 	virtual void Delete() override
 	{
@@ -73,9 +74,16 @@ public:
 
 		// Send Model View Matrix for renderning
 		renderer->render(MVP);
-		// Draw Transform
+
 #if _DEBUG
+		// Draw Transform directions
 		transform->drawDirections(MVP);
+
+		// Draw all components that have the draw function
+		for (auto it : m_components)
+		{
+			it.second->Draw(Color3F::YELLOW());
+		}
 #endif
 	}
 };

@@ -48,6 +48,8 @@ void SimpleShapes::Init()
 	// Create Vertex Arrays
 	createCube();
 	createBox();
+	createBoxLeft();
+	createBoxRight();
 	createTriangle();
 	createCircle();
 }
@@ -67,6 +69,38 @@ void SimpleShapes::createBox()
 	// Create Cube
 	v_box = new VertexArray(5, VertexArray::Mode::LINE_STRIPS);
 	v_box->setPositions(box_vertices, 5);
+}
+void SimpleShapes::createBoxLeft()
+{
+	Vector3 box_vertices[] =
+	{
+		Vector3(-0.0f,-0.5f, 0.0f),
+		Vector3(+1.0f,-0.5f, 0.0f),
+		Vector3(+1.0f,+0.5f, 0.0f),
+		Vector3(-0.0f,+0.5f, 0.0f),
+
+		Vector3(-0.0f,-0.5f, 0.0f),
+	};
+
+	// Create Cube
+	v_box_left = new VertexArray(5, VertexArray::Mode::LINE_STRIPS);
+	v_box_left->setPositions(box_vertices, 5);
+}
+void SimpleShapes::createBoxRight()
+{
+	Vector3 box_vertices[] =
+	{
+		Vector3(-1.0f,-0.5f, 0.0f),
+		Vector3(+0.0f,-0.5f, 0.0f),
+		Vector3(+0.0f,+0.5f, 0.0f),
+		Vector3(-1.0f,+0.5f, 0.0f),
+
+		Vector3(-1.0f,-0.5f, 0.0f),
+	};
+
+	// Create Cube
+	v_box_right = new VertexArray(5, VertexArray::Mode::LINE_STRIPS);
+	v_box_right->setPositions(box_vertices, 5);
 }
 
 void SimpleShapes::createCube()
