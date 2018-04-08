@@ -46,6 +46,7 @@ void SimpleShapes::Init()
 		isInit = true;
 
 	// Create Vertex Arrays
+	createCube();
 	createBox();
 	createTriangle();
 	createCircle();
@@ -54,6 +55,23 @@ void SimpleShapes::Init()
 void SimpleShapes::createBox()
 {
 	Vector3 box_vertices[] =
+	{
+		Vector3(-0.5f,-0.5f, 0.0f),
+		Vector3(+0.5f,-0.5f, 0.0f),
+		Vector3(+0.5f,+0.5f, 0.0f),
+		Vector3(-0.5f,+0.5f, 0.0f),
+
+		Vector3(-0.5f,-0.5f, 0.0f),
+	};
+
+	// Create Cube
+	v_box = new VertexArray(5, VertexArray::Mode::LINE_STRIPS);
+	v_box->setPositions(box_vertices, 5);
+}
+
+void SimpleShapes::createCube()
+{
+	Vector3 cube_vertices[] =
 	{
 		// Back 4 vertices
 		Vector3(-0.5f, -0.5f, -0.5f), // 0
@@ -66,7 +84,7 @@ void SimpleShapes::createBox()
 	    Vector3(+0.5f, +0.5f, +0.5f), // 6
 	    Vector3(+0.5f, -0.5f, +0.5f)  // 7
 	};
-	unsigned int box_indices[] =
+	unsigned int cube_indices[] =
 	{
 		// back face
 		0, 1,
@@ -84,7 +102,7 @@ void SimpleShapes::createBox()
 		2, 6,
 		3, 7
 	};
-	Color3F box_colors[] =
+	Color3F cube_colors[] =
 	{
 		Color3F::WHITE(),
 		Color3F::RED(),
@@ -96,11 +114,11 @@ void SimpleShapes::createBox()
 		Color3F::WHITE()
 	};
 
-	// Create Box
-	v_box = new VertexArray(8, VertexArray::Mode::LINES);
-	v_box->setPositions(box_vertices, 8);
-	v_box->setColors(box_colors, 8);
-	v_box->setIndices(box_indices, 24);
+	// Create Cube
+	v_cube = new VertexArray(8, VertexArray::Mode::LINES);
+	v_cube->setPositions(cube_vertices, 8);
+	v_cube->setColors	(cube_colors,   8);
+	v_cube->setIndices	(cube_indices, 24);
 }
 
 void SimpleShapes::createTriangle()

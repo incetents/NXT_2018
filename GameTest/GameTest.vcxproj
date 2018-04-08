@@ -192,6 +192,7 @@
     <ClInclude Include="App\SimpleSound.h" />
     <ClInclude Include="Collision\AABB.h" />
     <ClInclude Include="Collision\Circle.h" />
+    <ClInclude Include="Collision\Collider.h" />
     <ClInclude Include="Collision\LineCollider.h" />
     <ClInclude Include="Collision\Rigidbody.h" />
     <ClInclude Include="Editor.h" />
@@ -202,7 +203,10 @@
     <ClInclude Include="GameObject\GameObject.h" />
     <ClInclude Include="GameObject\Renderer.h" />
     <ClInclude Include="GameObject\RenderQueue.h" />
+    <ClInclude Include="game\Ball.h" />
+    <ClInclude Include="game\Bouncer.h" />
     <ClInclude Include="game\Bumper.h" />
+    <ClInclude Include="game\Wall.h" />
     <ClInclude Include="math\Color.h" />
     <ClInclude Include="math\MathCore.h" />
     <ClInclude Include="math\Matrix2x2.h" />
@@ -247,7 +251,10 @@
     <ClCompile Include="GameObject\GameObject.cpp" />
     <ClCompile Include="GameObject\Renderer.cpp" />
     <ClCompile Include="GameObject\RenderQueue.cpp" />
+    <ClCompile Include="game\Ball.cpp" />
+    <ClCompile Include="game\Bouncer.cpp" />
     <ClCompile Include="game\Bumper.cpp" />
+    <ClCompile Include="game\Wall.cpp" />
     <ClCompile Include="math\Color.cpp" />
     <ClCompile Include="math\Matrix2x2.cpp" />
     <ClCompile Include="math\Matrix3x3.cpp" />

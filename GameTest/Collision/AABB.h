@@ -1,8 +1,10 @@
 #pragma once
 
 #include "../Math/Vector2.h"
+#include "../GameObject/Component.h"
+#include "Collider.h"
 
-class AABBCollider2D
+class AABBCollider2D : public Component, public Collider
 {
 private:
 	// Edge points of aabb collider
@@ -11,8 +13,5 @@ private:
 
 public:
 
-	void Draw()
-	{
-
-	}
+	
 };

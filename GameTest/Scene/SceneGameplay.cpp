@@ -2,14 +2,17 @@
 #include "stdafx.h"
 
 #include "SceneGameplay.h"
+#include "GameStateManager.h"
 
 void SceneGameplay::Init()
 {
 
 }
-void SceneGameplay::Update(float delta)
+GameState SceneGameplay::Update(float delta)
 {
 
+
+	return currentGameState;
 }
 void SceneGameplay::Render()
 {

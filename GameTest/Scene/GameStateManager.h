@@ -11,49 +11,21 @@
 #include "../Scene/SceneMenu.h"
 #include "../Scene/SceneTest.h"
 
+
 static class GameStateManager : public Singleton<class GameStateManager>
 {
-private:
-
 public:
-	enum GameState
-	{
-		NONE = -1,
-		TEST = 0,
-		MENU,
-		GAMEPLAY,
-		TOTAL
-	};
 	struct GlobalData
 	{
-	
+		// Values that can be accesed from all scenes
+
 	};
 	GameState	m_currentState = GameState::NONE;
 	Scene* scene = nullptr;
-	
-	// Function Pointers
-	//	void (GameStateManager::*Initfunction)(void) = &GameStateManager::null;
-	//	void (GameStateManager::*UpdateFunction)(float) = &GameStateManager::nullf;
-	//	void (GameStateManager::*RenderFunction)(void) = &GameStateManager::null;
-	//	
-	//	void null(){}
-	//	void nullf(float) {}
-	//	
-	//	void InitTest();
-	//	void InitMenu();
-	//	void InitGameplay();
-	//	
-	//	void UpdateTest(float delta);
-	//	void UpdateMenu(float delta);
-	//	void UpdateGameplay(float delta);
-	//	
-	//	void RenderTest();
-	//	void RenderMenu();
-	//	void RenderGameplay();
 
 public:
-	GlobalData data;
-	float m_Time = 0.0f;
+	GlobalData  data;
+	float		time = 0.0f;
 
 	const GameState& getState() const
 	{
@@ -61,11 +33,13 @@ public:
 	}
 	void changeState(GameState state)
 	{
-		// Error States
-		if (state == GameState::NONE || state == GameState::TOTAL)
+		// Error or Same States
+		if (state == GameState::NONE ||
+			state == GameState::TOTAL ||
+			state == m_currentState
+			)
 			return;
 
-		bool SceneChange = (m_currentState != state);
 		m_currentState = state;
 
 		// Delete existing scene
@@ -82,27 +56,29 @@ public:
 		switch (m_currentState)
 		{
 		case GameState::TEST:
-			scene = new SceneTest();
+			scene = new SceneTest(GameState::TEST);
 			break;
 
 		case GameState::MENU:
+			scene = new SceneMenu(GameState::MENU);
 			break;
 
 		case GameState::GAMEPLAY:
+			scene = new SceneGameplay(GameState::GAMEPLAY);
 			break;
 		}
 
-		if (SceneChange)
-		{
-			if (scene != nullptr)
-				scene->Init();
-		}
+		// Call Init Function
+		if (scene != nullptr)
+			scene->Init();
 	}
 
 	void Update(float delta)
 	{
 		if (scene != nullptr)
-			scene->Update(delta);
+		{
+			changeState(scene->Update(delta));
+		}
 	}
 
 	void Render()

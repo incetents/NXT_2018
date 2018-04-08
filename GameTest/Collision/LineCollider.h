@@ -2,8 +2,9 @@
 
 #include "../GameObject/Component.h"
 #include "../Math/Vector2.h"
+#include "Collider.h"
 
-class LineCollider2D : public Component
+class LineCollider2D : public Component, public Collider
 {
 	friend class Vector2;
 	friend class GameObject;

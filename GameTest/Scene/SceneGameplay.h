@@ -8,8 +8,10 @@ class SceneGameplay : public Scene
 protected:
 
 public:
+	SceneGameplay(GameState newstate) : Scene(newstate) {}
+
 	void Init() override;
-	void Update(float delta) override;
+	GameState Update(float delta) override;
 	void Render() override;
 	void Delete() override;
 };

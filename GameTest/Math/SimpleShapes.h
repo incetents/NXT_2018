@@ -9,10 +9,12 @@ static class SimpleShapes : public Singleton<class SimpleShapes>
 protected:
 	bool isInit = false;
 
+	void createCube();
 	void createBox();
 	void createTriangle();
 	void createCircle();
 public:
+	VertexArray* v_cube;
 	VertexArray* v_box;
 	VertexArray* v_tri;
 	VertexArray* v_circle;

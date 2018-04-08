@@ -34,6 +34,7 @@ public:
 	void updateAll(float delta);
 	// Draw Objects
 	void drawAll();
-
+	// Clear everything
+	void clear();
 
 };

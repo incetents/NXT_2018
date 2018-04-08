@@ -25,21 +25,26 @@ CircleCollider2D::CircleCollider2D(Transform* T)
 // Projection Point
 Vector2 CircleCollider2D::calculateCollisionPoint(const LineCollider2D& c)
 {
-	Vec2 LineToCircle_Local = m_position - c.getPoint1();
+	Vec2 LineToCircle_Local = getPosition() - c.getPoint1();
 	Vec2 Projection_Local = LineToCircle_Local.Project(c.getDirection());
 	return Projection_Local + c.getPoint1();
 }
 bool CircleCollider2D::checkCollision(const CircleCollider2D& c)
 {
-	return ((m_position - c.m_position).Length() < m_radius + c.m_radius);
+	return ((getPosition() - c.getPosition()).Length() < m_radius + c.m_radius);
 }
 void CircleCollider2D::collisionResponse(const CircleCollider2D& c)
 {
+	Vec2 position = getPosition();
+	Vec2 other_position = c.getPosition();
+	// Activate Function
+	m_gameObject->onCollide(c);
+
 	// If it does not have a rigidbody (simple bounce)
 	if (c.m_rigidbody == nullptr)
 	{
 		Vector2 Velocity = m_rigidbody->getVelocity();
-		Vector2 Difference = (m_position - c.m_position);
+		Vector2 Difference = (position - other_position);
 		Vector2 NewVel = Vector2::Reflect(Velocity, Difference.Normalize());
 		float ratio = (m_mass / max(c.m_mass, m_mass));
 		ratio += ratio * c.m_bounciness;
@@ -52,7 +57,7 @@ void CircleCollider2D::collisionResponse(const CircleCollider2D& c)
 		Vector2 offset = Difference.Resize(offsetAmount);
 
 		m_transform->increasePosition(offset);
-		m_position = m_transform->getPosition();
+		position = m_transform->getPosition();
 	}
 
 
@@ -60,7 +65,7 @@ void CircleCollider2D::collisionResponse(const CircleCollider2D& c)
 	else
 	{
 		// Data
-		Vector2 NewDirection = m_position - c.m_position;
+		Vector2 NewDirection = position - other_position;
 
 		Vec2 Velocity = m_rigidbody->getVelocity();
 		Vector2 NormalV1 = Velocity.Project(NewDirection);
@@ -73,7 +78,7 @@ void CircleCollider2D::collisionResponse(const CircleCollider2D& c)
 		Vector2 Move = NormalV1.Resize(-L / Vfix);
 
 		m_transform->increasePosition(Move);
-		m_position = Move;
+		position = Move;
 
 		// normal velocity components after the impact
 		float m1 = m_mass;
@@ -94,9 +99,9 @@ void CircleCollider2D::collisionResponse(const CircleCollider2D& c)
 	}
 }
 
-
 bool CircleCollider2D::checkCollision(const LineCollider2D& c)
 {
+	Vec2 position = getPosition();
 	// Data
 	Vec2 W1 = c.getPoint1();
 	Vec2 W2 = c.getPoint2();
@@ -106,14 +111,14 @@ bool CircleCollider2D::checkCollision(const LineCollider2D& c)
 	// Check 1, see if ball is touching line <- (interpreted as infinitely long)
 	bool Check1;
 	Vec2 CollisionTarget = calculateCollisionPoint(c);
-	float Projection_Distance = (m_position - CollisionTarget).Length();
+	float Projection_Distance = (position - CollisionTarget).Length();
 	Check1 = Projection_Distance < m_radius;
 
 	// Check for tunnelling instead
 	if (!Check1)
 	{
-		Vec2 P1 = m_position;
-		Vec2 P2 = m_position - m_rigidbody->getVelocity();
+		Vec2 P1 = position;
+		Vec2 P2 = position - m_rigidbody->getVelocity();
 		int CurrentSign = Utility::Sign(c.getNormal().Dot((P1 - W1).Normalize()));
 		int NextSign	= Utility::Sign(c.getNormal().Dot((P2 - W1).Normalize()));
 		// If current and next sides of the line are the same, tunnelling has not occurred.
@@ -144,27 +149,29 @@ bool CircleCollider2D::checkCollision(const LineCollider2D& c)
 	bool Check2 = (CollToW1) <= line_length && (CollToW2) <= line_length;
 
 	// Check 3, see if at least 1 line point is inside the sphere
-	float BallToW1 = (m_position - W1).Length();
-	float BallToW2 = (m_position - W2).Length();
+	float BallToW1 = (position - W1).Length();
+	float BallToW2 = (position - W2).Length();
 	bool Check3 = (BallToW1) < m_radius || (BallToW2) < m_radius;
 
 	return Check2 || Check3;
 }
 void CircleCollider2D::collisionResponse(const LineCollider2D& c)
 {
-	//SimpleLogger.ErrorStatic("Collision");
+	Vec2 position = getPosition();
+	// Activate Function
+	m_gameObject->onCollide(c);
 
 	// Cannot do collision without rigidbody (temp 'if' placement)
 	if (m_rigidbody != nullptr)
 	{
 		// Data
 		Vec2 CollisionTarget = calculateCollisionPoint(c);
-		Vec2 CircleToTarget = CollisionTarget - m_position;
+		Vec2 CircleToTarget = CollisionTarget - position;
 		
 		// Fix position
 		// https://gamedev.stackexchange.com/questions/105296/calculation-correct-position-of-object-after-collision-2d?rq=1
 		Vec2 LineDirection = c.getDirection().Normalize();
-		Vec2 toCenter = (m_position - c.getPoint1());
+		Vec2 toCenter = (position - c.getPoint1());
 
 		Vec2 perpComponent = toCenter - Vec2::Dot(toCenter, LineDirection) * LineDirection; //toCenter - Projection
 
@@ -172,7 +179,7 @@ void CircleCollider2D::collisionResponse(const LineCollider2D& c)
 
 		Vec2 mvmtToCorrectPosition = penetrationDepth * perpComponent.Normalize();
 		m_transform->increasePosition(mvmtToCorrectPosition);
-		m_position = m_transform->getPosition();
+		position = m_transform->getPosition();
 
 		// Fix position (also breaks, math is hard)
 		/*
@@ -225,16 +232,14 @@ void CircleCollider2D::collisionResponse(const LineCollider2D& c)
 
 void CircleCollider2D::Init()
 {
-	m_position = m_transform->getPosition();
+	// a bit of a simplifcation
 	m_radius = m_transform->getScale().x * 0.5f;
-	// a bit of a simplifcation for now
 	m_mass = m_radius;
 }
 
 void CircleCollider2D::Update(float delta)
 {
-	m_position = m_transform->getPosition();
+	// a bit of a simplifcation
 	m_radius = m_transform->getScale().x * 0.5f;
-	// a bit of a simplifcation for now
 	m_mass = m_radius;
 }

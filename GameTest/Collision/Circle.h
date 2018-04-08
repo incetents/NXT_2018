@@ -1,8 +1,10 @@
 #pragma once
 
 #include "../GameObject/Component.h"
+#include "Collider.h"
+#include "../App/SimpleLogger.h"
 
-class CircleCollider2D : public Component
+class CircleCollider2D : public Component, public Collider
 {
 	friend class Vector2;
 	friend class GameObject;
@@ -17,7 +19,7 @@ private:
 	Rigidbody2D*  m_rigidbody;
 
 	// Data
-	Vector2 m_position;
+	Vector2 m_offset;
 	float	m_radius = 0.0f;
 	float   m_mass = 0.0f;
 	float   m_bounciness = 1.8f;
@@ -38,6 +40,17 @@ public:
 	{
 		return m_transform;
 	}
+
+	// Get Position
+	Vec2 getPosition() const
+	{
+		if (m_transform == nullptr)
+		{
+			SimpleLogger.ErrorStatic("Getting Position from null Transform");
+			return Vec2();
+		}
+		return Vec2(m_transform->getPosition());
+	}
 	
 	// Collision Check
 	bool checkCollision(const LineCollider2D& c);
@@ -54,6 +67,6 @@ public:
 	void DrawOutline()
 	{
 		// A bit dumb, basically just an AABB box around a circle, but drawing circles in immediate mode aren't convenient
-		App::DrawLineQuad(m_position, m_radius * 2, m_radius * 2);
+		App::DrawLineQuad(m_transform->getPosition(), m_radius * 2, m_radius * 2);
 	}
 };

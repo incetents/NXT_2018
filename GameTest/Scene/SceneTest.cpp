@@ -39,21 +39,17 @@ Emitter* E_1;
 
 void SceneTest::Init()
 {
+
 	// Emitter
 	Emitter* E = new Emitter(100);
 	E->setColorByLife(Color3F::RED(), Color3F::ORANGE(), Color3F::YELLOW());
 
 	// Create Ball
-	ball = GameObject::createGameObject(SimpleShapes.v_circle, "Ball");
-	ball->AddComponent(new Rigidbody2D(ball->transform));
-	ball->transform->setPosition(Vec2(-400, -100));
-	//ball->transform->setPosition(Vec2(-100, -100));
+	ball = new Ball("Ball", 60.0f, Vec2(-400, -100), Vec2(12.0f, 1.0f));
+	ball->renderer->m_lineWidth = 4.0f;
 	ball->GetComponent<Rigidbody2D>()->setGravityAmount(0.9f);
-	ball->GetComponent<Rigidbody2D>()->setVelocity(Vec2(12.0f, 1.0f));
 
-	ball->AddComponent(new CircleCollider2D(ball->transform));
-	ball->GetComponent<Transform>()->setScale(80.0f);
-
+	// Create Bumper
 	Vector2 WallPoints[] =
 	{
 		Vector2(-250, -300),
@@ -68,36 +64,27 @@ void SceneTest::Init()
 		Vector2(-250, -300)
 	};
 
-
 	for (int i = 0; i < 8; i++)
 	{
-		// Create Wall
-		VertexArray* V_Wall1 = new VertexArray(2, VertexArray::LINES);
-		Vector3 V_Wall1_P[] =
-		{
-			Vector3(WallPoints[i]),
-			Vector3(WallPoints[i + 1])
-		};
-		Color3F V_Wall1_C[] =
-		{
+		Wall* NewWall = new Wall(
+			"Wall: " + toString(i),
+			WallPoints[i],
+			WallPoints[i + 1],
 			Color3F::RED(),
 			Color3F::BLUE()
-		};
-		V_Wall1->setPositions(V_Wall1_P, 2);
-		V_Wall1->setColors(V_Wall1_C, 2);
+		);
 
-		GameObject* W1 = GameObject::createGameObject(V_Wall1, "Wall: " + toString(i));
-		W1->AddComponent(new LineCollider2D(W1->transform));
-		W1->GetComponent<LineCollider2D>()->setPoints(WallPoints[i], WallPoints[i + 1]);
-		walls.push_back(W1);
+		walls.push_back(NewWall);
 	}
 
 	// Add Circle Ball for testing
-	GameObject* ball_test = GameObject::createGameObject(SimpleShapes.v_circle);
-	ball_test->AddComponent<>(new CircleCollider2D(ball_test->transform));
-	ball_test->GetComponent<Transform>()->setPosition(Vec2(0, -300));
-	ball_test->GetComponent<Transform>()->setScale(150.0f);
-	walls.push_back(ball_test);
+	Bouncer* bouncer = new Bouncer("Bouncer1", 150.0f, Vec2(0, -300));
+
+	//GameObject* ball_test = new GameObject(SimpleShapes.v_circle);
+	//ball_test->AddComponent<>(new CircleCollider2D(ball_test->transform));
+	//ball_test->GetComponent<Transform>()->setPosition(Vec2(0, -300));
+	//ball_test->GetComponent<Transform>()->setScale(150.0f);
+	bouncers.push_back(bouncer);
 
 	//	// Create Wall
 	//	VertexArray* V_Wall1 = new VertexArray(2, VertexArray::LINES);
@@ -118,13 +105,17 @@ void SceneTest::Init()
 	//	W1->AddComponent(new LineCollider2D(W1->transform));
 	//	W1->GetComponent<LineCollider2D>()->setPoints(Vector2(-250, -300), Vector2(250, -200));
 	//	data.walls.push_back(W1);
-
-	// Add GameObjects to render queue
-	rq.add(ball);
 	
+	// Add GameObjects to render queue
+	rq.add<GameObject>(ball);
+
 	size_t totalWalls = walls.size();
 	for (size_t i = 0; i < totalWalls; i++)
-		rq.add(walls[i]);
+		rq.add<GameObject>(walls[i]);
+
+	size_t totalBouncers = bouncers.size();
+	for (size_t i = 0; i < totalBouncers; i++)
+		rq.add<GameObject>(bouncers[i]);
 
 	// Add Emitter
 	//data.rq_testscene.add(E);
@@ -133,8 +124,15 @@ void SceneTest::Init()
 	rq.initAll();
 
 }
-void SceneTest::Update(float delta)
+GameState SceneTest::Update(float delta)
 {
+	if (GetAsyncKeyState('1'))
+	{
+		return GameState::MENU;
+		//ball->GetComponent<Rigidbody2D>()->addForce(Vec2(0, 1));
+		//return;
+	}
+
 	// Move Camera
 	static float CamSpeed = 5.0f;
 	if (GetAsyncKeyState('W'))
@@ -147,7 +145,7 @@ void SceneTest::Update(float delta)
 		CameraManager.getMain()->m_transform.increasePosition(Vector3(+CamSpeed, 0, 0));
 
 	// Collision Test
-	int total_walls = walls.size();
+	size_t total_walls = walls.size();
 	for (int i = 0; i < total_walls; i++)
 	{
 		// Ball Collides with line
@@ -157,15 +155,18 @@ void SceneTest::Update(float delta)
 			SimpleLogger.Print("COLLISION LINE");
 			ball->GetComponent<CircleCollider2D>()->collisionResponse(*L);
 		}
+	}
 
-		// Ball colliders with circle
-		auto C = walls[i]->GetComponent<CircleCollider2D>();
+	size_t total_bouncers = bouncers.size();
+	for (int i = 0; i < total_bouncers; i++)
+	{
+		// Ball colliders with circles
+		auto C = bouncers[i]->GetComponent<CircleCollider2D>();
 		if (C != nullptr && ball->GetComponent<CircleCollider2D>()->checkCollision(*C))
 		{
 			SimpleLogger.Print("COLLISION CIRCLE");
 			ball->GetComponent<CircleCollider2D>()->collisionResponse(*C);
 		}
-
 	}
 
 	static float speed = 2.0f;
@@ -182,6 +183,8 @@ void SceneTest::Update(float delta)
 
 	// Update All Objects
 	rq.updateAll(delta);
+
+	return currentGameState;
 }
 void SceneTest::Render()
 {
@@ -199,5 +202,10 @@ void SceneTest::Render()
 }
 void SceneTest::Delete()
 {
-
+	delete ball;
+	for (int i = 0; i < walls.size(); i++)
+	{
+		delete walls[i];
+	}
+	walls.clear();
 }

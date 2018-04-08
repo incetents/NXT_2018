@@ -108,3 +108,11 @@ void RenderQueue::drawAll()
 		m_emitters[i]->Draw();
 	}
 }
+
+void RenderQueue::clear()
+{
+	m_gameobjects.clear();
+	m_emitters.clear();
+	m_totalObjects = 0;
+	m_totalEmitters = 0;
+}

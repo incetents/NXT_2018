@@ -11,6 +11,7 @@
 #include "Renderer.h"
 #include "Entity.h"
 #include "../App/SimpleLogger.h"
+#include "../Collision/Collider.h"
 
 #include "../GameObject/CameraManager.h"
 
@@ -20,8 +21,7 @@ private:
 	// Reference to all other GameObjects
 	static std::vector<GameObject*> m_allGameObjects;
 
-	// Constructor only called from static member
-	GameObject(VertexArray* VA, std::string _name = "");
+	void SetupComponents();
 
 public:
 	// Core Data
@@ -29,16 +29,23 @@ public:
 	Transform*	transform;
 	Renderer*	renderer;
 
-	// Create GameObject
-	static GameObject* createGameObject(VertexArray* _VA, std::string _name = "")
-	{
-		return new GameObject(_VA, _name);
-	}
+	// Constructor
+	GameObject( std::string _name = ""); // Vertex Array
+	GameObject(VertexArray* VA, std::string _name = ""); // Init Vertex Array
+
+	virtual void onCollide(const Collider& c) {}
 
 	virtual void Delete() override
 	{
 		// Remove from list
 		m_allGameObjects.erase(std::remove(m_allGameObjects.begin(), m_allGameObjects.end(), this), m_allGameObjects.end());
+		
+		// Delete all components
+		for (auto it : m_components)
+		{
+			it.second->Delete();
+			delete it.second;
+		}
 	}
 	
 	virtual void Init() override

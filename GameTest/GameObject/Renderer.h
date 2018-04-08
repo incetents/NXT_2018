@@ -8,6 +8,7 @@
 #include "../App/app.h"
 #include <string>
 
+#include "../App/SimpleLogger.h"
 #include "../GameObject/Component.h"
 
 class Renderer : public Component
@@ -21,13 +22,13 @@ public:
 	}
 	void setVertexArray(VertexArray* VA)
 	{
-		m_vertexArray = VA;
-	}
-
-	void updateVertexArray()
-	{
-		if (m_vertexArray == nullptr)
+		if (VA == nullptr)
+		{
+			SimpleLogger.ErrorStatic("Cannot Set Vertex Array with nullptr");
 			return;
+		}
+
+		m_vertexArray = VA;
 
 		// Update Mode
 		VertexArray::Mode M = m_vertexArray->getMode();
@@ -48,10 +49,16 @@ public:
 	}
 	void resendPositions(Vector3* _Positions)
 	{
+		if (m_vertexArray == nullptr)
+			return;
+
 		m_vertexArray->setPositions(_Positions, m_vertexArray->getVertexCount());
 	}
 	void resendColors(Color3F* _Colors)
 	{
+		if (m_vertexArray == nullptr)
+			return;
+
 		m_vertexArray->setColors(_Colors, m_vertexArray->getVertexCount());
 	}
 
@@ -65,16 +72,15 @@ public:
 		(this->*RenderFunction)();
 	}
 
-protected:
-	float   m_GlobalpointSize = 1.0f;
-	float	m_GloballineWidth = 1.0f;
+	float   m_pointSize = 1.0f;
+	float	m_lineWidth = 1.0f;
 	bool	m_activeState = true;
 	
 private:
 	VertexArray* m_vertexArray = nullptr;
 
-	Matrix4x4 t_modelMatrix;// Transform Data (Temp for draw call)
-	u_int	  t_drawCount;  // VertexArray Data (Temp for draw call)
+	Matrix4x4 t_modelMatrix;	// Transform Data (Temp for draw call)
+	u_int	  t_drawCount = 0;  // VertexArray Data (Temp for draw call)
 	Vector3*  t_positions	= nullptr; //
 	Color3F*  t_colors		= nullptr; //
 	float*	  t_sizes		= nullptr; //
@@ -110,7 +116,7 @@ private:
 
 	void drawPoints()
 	{
-		glPointSize(m_GlobalpointSize);
+		glPointSize(m_pointSize);
 
 		App::DrawPoints(
 			t_modelMatrix,
@@ -122,7 +128,7 @@ private:
 	}
 	void drawLineStrips()
 	{
-		glLineWidth(m_GloballineWidth);
+		glLineWidth(m_lineWidth);
 
 		for (u_int i = 0; i < t_drawCount - 1; i++)
 		{
@@ -139,7 +145,7 @@ private:
 	{
 		assert(t_drawCount % 2 == 0); // Lines must have multiples of 2
 
-		glLineWidth(m_GloballineWidth);
+		glLineWidth(m_lineWidth);
 
 		for (u_int i = 0; i < t_drawCount; i+=2)
 		{

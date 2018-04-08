@@ -26,7 +26,7 @@ void Init()
 	App::CullMode(CullType::COUNTER_CLOCKWISE);
 
 	// Initial State
-	GameStateManager.changeState(GameStateManager::TEST);
+	GameStateManager.changeState(GameState::TEST);
 }
 
 //------------------------------------------------------------------------
@@ -39,7 +39,7 @@ void Update(float deltaTime)
 	GameStateManager.Update(deltaTime);
 
 	// Update Time
-	GameStateManager.m_Time += deltaTime;
+	GameStateManager.time += deltaTime;
 }
 
 //------------------------------------------------------------------------

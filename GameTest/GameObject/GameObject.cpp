@@ -9,17 +9,31 @@
 
 std::vector<GameObject*> GameObject::m_allGameObjects;
 
-// Constructor
-GameObject::GameObject(VertexArray* VA, std::string _name) : name(_name)
+void GameObject::SetupComponents()
 {
 	// Add components
 	transform = AddComponent<Transform>(new Transform());
 	renderer = AddComponent<Renderer>(new Renderer());
 
 	// Pure Data
-	GetComponent<Renderer>()->setVertexArray(VA);
-	GetComponent<Renderer>()->updateVertexArray();
 	GetComponent<Transform>()->setGameObjectReference(this);
+}
+
+// Constructor
+GameObject::GameObject(std::string _name) : name(_name)
+{
+	SetupComponents();
+
+	// Add to super list
+	m_allGameObjects.push_back(this);
+
+}
+GameObject::GameObject(VertexArray* VA, std::string _name) : name(_name)
+{
+	SetupComponents();
+
+	// Pure Data
+	GetComponent<Renderer>()->setVertexArray(VA);
 
 	// Add to super list
 	m_allGameObjects.push_back(this);

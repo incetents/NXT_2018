@@ -5,6 +5,7 @@
 #include "../Math/Vertex.h"
 #include "../Utility/Utility.h"
 #include "Particle.h"
+#include "../GameObject/CameraManager.h"
 
 // Currently only updates in local space
 class Emitter
