@@ -20,4 +20,5 @@ public:
 	void UpdatePoint1(Vec2 p1);
 	void UpdatePoint2(Vec2 p2);
 	void UpdatePoints(Vec2 p1, Vec2 p2);
+	void setThickness(float f);
 };

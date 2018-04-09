@@ -11,6 +11,7 @@
 #include "AppSettings.h"
 #include "SimpleController.h"
 
+#include <string>
 #include "../Math/Color.h"
 
 // Forward Declaration
@@ -25,6 +26,13 @@ enum class CullType
 	COUNTER_CLOCKWISE,
 	CLOCKWISE
 };
+enum StringSide
+{
+	Left = 0,
+	Center = 1,
+	Right = 2,
+};
+
 
 //---------------------------------------------------------------------------------
 // App namespace: These are the IO calls you can use for you game.
@@ -88,6 +96,7 @@ namespace App
 	void Print(float x, float y, const char *text, Color3F color = Color3F::WHITE(), void *font = GLUT_BITMAP_HELVETICA_18);
 	void Print(int x, int y, const char *st, Color3F color = Color3F::WHITE(), void *font = GLUT_BITMAP_HELVETICA_18);
 
+	void DrawString(std::string a_string, float a_scale, float a_r, float a_g, float a_b, StringSide a_side, float a_offX, float a_offY);
 
 	//*******************************************************************************************
 	// Sound handling.	

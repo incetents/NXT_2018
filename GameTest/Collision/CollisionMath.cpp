@@ -6,6 +6,7 @@
 #include "../Math/Vector3.h"
 #include "../Math/Vector4.h"
 #include "../Math/Transform.h"
+#include "../Math/MathCore.h"
 
 #include "../Utility/Utility.h"
 
@@ -92,6 +93,35 @@ bool CheckCollision(const CircleCollider2D& c1, const CircleCollider2D& c2)
 template<>
 bool CheckCollision(const CircleCollider2D& c, const OBB2D& b)
 {
+	
+	std::vector<Vec2> boxpoints = b.getPoints();
+	Vec2 cpos = c.getPosition();
+	float crad = c.getRadius();
+
+	// Check if point is inside circle
+	for (int i = 0; i < boxpoints.size(); i++)
+	{
+		if ((boxpoints[i] - cpos).Length() < crad)
+			return true;
+	}
+
+	Vec2 axis1 = (boxpoints[1] - boxpoints[0]).Normalize();
+	Vec2 axis2 = (boxpoints[2] - boxpoints[0]).Normalize();
+
+	//
+	//	Vec2 BoxToCircle = c.getPosition() - b.getPosition();
+	//	float b_sin = sinf(Deg_To_Rad(b.getRotation()));
+	//	float b_cos = sinf(Deg_To_Rad(b.getRotation()));
+	//	
+	//	float Offsetx = +BoxToCircle.x * b_cos + BoxToCircle.y * b_sin;
+	//	float OffsetY = -BoxToCircle.x * b_sin + BoxToCircle.y * b_cos;
+	//	
+	//	Vec2 RotatedVec(Offsetx, OffsetY);
+	//	
+	//	Vec2 FixedVec;
+	//	FixedVec.x = MacroClamp(RotatedVec.x, -b.getSize().x * 0.5f, +b.getSize().x * 0.5f);
+	//	FixedVec.y = MacroClamp(RotatedVec.y, -b.getSize().y * 0.5f, +b.getSize().y * 0.5f);
+	 
 	return false;
 }
 template<>

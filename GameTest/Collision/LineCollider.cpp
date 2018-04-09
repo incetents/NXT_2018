@@ -30,9 +30,35 @@ void LineCollider2D::setPoints(Vector2 v1, Vector2 v2)
 
 Vector2 LineCollider2D::getDirection() const
 {
-	return (m_p2 - m_p1);
+	if (m_transform == nullptr)
+		return (m_p2 - m_p1);
+
+	Matrix4x4 model = m_transform->getModel();
+
+	return (model * m_p2 - model * m_p1);
 }
 Vector2 LineCollider2D::getNormal() const
 {
-	return (m_p1 - m_p2).Perpendicular().Normalize();
+	if (m_transform == nullptr)
+		return (m_p1 - m_p2).Perpendicular().Normalize();
+
+	Matrix4x4 model = m_transform->getModel();
+
+	return (model * m_p1 - model * m_p2).Perpendicular().Normalize();
+}
+
+// Get Points
+Vector2 LineCollider2D::getPoint1() const
+{
+	if (m_transform == nullptr)
+		return Vec2();
+
+	return m_transform->getModel() * m_p1;
+}
+Vector2 LineCollider2D::getPoint2() const
+{
+	if (m_transform == nullptr)
+		return Vec2();
+
+	return m_transform->getModel() * m_p2;
 }

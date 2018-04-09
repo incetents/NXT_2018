@@ -8,9 +8,15 @@
 #include "../Math/SimpleShapes.h"
 #include "../Collision/Rigidbody.h"
 #include "../Collision/Circle.h"
+#include "Flipper.h"
 
 Ball::Ball(std::string _name, float scale, Vector2 position, Vector2 velocity) : GameObject(_name)
 {
+	// Create child
+	cube_effect = new GameObject(SimpleShapes.v_cube, _name + "-effect");
+	cube_effect->transform->setParent(transform);
+	cube_effect->transform->setScale(0.3f);
+
 	// Set Shape
 	GetComponent<Renderer>()->setVertexArray(SimpleShapes.v_circle);
 
@@ -24,11 +30,41 @@ Ball::Ball(std::string _name, float scale, Vector2 position, Vector2 velocity) :
 	GetComponent<Rigidbody2D>()->setVelocity(velocity);
 }
 
-void Ball::OnCollide(const Collider& c)
+void Ball::OnCollide(Collider c)
 {
-	SimpleLogger.Print("COLLIDE");
+	SimpleLogger.Print(c.getGameObjectReference()->name);
+
+	// Check for flippers
+	if (
+		c.getGameObjectReference()->name == "FlipperPiece"
+		)
+	{
+
+		// Upcast to get flipper object
+		Flipper* F = dynamic_cast<Flipper*>(c.getGameObjectReference()->transform->getParent()->getGameObjectReference());
+		// Check energy
+		float energy = F->getEnergy();
+		energy = sqrt(energy); // sqrt for curve effect
+		float strength = F->getStrength();
+		Vec2 aim = (F->getFlipperNormal() + Vec2(0, 1)).Normalize();
+
+		//SimpleLogger.ErrorStatic("ENG: " + toString(energy));
+
+		// Move Upwards
+		GetComponent<Transform>()->increasePosition(Vec3(0, 20, 0) * energy);
+
+		// Add Force
+		GetComponent<Rigidbody2D>()->addForce(aim * energy * strength);
+	}
 }
-void Ball::OnTrigger(const Collider& c)
+void Ball::OnTrigger(Collider c)
 {
 	SimpleLogger.Print("TRIGGER");
+}
+void Ball::Update(float delta)
+{
+	// Call gameobject update
+	GameObject::Update(delta);
+
+	cube_effect->transform->increaseRotation(Vec3(2, 2, 0));
 }

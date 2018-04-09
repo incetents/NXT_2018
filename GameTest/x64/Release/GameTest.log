@@ -1,0 +1,10 @@
+﻿  Ball.cpp
+  Generating code
+  236 of 1714 functions (13.8%) were compiled, the rest were copied from previous compilation.
+    2 functions were new in current compilation
+    26 functions had inline decision re-evaluated but remain unchanged
+  Finished generating code
+  GameTest.vcxproj -> C:\Users\100547971\Desktop\NXT\x64\Release\GameTest.exe
+  GameTest.vcxproj -> C:\Users\100547971\Desktop\NXT\x64\Release\GameTest.pdb (Full PDB)
+  C:\Users\100547971\Desktop\NXT\\GameTest\glut\bin\x64\freeglut.dll
+  1 File(s) copied

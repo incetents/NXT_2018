@@ -116,6 +116,14 @@ namespace MathCore
 	}
 
 	template<typename T>
+	static float InverseLerp(T value, T a, T b)
+	{
+		float smallest = min(a, b);
+		float biggest = max(a, b);
+		return (value - smallest) / (biggest - smallest);
+	}
+
+	template<typename T>
 	static T To_Radians(T value)
 	{
 		return Deg_To_Rad(value);

@@ -78,9 +78,9 @@ void SceneTest::Init()
 		walls.push_back(NewWall);
 	}
 
-	// Add Bumper
-	Bumper* bumper1 = new Bumper("Bumper1", Bumper::Side::LEFT, 0.0f, -45.0f, Vec2(-220, -320), Vec2(130, 40));
-	Bumper* bumper2 = new Bumper("Bumper2", Bumper::Side::RIGHT, 0.0f, +45.0f, Vec2(+220, -320), Vec2(130, 40));
+	// Add Flippers
+	Flipper* bumper1 = new Flipper("Flipper1", Flipper::Side::LEFT, -0.0f, -45.0f, Vec2(-220, -330), Vec2(130, 40));//320
+	Flipper* bumper2 = new Flipper("Flipper2", Flipper::Side::RIGHT, +0.0f, +45.0f, Vec2(+220, -330), Vec2(130, 40));
 	bumpers.push_back(bumper1);
 	bumpers.push_back(bumper2);
 
@@ -113,12 +113,10 @@ void SceneTest::Init()
 }
 GameState SceneTest::Update(float delta)
 {
-	if (GetAsyncKeyState('1'))
-	{
+	if (GetAsyncKeyState('2'))
 		return GameState::MENU;
-		//ball->GetComponent<Rigidbody2D>()->addForce(Vec2(0, 1));
-		//return;
-	}
+	if (GetAsyncKeyState('3'))
+		return GameState::GAMEPLAY;
 
 	// Move Camera
 	static float CamSpeed = 5.0f;
@@ -157,6 +155,8 @@ GameState SceneTest::Update(float delta)
 }
 void SceneTest::Render()
 {
+	//SimpleLogger.Print("F1: " + toString(bumpers[0]->getFlipperNormal().x) + "|" + toString(bumpers[0]->getFlipperNormal().y));
+
 	// Draw All Objects
 	rq.drawAll();
 

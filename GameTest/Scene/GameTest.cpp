@@ -26,7 +26,7 @@ void Init()
 	App::CullMode(CullType::COUNTER_CLOCKWISE);
 
 	// Initial State
-	GameStateManager.changeState(GameState::TEST);
+	GameStateManager.changeState(GameState::MENU);
 }
 
 //------------------------------------------------------------------------

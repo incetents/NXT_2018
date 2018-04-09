@@ -22,6 +22,8 @@
 #define APP_VIRTUAL_TO_NATIVE_COORDS(_x_,_y_)			_x_ = ((_x_ / APP_VIRTUAL_WIDTH )*2.0f) - 1.0f; _y_ = ((_y_ / APP_VIRTUAL_HEIGHT)*2.0f) - 1.0f;
 #define APP_NATIVE_TO_VIRTUAL_COORDS(_x_,_y_)			_x_ = ((_x_ + 1.0f) * APP_VIRTUAL_WIDTH) / 2.0f; _y_ = ((_y_ + 1.0f) * APP_VIRTUAL_HEIGHT) / 2.0f;
 
+
+
 namespace App
 {	
 	void SetWireframeMode(bool state)
@@ -321,8 +323,23 @@ namespace App
 		Print((float)x, (float)y, st, color.r, color.g, color.b, font);
 	}
 
+	// Function not working
+	void DrawString(std::string a_string, float a_scale, float a_r, float a_g, float a_b, StringSide a_side, float x, float y)
+	{
+		float factor = static_cast<float>(a_side) / 2.0f;
+		float scale = a_scale; float len = glutStrokeLength(GLUT_STROKE_ROMAN, (unsigned char*)a_string.c_str()) * factor;
+		//glPushMatrix();
+		//glScalef(scale, scale, scale);
+		//glTranslatef(-len + a_offX, a_offY, 0.0f);
+		glColor3f(a_r, a_g, a_b);
+		glRasterPos2f(x, y);
+		glutStrokeString(GLUT_STROKE_ROMAN, (unsigned char*)a_string.c_str());
+		//glPopMatrix();
+	}
+
 	const CController &GetController( int pad )
 	{
 		return CSimpleControllers::GetInstance().GetController(pad);
 	}
 }
+

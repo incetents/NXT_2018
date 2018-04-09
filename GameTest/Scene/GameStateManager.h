@@ -10,7 +10,8 @@
 #include "../Scene/SceneGameplay.h"
 #include "../Scene/SceneMenu.h"
 #include "../Scene/SceneTest.h"
-
+#include "../GameObject/CameraManager.h"
+#include "../Math/Transform.h"
 
 static class GameStateManager : public Singleton<class GameStateManager>
 {
@@ -67,6 +68,9 @@ public:
 			scene = new SceneGameplay(GameState::GAMEPLAY);
 			break;
 		}
+
+		// Reset Camera
+		CameraManager.getMain()->m_transform.setPosition(Vec3(0, 0, 0));
 
 		// Call Init Function
 		if (scene != nullptr)

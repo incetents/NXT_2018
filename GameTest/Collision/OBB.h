@@ -6,6 +6,7 @@
 #include "../GameObject/RenderQueue.h"
 #include "../Math/Vector2.h"
 #include "../Math/Color.h"
+#include <vector>
 
 class OBB2D : public Component, public Collider
 {
@@ -16,30 +17,29 @@ class OBB2D : public Component, public Collider
 	friend class LineCollider2D;
 
 private:
-	// Object References
-	GameObject* m_gameObject;
-	Transform*  m_transform;
+
 
 	// Data (pos and size from transform)
-	float rotation;
+	float m_rotation = 0.0f;
 
 public:
 
 	OBB2D(Transform* T);
 
-	// Get Object Reference
-	GameObject*	getGameObjectReference() const
-	{
-		return m_gameObject;
-	}
-	Transform*	getTransformReference() const
-	{
-		return m_transform;
-	}
 
-	// Get Position
+	// Get Data
 	Vec2 getPosition() const;
+	Vec2 getSize() const;
+	float getRotation() const
+	{
+		return m_rotation;
+	}
+	std::vector<Vec2> getPoints() const;
 
+	void UpdateRotation(float z)
+	{
+		m_rotation = z;
+	}
 	void Update(float delta) override;
 	void Draw(Color3F color = Color3F::WHITE()) const override;
 

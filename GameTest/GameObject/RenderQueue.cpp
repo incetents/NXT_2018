@@ -97,8 +97,6 @@ void RenderQueue::initAll()
 	{
 		m_gameobjects[i]->Init();
 	}
-
-	// Emitter Init
 }
 
 void RenderQueue::updateAll(float delta)
@@ -109,7 +107,7 @@ void RenderQueue::updateAll(float delta)
 
 		// If Circle Rigidbody
 		auto R = m_gameobjects[i]->GetComponent<Rigidbody2D>();
-		if(R != nullptr)
+		if(R != nullptr && R->checkActive())
 		{
 			// A bit hacky since only circle colliders have rigidbodies
 			auto C = m_gameobjects[i]->GetComponent<CircleCollider2D>();
@@ -123,6 +121,12 @@ void RenderQueue::updateAll(float delta)
 						continue;
 
 					C->updateCollisions(m_gameobjects[j]);
+
+					// Update Collision with their children
+					for (int ch = 0; ch < m_gameobjects[j]->transform->getChildCount(); ch++)
+					{
+						C->updateCollisions(m_gameobjects[j]->transform->getChild(ch)->getGameObjectReference());
+					}
 				}
 			}
 		}

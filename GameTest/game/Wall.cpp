@@ -63,3 +63,7 @@ void Wall::UpdatePoints(Vec2 p1, Vec2 p2)
 
 	GetComponent<LineCollider2D>()->setPoints(point1, point2);
 }
+void Wall::setThickness(float amount)
+{
+	renderer->m_lineWidth = amount;
+}

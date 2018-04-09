@@ -10,7 +10,7 @@ class Rigidbody2D : public Component
 {
 	friend class GameObject;
 	friend class Transform;
-private:
+protected:
 	// Object References
 	GameObject* m_gameObject = nullptr;
 	Transform* m_transform = nullptr;
@@ -19,6 +19,7 @@ private:
 	Vector2 m_gravity = Vector2(0, -1);
 	float	m_gravityScale = 0.0f;
 	const float m_terminalspeed = 20.0f;
+	bool m_enabled = true;
 
 	Vector2 m_velocity = Vector2(0, 0);
 
@@ -51,11 +52,21 @@ public:
 		m_velocityQueueCount++;
 	}
 
-	// Add Force
+	// Add Force to velocity
 	inline void addForce(Vector2 v)
 	{
 		m_velocityForces.push_back(v);
 		m_velocityForcesCount++;
+	}
+
+	// Update Overrider
+	inline void setActive(bool state)
+	{
+		m_enabled = state;
+	}
+	inline bool checkActive()
+	{
+		return m_enabled;
 	}
 
 	// Set Data

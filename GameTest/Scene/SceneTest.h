@@ -3,7 +3,7 @@
 
 #include "Scene.h"
 #include "../game/Ball.h"
-#include "../game/Bumper.h"
+#include "../game/Flipper.h"
 #include "../game/Wall.h"
 #include "../game/Bouncer.h"
 
@@ -11,7 +11,7 @@ class SceneTest : public Scene
 {
 protected:
 	Ball* ball;
-	std::vector<Bumper*> bumpers;
+	std::vector<Flipper*> bumpers;
 	std::vector<Wall*> walls;
 	std::vector<Bouncer*> bouncers;
 

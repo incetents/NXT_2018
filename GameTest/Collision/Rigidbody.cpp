@@ -16,6 +16,10 @@ Rigidbody2D::Rigidbody2D(Transform* T)
 
 void Rigidbody2D::Update(float delta)
 {
+	// Needs to be enabled to update
+	if (!m_enabled)
+		return;
+
 	if (m_transform != nullptr)
 	{
 		Vec2 velocityQueue;

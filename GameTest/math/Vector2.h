@@ -89,11 +89,9 @@ public:
 	static float ProjectLength(const Vector2&, const Vector2&);
 
 	// Rotate Degrees
-	void Rotate(Degrees&, RotationDirection);
-	static void Rotate(Vector2&, Degrees&, RotationDirection);
+	Vector2 Rotate(Degrees&, RotationDirection = RotationDirection(0));
 	// Rotate Radians
-	void Rotate(Radians&, RotationDirection);
-	static void Rotate(Vector2&, Radians&, RotationDirection);
+	Vector2 Rotate(Radians&, RotationDirection = RotationDirection(0));
 
 	// Get Angle Degrees
 	Degrees GetAngleDegrees(Vector2&);

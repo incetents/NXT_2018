@@ -207,7 +207,7 @@
     <ClInclude Include="GameObject\RenderQueue.h" />
     <ClInclude Include="game\Ball.h" />
     <ClInclude Include="game\Bouncer.h" />
-    <ClInclude Include="game\Bumper.h" />
+    <ClInclude Include="game\Flipper.h" />
     <ClInclude Include="game\Wall.h" />
     <ClInclude Include="math\Color.h" />
     <ClInclude Include="math\MathCore.h" />
@@ -257,7 +257,7 @@
     <ClCompile Include="GameObject\RenderQueue.cpp" />
     <ClCompile Include="game\Ball.cpp" />
     <ClCompile Include="game\Bouncer.cpp" />
-    <ClCompile Include="game\Bumper.cpp" />
+    <ClCompile Include="game\Flipper.cpp" />
     <ClCompile Include="game\Wall.cpp" />
     <ClCompile Include="math\Color.cpp" />
     <ClCompile Include="math\Matrix2x2.cpp" />

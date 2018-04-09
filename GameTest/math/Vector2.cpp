@@ -198,35 +198,27 @@ float Vector2::ProjectLength(const Vector2& v1, const Vector2& v2)
 }
 
 // Rotate Degrees
-void Vector2::Rotate(Degrees& D, RotationDirection Rot = RotationDirection::COUNTER_CLOCKWISE)
+Vector2 Vector2::Rotate(Degrees& D, RotationDirection Rot)
 {
 	// Alt Conversion
-	Rotate(Radians(D.GetRadians()), Rot);
+	return Rotate(Radians(D.GetRadians()), Rot);
 
 }
-void Vector2::Rotate(Vector2& v, Degrees& D, RotationDirection Rot = RotationDirection::COUNTER_CLOCKWISE)
-{
-	v.Rotate(D, Rot);
-}
 // Rotate Radians
-void Vector2::Rotate(Radians& R, RotationDirection Rot = RotationDirection::COUNTER_CLOCKWISE)
+Vector2 Vector2::Rotate(Radians& R, RotationDirection Rot)
 {
 	float Rad = R.Get();
 	// Counter Clockwise Rotation
 	if (Rot == RotationDirection::COUNTER_CLOCKWISE)
 	{
-		*this = Vector2(
+		return Vector2(
 			+x*cosf(Rad) - y*sinf(Rad),
 			+x*sinf(Rad) + y*cosf(Rad));
 	}
 	// Clockwise Rotation
-	*this = Vector2(
+	return Vector2(
 		+x*cosf(Rad) + y*sinf(Rad),
 		-x*sinf(Rad) + y*cosf(Rad));
-}
-void Vector2::Rotate(Vector2& v, Radians& R, RotationDirection Rot = RotationDirection::COUNTER_CLOCKWISE)
-{
-	v.Rotate(R, Rot);
 }
 
 // Get Angle Degrees
