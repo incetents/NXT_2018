@@ -117,8 +117,8 @@ void SceneGameplay::Init()
 		Vec3(0, 1000 + y_offset, 120.0f),
 		Vec3(-290, 800 + y_offset, 120.0f),
 		Vec3(+290, 800 + y_offset, 120.0f),
-		Vec3(-400, 500 + y_offset, 120.0f),
-		Vec3(+400, 500 + y_offset, 120.0f)
+		Vec3(-330, 500 + y_offset, 80.0f),
+		Vec3(+330, 500 + y_offset, 80.0f)
 	};
 	for (int i = 0; i < BouncerCount; i++)
 	{
