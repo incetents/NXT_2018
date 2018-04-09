@@ -207,7 +207,9 @@ GameState SceneGameplay::Update(float delta)
 		ballSpawn = true;
 	}
 
+#if _DEBUG
 	SimpleLogger.Print("Ball Pos: " + toString(ball->transform->getPosition().x) + "|" + toString(ball->transform->getPosition().y));
+#endif
 
 	// Update objects
 	rq.updateAll(delta);

@@ -32,7 +32,9 @@ Ball::Ball(std::string _name, float scale, Vector2 position, Vector2 velocity) :
 
 void Ball::OnCollide(Collider c)
 {
+#if _DEBUG
 	SimpleLogger.Print(c.getGameObjectReference()->name);
+#endif
 
 	// Check for flippers
 	if (

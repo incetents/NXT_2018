@@ -39,7 +39,7 @@ void OBB2D::Update(float delta)
 
 void OBB2D::Draw(Color3F color) const
 {
-	SimpleLogger.Print("Rotation: " + toString(m_rotation));
+	//SimpleLogger.Print("Rotation: " + toString(m_rotation));
 
 	if (m_transform != nullptr)
 	{
